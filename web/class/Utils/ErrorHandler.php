@@ -21,7 +21,8 @@ final class ErrorHandler {
 	 * Register the custom error handler
 	 */
 	public static function register() {
-		set_error_handler("Utils\\ErrorHandler::log");
+		set_error_handler(__CLASS__ . "::log");
+		set_exception_handler(__CLASS__ . "::logException");
 	}
 
 	/**
@@ -73,6 +74,22 @@ final class ErrorHandler {
 		);
 	}
 
+	/**
+	 * Logs the Exception and send a debug mail to MAIL_DEVELOPER if not an INFO.
+	 *
+	 * @param \Exception $exception the exception thrown
+	 */
+	public static function logException($exception) {
+		//TODO: the log function must throw an Exception ad handling done here
+		//(with recursive due to previous Exception if any)
+		self::log(
+			$exception->getCode(),
+			$exception->getMessage(),
+			$exception->getFile(),
+			$exception->getLine(),
+			$exception->getTraceAsString()
+		);
+	}
 
 	/**
 	 * Retrieves the type of error according to its level.
