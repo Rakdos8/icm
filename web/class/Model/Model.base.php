@@ -62,7 +62,7 @@ abstract class Model {
 	 * @return integer the number of deleted bean, -1 in case of error
 	 */
 	public final function delete() {
-		$lienBDD = new BDD();
+		$lienBDD = new MySQL();
 
 		if ($lienBDD != NULL) {
 			$clauseWhere = array();
@@ -90,7 +90,7 @@ abstract class Model {
 	 * @return integer the number of update bean, -1 in case of error
 	 */
 	public final function update() {
-		$lienBDD = new BDD();
+		$lienBDD = new MySQL();
 
 		if ($lienBDD != NULL) {
 			$clauseSet = array();
@@ -125,7 +125,7 @@ abstract class Model {
 	 * @return integer the number of inserted bean, -1 in case of error
 	 */
 	public final function insert($returnPkId = false) {
-		$lienBDD = new BDD();
+		$lienBDD = new MySQL();
 
 		if ($lienBDD != NULL) {
 			$champs = array_keys($this->tuple);

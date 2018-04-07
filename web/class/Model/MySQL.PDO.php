@@ -7,7 +7,7 @@ use Utils\Utils;
 /**
  * Interface between MySQL and PDO.
  */
-final class BDD extends \PDO {
+final class MySQL extends \PDO {
 
 	/**
 	 * @var string current SQL query
@@ -23,10 +23,15 @@ final class BDD extends \PDO {
 				"mysql:dbname=" . constant("DB_NAME") . ";" .
 				"host=" . constant("DB_URL") . ";" .
 				"port=" . constant("BDD_PORT") . ";" .
-				"charset=utf8;",
+				"charset=utf8mb4;",
 				constant("DB_LOGIN"),
 				constant("DB_PASSWORD"),
-				array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'")
+				array(
+					\PDO::ATTR_EMULATE_PREPARES => false,
+					\PDO::ATTR_ERRMODE =>\PDO::ERRMODE_EXCEPTION,
+					\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+					\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
+				)
 			);
 		} catch (\PDOException $ex) {
 			die("Impossible to connect to Database: " . $ex->getMessage() . " !");
@@ -40,13 +45,12 @@ final class BDD extends \PDO {
 	 * @return int number of row modified by the query
 	 */
 	public final function rawExec($sql) {
-		$ret = parent::exec($sql);
-
-		if ($ret === false) {
+		try {
+			return parent::exec($sql);
+		} catch (\PDOException $ex) {
 			$this->logSqlError();
-			return NULL;
 		}
-		return $ret;
+		return NULL;
 	}
 
 	/**
@@ -58,14 +62,13 @@ final class BDD extends \PDO {
 	 */
 	public final function objExec($sql, $className) {
 		$prepared = parent::prepare($sql);
-		$ret = $prepared->execute();
-
-		if ($ret === false) {
+		try {
+			$prepared->execute();
+			return $prepared->fetchAll(\PDO::FETCH_CLASS, $className);
+		} catch (\PDOException $ex) {
 			$this->logSqlError($prepared);
-			return NULL;
 		}
-
-		return $prepared->fetchAll(\PDO::FETCH_CLASS, $className);
+		return NULL;
 	}
 
 	/**
