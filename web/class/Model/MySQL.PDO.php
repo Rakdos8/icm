@@ -46,6 +46,7 @@ final class MySQL extends \PDO {
 	 */
 	public final function rawExec($sql) {
 		try {
+			$this->sqlQuery = $sql;
 			return parent::exec($sql);
 		} catch (\PDOException $ex) {
 			$this->logSqlError();
@@ -61,12 +62,12 @@ final class MySQL extends \PDO {
 	 * @return array array of bean that match the SQL query
 	 */
 	public final function objExec($sql, $className) {
-		$prepared = parent::prepare($sql);
+		$statement = parent::prepare($sql);
 		try {
-			$prepared->execute();
-			return $prepared->fetchAll(\PDO::FETCH_CLASS, $className);
+			$statement->execute();
+			return $statement->fetchAll(\PDO::FETCH_CLASS, $className);
 		} catch (\PDOException $ex) {
-			$this->logSqlError($prepared);
+			$this->logSqlError($statement);
 		}
 		return NULL;
 	}
@@ -74,15 +75,15 @@ final class MySQL extends \PDO {
 	/**
 	 * Logs the SQL error into file + send mail
 	 *
-	 * @param \PDOStatement $errorSource PDOStatement or NULL if it was a raw query
+	 * @param \PDOStatement $statement PDOStatement or NULL if it was a raw query
 	 */
-	public final function logSqlError($errorSource = NULL) {
-		if ($errorSource != NULL && $errorSource instanceof \PDOStatement) {
-			$this->sqlQuery = $errorSource->queryString;
+	public final function logSqlError($statement = NULL) {
+		if ($statement != NULL && $statement instanceof \PDOStatement) {
+			$this->sqlQuery = $statement->queryString;
 		} else {
-			$errorSource = $this;
+			$statement = $this;
 		}
-		$errorLog = $errorSource->errorInfo();
+		$errorLog = $statement->errorInfo();
 
 		$prefix = "[" . Utils::dateJJ_MM_AAAA(true, time()) . "] ";
 		$message = $prefix . "SQLSTATE: " . $errorLog[0] . "\n";
