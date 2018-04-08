@@ -4,14 +4,15 @@
 require_once "../inc/bootstrap.inc.php";
 
 // Include some class
-use Controller\AController;
 use Dispatcher\ADispatcher;
 
 session_start();
 if (array_key_exists("logout", $_GET)) {
 	session_destroy();
-	AController::deleteCookie(NULL);
-	AController::deleteSession(NULL);
+	Utils\Handler\Session::deleteSession(NULL);
+	Utils\Handler\Cookie::deleteCookie(NULL);
+
+	// Return to the home page
 	Utils\Utils::redirect("/");
 }
 
@@ -241,8 +242,7 @@ $template = ADispatcher::getInstance()->dispatch();
 				<div class="col-xs-12">
 					Copyright <abbr title="EMA">EVEMyAdmin</abbr> <b>0.1b</b> © 2015<br>
 					<a href="http://www.eveonline.com" target="_blank">EVE Online</a>, EVE and all associated logos and
-					designs
-					are the intellectual property of <a href="http://www.ccpgames.com" target="_blank">CCP hf</a>.
+					designs are the intellectual property of <a href="http://www.ccpgames.com" target="_blank">CCP hf</a>.
 				</div>
 			</div>
 		</div>

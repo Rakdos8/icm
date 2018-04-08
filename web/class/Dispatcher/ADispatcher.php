@@ -3,6 +3,7 @@
 namespace Dispatcher;
 
 use Controller\AController;
+use Controller\Errors;
 use Utils\Utils;
 
 require_once PATH_CONTROLLER . "/AController.php";
@@ -101,7 +102,7 @@ abstract class ADispatcher {
 		}
 		// If the page is a number: HTTP error (404, 501, else)
 		if (is_numeric($page)) {
-			$rawController = \Controller\Errors::class;
+			$rawController = Errors::class;
 			// Retrieve the real class name without it's namespace prefix
 			$page = substr(
 				strtolower($rawController),

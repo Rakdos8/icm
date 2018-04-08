@@ -62,7 +62,7 @@ createMissingFile(PATH_LOG_SQL_ERROR);
 
 // Reading main config file
 $mainConfigFile = PATH_CONFIG . "/config.ini";
-$iniConfig = parse_ini_file($mainConfigFile);
+$iniConfig = parse_ini_file($mainConfigFile, false, INI_SCANNER_TYPED);
 if (!$iniConfig) {
 	die("Impossible to read config file: '" . $mainConfigFile . "' !");
 }
@@ -75,7 +75,7 @@ ini_set("log_errors_max_len", 1024);
 // Sets the file path for PHP NOTICE, WARNING, FATAL, etc.
 ini_set("error_log", PATH_LOG_PHP_ERROR);
 // Don't print error on web page directly
-ini_set("display_errors", $iniConfig['show_errors'] == "true" ? 1 : 0);
+ini_set("display_errors", $iniConfig['show_errors']);
 
 // Sets the temporary file (for upload) in the right folder
 ini_set("upload_tmp_dir", PATH_ROOT . "/tmp");
@@ -85,6 +85,13 @@ ini_set("memory_limit", "16M");
 // Sets the active domain to the current domain name
 ini_set("session.cookie_domain", "." . $iniConfig['domain']);
 session_set_cookie_params(0, "/", "." . $iniConfig['domain'], true, true);
+
+// Domain and application config
+define("DOMAIN", $iniConfig['domain'], false);
+
+// Cookie configuration
+define("DISCLAIMER_NAME", $iniConfig['disclaimer_name'], false);
+define("COOKIE_DEFAULT_EXPIRATION", $iniConfig['default_expiration'], false);
 
 // Define of RE-CAPTCHA v2 from Google
 define("RE-CAPTCHA_PUBLIC", $iniConfig['recaptcha_public'], false);

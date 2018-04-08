@@ -196,24 +196,36 @@ class Utils {
 	}
 
 	/**
-	 * Permet d'envoyer un mail de manière "simple" avec les infos nécessaires.
+	 * Allows to send simple mail to people.
 	 *
-	 * @param string $subject Le sujet du mail
-	 * @param string $message Le contenu du mail
-	 * @param string $mailTo L'adresse mail du destinataire
-	 * @param string $mailFrom L'adresse mail de l'expéditeur
-	 * @param string $mailCopy Pas de copie par défaut.
-	 * @return boolean True si le mail a bien été accepté par la poste *huhu*, sinon false.
+	 * @param string $subject the subject of the mail
+	 * @param string $message the message of the mail
+	 * @param string $mailTo the receiver mail address
+	 * @param string $mailFrom the sender mail address
+	 * @param string $mailCopy the copied receiver (comma separated)
+	 * @param string $mailHiddenCopy the hidden copied receiver (comma separated)
+	 * @return boolean true if mail was sent, false otherwise
+	 * @see mail()
 	 */
-	public static final function sendMail($subject, $message, $mailTo, $mailFrom = MAIL_ADMINISTRATOR, $mailCopy = NULL) {
-		$from = "MIME-version: 1.0\n";
-		$from .= "Content-type: text/html; charset=utf-8\n";
-		$from .= "From: EVEMyAdmin <" . $mailFrom . ">\n";
+	public static final function sendMail(
+		$subject,
+		$message,
+		$mailTo,
+		$mailFrom = MAIL_ADMINISTRATOR,
+		$mailCopy = NULL,
+		$mailHiddenCopy = NULL
+	) {
+		$headers = "MIME-version: 1.0\n";
+		$headers .= "Content-type: text/html; charset=utf-8\n";
+		$headers .= "From: EVEMyAdmin <" . $mailFrom . ">\n";
 		if (!is_null($mailCopy)) {
-			$from .= "Cc: " . $mailCopy . "\n";
+			$headers .= "Cc: " . $mailCopy . "\n";
+		}
+		if (!is_null($mailHiddenCopy)) {
+			$headers .= "Bcc: " . $mailHiddenCopy . "\n";
 		}
 
-		return mail($mailTo, $subject, $message, $from);
+		return mail($mailTo, $subject, $message, $headers);
 	}
 
 	/**
@@ -303,6 +315,43 @@ class Utils {
 			self::sha512($salt, NULL) . $string :
 			$string;
 		return hash("sha512", $hash);
+	}
+
+	/**
+	 * Calls the htmlentities method for each value of the array
+	 *
+	 * @param string|array $toEncode string or array to encode.
+	 * @return string string encoded
+	 * @see htmlentities()
+	 * @see html_entity_decode_array_map() to decode
+	 */
+	public static final function htmlentities_array_map($toEncode) {
+		// Loop down the array to encode
+		if (is_array($toEncode)) {
+			foreach ($toEncode as $subArray) {
+				self::htmlentities_array_map($subArray);
+			}
+		}
+		return trim(
+			htmlentities($toEncode, ENT_QUOTES, "UTF-8", false),
+			" \t\n\r\0\x0B"
+		);
+	}
+
+	/**
+	 * Calls the html_entity_decode method for each value of the array
+	 *
+	 * @param string|array $toDecode string or array to decode
+	 * @return string string decoded
+	 */
+	public static final function html_entity_decode_array_map($toDecode) {
+		// Loop down the array to decode
+		if (is_array($toDecode)) {
+			foreach ($toDecode as $subArray) {
+				self::html_entity_decode_array_map($subArray);
+			}
+		}
+		return html_entity_decode($toDecode, ENT_QUOTES, "UTF-8");
 	}
 
 }
