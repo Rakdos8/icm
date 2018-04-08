@@ -27,7 +27,11 @@ final class MySQL extends \PDO {
 				constant("DB_LOGIN"),
 				constant("DB_PASSWORD"),
 				array(
+					// Allows to return the real value of row updated insteaf of 0 if nothing changed
+					\PDO::MYSQL_ATTR_FOUND_ROWS => true,
+					// Better to rely on DataBase engine to prepare the query
 					\PDO::ATTR_EMULATE_PREPARES => false,
+					// Better throw exception than silent errors
 					\PDO::ATTR_ERRMODE =>\PDO::ERRMODE_EXCEPTION,
 					\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
 					\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
@@ -78,7 +82,7 @@ final class MySQL extends \PDO {
 	 * @param \PDOStatement $statement PDOStatement or NULL if it was a raw query
 	 */
 	public final function logSqlError($statement = NULL) {
-		if ($statement != NULL && $statement instanceof \PDOStatement) {
+		if (!is_null($statement) && $statement instanceof \PDOStatement) {
 			$this->sqlQuery = $statement->queryString;
 		} else {
 			$statement = $this;
