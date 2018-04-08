@@ -6,7 +6,9 @@ Options -Indexes
 	Deny From All
 </Files>
 
+ErrorDocument 403 /403
 ErrorDocument 404 /404
+ErrorDocument 501 /501
 
 # Turn on URL rewriting
 RewriteEngine On

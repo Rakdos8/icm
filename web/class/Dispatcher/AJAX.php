@@ -17,7 +17,7 @@ final class AJAX extends ADispatcher {
 		if ($controllerStatus != AController::CONTROLLER_MISSING) {
 			$data = $this->controller->getTemplateValues();
 			// Removes the first value in the array
-			//TODO Which is what ?
+			//TODO: What's the reason of that...?
 			$this->values = array_shift($data);
 
 			// If the controller had an error
