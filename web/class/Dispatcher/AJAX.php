@@ -3,6 +3,7 @@
 namespace Dispatcher;
 
 use Controller\AController;
+use Utils\Utils;
 
 /**
  * Dispatcher for the AJAX
@@ -32,7 +33,7 @@ final class AJAX extends ADispatcher {
 			$json['error'] = "Controller does not exist.";
 		}
 		// Modify HTML into UTF-8 elements
-		array_walk_recursive($json, AController::class . "::htmlentities_array_map");
+		array_walk_recursive($json, Utils::class . "::htmlentities_array_map");
 
 		// Prints the JSON
 		echo json_encode($json, JSON_UNESCAPED_SLASHES);
