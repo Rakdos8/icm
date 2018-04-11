@@ -9,10 +9,9 @@ use Dispatcher\ADispatcher;
 // Links with the phpbb forum
 $phpbb = \Utils\Handler\PhpBB::getInstance();
 
-if (array_key_exists("logout", $_GET)) {
+$request = $phpbb->getRequest();
+if (strcmp($request->variable("page", "index"), "logout") == 0) {
 	$phpbb->logout();
-	Utils\Handler\Session::deleteSession(NULL);
-	Utils\Handler\Cookie::deleteCookie(NULL);
 
 	// Return to the home page
 	Utils\Utils::redirect("/");

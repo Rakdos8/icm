@@ -3,7 +3,7 @@
 namespace Controller;
 
 /**
- * Handles the Index page
+ * Handles the Errors page
  */
 final class Errors extends AController {
 

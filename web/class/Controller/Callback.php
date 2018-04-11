@@ -6,7 +6,7 @@ use EVEOnline\OAuth\Login;
 use Utils\Utils;
 
 /**
- * Handles the Index page
+ * Handles the Callback page
  */
 final class Callback extends AController {
 

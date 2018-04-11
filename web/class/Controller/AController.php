@@ -5,9 +5,6 @@ namespace Controller;
 use Utils\Handler\PhpBB;
 use Utils\Utils;
 
-// Inclusion du modèle principal gérant l'abstraction de la BDD
-require_once PATH_MODEL . "/Model.base.php";
-
 /**
  * Handles every Controller from this abstract class.
  */

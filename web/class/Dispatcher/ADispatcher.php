@@ -10,10 +10,9 @@ use phpbb\request\request_interface;
 require_once PATH_CONTROLLER . "/AController.php";
 
 /**
- * Classe servant de base pour le Répartiteur (non instanciable !).
- * Héritage obligatoire pour l'exploiter
+ * Define a Dispatcher: a way to respond correctly to the user
  *
- * @package web.class.repartiteur
+ * @package Dispatcher
  */
 abstract class ADispatcher {
 
