@@ -38,14 +38,14 @@ final class Callback extends AController {
 				"redirectUri" => urlencode(ESI_CALLBACK_URL)
 			)
 		);
-		echo "<hr>";
 		$token = $tokenRetriever->getAccessToken("authorization_code", array("code" => $code));
 
-		// Optional: Now you have a token you can look up a users profile data
+		// Now we have a token, get simple data to check that's OK
 		try {
 			// We got an access token, let's now get the user's details
 			$user = $tokenRetriever->getResourceOwner($token);
-			debug($user->toArray());
+			//TODO: Save in DataBase token/refresh + character
+			debug($token);
 			debug($user, true);
 			Utils::redirect("/");
 			return AController::TREATMENT_SUCCEED;
