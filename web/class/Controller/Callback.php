@@ -3,7 +3,6 @@
 namespace Controller;
 
 use EVEOnline\OAuth\Login;
-use EVEOnline\OAuth\LoginResourceOwner;
 use Utils\Utils;
 
 /**
@@ -46,16 +45,15 @@ final class Callback extends AController {
 		try {
 			// We got an access token, let's now get the user's details
 			$user = $tokenRetriever->getResourceOwner($token);
-			// Use these details to create a new profile
-			printf('Hello %s!', $user->getCharacterName());
-			die;
-		} catch (\Exception $e) {
+			debug($user->toArray());
+			debug($user, true);
+			Utils::redirect("/");
+			return AController::TREATMENT_SUCCEED;
+		} catch (\Exception $ex) {
 			// Failed to get user details
-			debug($e);
-			exit('Oh dear...: ' . $e->getMessage());
+			debug($ex);
 		}
-		Utils::redirect("/");
-		return AController::TREATMENT_SUCCEED;
+		return AController::TREATMENT_ERROR;
 	}
 
 }

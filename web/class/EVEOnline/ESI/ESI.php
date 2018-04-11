@@ -1,11 +1,11 @@
 <?php
 
-namespace ESI;
+namespace EVEOnline\ESI;
 
 /**
  * Main class which handles HTTP query, login, and other stuff.
  *
- * @package ESI
+ * @package EVEOnline\ESI
  */
 class ESI {
 

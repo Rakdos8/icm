@@ -23,29 +23,40 @@ class Login extends AbstractProvider {
 	 * @return string
 	 */
 	public function getBaseAuthorizationUrl() {
-		return ESI_LOGIN_BASE_URL . '/oauth/authorize';
+		return ESI_LOGIN_BASE_URL . "/oauth/authorize";
 	}
 
 	/**
 	 * Get access token url to retrieve token.
 	 *
 	 * @param  array $params
-	 *
 	 * @return string
 	 */
 	public function getBaseAccessTokenUrl(array $params) {
-		return ESI_LOGIN_BASE_URL . '/oauth/token';
+		return ESI_LOGIN_BASE_URL . "/oauth/token";
 	}
 
 	/**
 	 * Get provider url to fetch user details.
 	 *
-	 * @param  AccessToken $token
-	 *
+	 * @param AccessToken $token the token
 	 * @return string
 	 */
 	public function getResourceOwnerDetailsUrl(AccessToken $token) {
-		return ESI_LOGIN_BASE_URL . '/oauth/verify';
+		return ESI_LOGIN_BASE_URL . "/oauth/verify";
+	}
+
+	/**
+	 * Retrieves the resource owner.
+	 *
+	 * @param AccessToken $token the token
+	 * @return LoginResourceOwner the resource owner
+	 */
+	public function getResourceOwner(AccessToken $token) {
+		return $this->createResourceOwner(
+			$this->fetchResourceOwnerDetails($token),
+			$token
+		);
 	}
 
 	/**
@@ -63,12 +74,9 @@ class Login extends AbstractProvider {
 	/**
 	 * Check a provider response for errors.
 	 *
+	 * @param ResponseInterface $response
+	 * @param array|string $data Parsed response data
 	 * @throws IdentityProviderException
-	 *
-	 * @param  ResponseInterface $response
-	 * @param  array|string $data Parsed response data
-	 *
-	 * @return void
 	 */
 	protected function checkResponse(ResponseInterface $response, $data) {
 		if (!empty($data['error'])) {
@@ -79,8 +87,8 @@ class Login extends AbstractProvider {
 	/**
 	 * Generate a user object from a successful user details request.
 	 *
-	 * @param  array $response
-	 * @param  AccessToken $token
+	 * @param array $response
+	 * @param AccessToken $token
 	 * @return LoginResourceOwner
 	 */
 	protected function createResourceOwner(array $response, AccessToken $token) {

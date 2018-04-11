@@ -1,13 +1,13 @@
 <?php
 
-namespace ESI;
+namespace EVEOnline\ESI;
 
 use Utils\Enum\BasicEnum;
 
 /**
  * HttpConnection for ESI call.
  *
- * @package ESI
+ * @package EVEOnline\ESI
  */
 class HttpConnection extends BasicEnum {
 

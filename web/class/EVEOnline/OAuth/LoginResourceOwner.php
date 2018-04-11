@@ -37,15 +37,6 @@ class LoginResourceOwner implements ResourceOwnerInterface{
 	}
 
 	/**
-	 * Get character id. Alias of getId().
-	 *
-	 * @return int|null
-	 */
-	public function getCharacterID() {
-		return $this->getId();
-	}
-
-	/**
 	 * Get resource owner name (character name).
 	 *
 	 * @return string|null
@@ -55,20 +46,11 @@ class LoginResourceOwner implements ResourceOwnerInterface{
 	}
 
 	/**
-	 * Get character name. Alias of getName().
-	 *
-	 * @return string|null
-	 */
-	public function getCharacterName() {
-		return $this->getName();
-	}
-
-	/**
 	 * Get character owner hash.
 	 *
 	 * @return string|null
 	 */
-	public function getCharacterOwnerHash() {
+	public function getOwnerHash() {
 		return $this->response['CharacterOwnerHash'];
 	}
 
