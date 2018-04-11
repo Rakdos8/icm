@@ -100,7 +100,7 @@ abstract class AController {
 	/**
 	 * @return PhpBB the PhpBB Handler
 	 */
-	protected function getPhpbbUser() {
+	protected function getPhpbbHandler() {
 		return PhpBB::getInstance();
 	}
 

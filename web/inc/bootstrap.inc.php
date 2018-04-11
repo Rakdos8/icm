@@ -104,7 +104,7 @@ define("DB_LOGIN", $iniConfig['login'], false);
 define("DB_PASSWORD", $iniConfig['password'], false);
 define("DB_URL", $iniConfig['url'], false);
 define("DB_PORT", $iniConfig['port'], false);
-define("DB_NAME", $iniConfig['schema_name'], false);
+define("DB_NAME", "`" . $iniConfig['schema_name'] . "`", false);
 
 // Define of RE-CAPTCHA v2 from Google
 define("RE-CAPTCHA_PUBLIC", $iniConfig['recaptcha_public'], false);

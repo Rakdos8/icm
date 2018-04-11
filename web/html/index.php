@@ -153,6 +153,8 @@ $template = ADispatcher::getInstance()->dispatch();
 				<div class="col-xs-offset-3 col-xs-6" style="background-color: green;">
 					<?php
 					echo $template;
+					echo "<br>";
+					debug(\Utils\Handler\Session::getSession("test"));
 					/*
 						function encrypt_decrypt($action, $string) {
 							$output = false;

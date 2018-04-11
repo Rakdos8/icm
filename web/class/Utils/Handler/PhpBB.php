@@ -7,7 +7,7 @@ namespace Utils\Handler;
  *
  * @package Utils\Handler
  */
-class PhpBB {
+class PhpBB implements Handler {
 
 	private static $INSTANCE = NULL;
 

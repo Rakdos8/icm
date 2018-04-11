@@ -20,24 +20,25 @@ final class MySQL extends \PDO {
 	public function __construct() {
 		try {
 			parent::__construct(
-				"mysql:dbname=" . constant("DB_NAME") . ";" .
+				"mysql:dbname=" . str_replace("`", "", constant("DB_NAME")) . ";" .
 				"host=" . constant("DB_URL") . ";" .
-				"port=" . constant("BDD_PORT") . ";" .
+				"port=" . constant("DB_PORT") . ";" .
 				"charset=utf8mb4;",
 				constant("DB_LOGIN"),
 				constant("DB_PASSWORD"),
 				array(
-					// Allows to return the real value of row updated insteaf of 0 if nothing changed
+					// Allows to return the real value of row updated instead of 0 if nothing changed
 					\PDO::MYSQL_ATTR_FOUND_ROWS => true,
 					// Better to rely on DataBase engine to prepare the query
 					\PDO::ATTR_EMULATE_PREPARES => false,
 					// Better throw exception than silent errors
-					\PDO::ATTR_ERRMODE =>\PDO::ERRMODE_EXCEPTION,
+					\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
 					\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
 					\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
 				)
 			);
 		} catch (\PDOException $ex) {
+			debug($ex, true);
 			die("Impossible to connect to Database: " . $ex->getMessage() . " !");
 		}
 	}

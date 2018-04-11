@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Utils\ErrorHandler;
+
 /**
  * Handles every bean in the DataBase
  */
@@ -14,39 +16,19 @@ abstract class Model {
 	protected $pkID;
 
 	/**
-	 * Array of field name and its value
-	 * @var array
+	 * @var string $table the table name
 	 */
-	protected $tuple = array();
+	protected $table;
 
 	/**
 	 * Creates a common Model bean
 	 *
-	 * @param array $values array with field name and values
+	 * @param string $table the table name with the schema
+	 * @param string $pkID the name of column of the primary key
 	 */
-	public function __construct($values = NULL) {
-		if (!is_null($values)) {
-			$this->tuple = $values;
-		}
-	}
-
-	/**
-	 * @param string $name the field name
-	 * @return string the value of the field name, NULL if not found
-	 */
-	public final function __get($name) {
-		if (isset($this->tuple[$name])) {
-			return $this->tuple[$name];
-		}
-		return NULL;
-	}
-
-	/**
-	 * @param string $name the field name
-	 * @param string $value the new value of the field
-	 */
-	public final function __set($name, $value) {
-		$this->tuple[$name] = $value;
+	public function __construct($table, $pkID = "id") {
+		$this->table = $table;
+		$this->pkID = $pkID;
 	}
 
 	/**
@@ -54,6 +36,43 @@ abstract class Model {
 	 */
 	public final function __toString() {
 		return get_class($this);
+	}
+
+	/**
+	 * Inserts new line in DataBase.
+	 *
+	 * @return integer the number of inserted bean
+	 */
+	public final function insert() {
+		$db = new MySQL();
+
+		$properties = self::getProperties($this);
+		$columns = array_keys($properties);
+		$values = array_values($properties);
+
+		// Quoting all value which is not null and a string in case
+		foreach ($values as &$value) {
+			if (is_null($value)) {
+				$value = "NULL";
+			} else if (is_string($value)) {
+				$value = $db->quote($value);
+			}
+		}
+
+		//TODO: IGNORE + ON DUPLICATE
+		$sql = "
+	INSERT INTO
+	" . $this->table . "
+	(" . implode(", ", $columns) . ")
+	VALUES
+	(" . implode(", ", $values) . ");";
+
+		$nbInsert = $db->rawExec($sql);
+		if ($nbInsert !== NULL) {
+			$this->{$this->pkID} = $db->lastInsertId();
+			return $nbInsert;
+		}
+		return -1;
 	}
 
 	/**
@@ -119,41 +138,20 @@ abstract class Model {
 	}
 
 	/**
-	 * Inserts new line in DataBase.
-	 *
-	 * @param boolean $returnPkId should we return the inserted ID ?
-	 * @return integer the number of inserted bean, -1 in case of error
+	 * @param object $object any object
+	 * @return array the properties on its column name and its value
 	 */
-	public final function insert($returnPkId = false) {
-		$lienBDD = new MySQL();
-
-		if ($lienBDD != NULL) {
-			$champs = array_keys($this->tuple);
-			$valeurs = array_values($this->tuple);
-
-			// Sécurisation des valeurs à insérer !
-			foreach ($valeurs as &$valeur) {
-				$valeur = $lienBDD->encodeEtSecurise($valeur);
+	private static function getProperties($object) {
+		$properties = array();
+		try {
+			$reflect = new \ReflectionClass(get_class($object));
+			foreach ($reflect->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
+				$properties[$property->getName()] = $property->getValue($object);
 			}
-
-			$sql = "
-				INSERT INTO
-					" . get_class($this) . "
-				(
-					" . implode(", ", $champs) . "
-				)
-				VALUES
-				( 
-					" . implode(", ", $valeurs) . " 
-				)
-				;";
+		} catch (\ReflectionException $ex) {
+			ErrorHandler::logException($ex);
 		}
-
-		$nbLigneAffecte = $lienBDD->exec($sql);
-		if ($nbLigneAffecte !== NULL) {
-			return $returnPkId ? $lienBDD->lastInsertId() : $nbLigneAffecte;
-		}
-		return -1;
+		return $properties;
 	}
 
 }

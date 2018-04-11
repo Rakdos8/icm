@@ -16,35 +16,7 @@ class Utils {
 	 * @return string the full stacktrace
 	 */
 	public static final function callStack($debugInFile = true) {
-		$i = 0;
-		$message = "";
-		$stackTrace = debug_backtrace();
-
-		$prefix = "[" . self::dateJJ_MM_AAAA(true, time()) . "] ";
-		foreach ($stackTrace as $node) {
-			$i++;
-
-			if (!array_key_exists("file", $node)) {
-				continue;
-			}
-			$file = substr($node['file'], strpos($node['file'], "web"));
-			$message .= $prefix . "#" . $i . " " . $file . "::";
-			$message .= $node['function'] . "(";
-			for ($j = 0; $j < count($node['args']); $j++) {
-				$value = $node['args'][$j];
-				$type = gettype($node['args'][$j]);
-				$value = str_replace(array('\n', '\r'), '', var_export($value, true));
-
-				$message .= $type . ": " . $value;
-				if ($j < (count($node['args']) - 1)) {
-					$message .= ", ";
-				}
-			}
-			if (!array_key_exists("line", $node)) {
-				continue;
-			}
-			$message .= ")@" . $node['line'] . PHP_EOL;
-		}
+		$message = print_r(debug_backtrace(), true);
 
 		if ($debugInFile) {
 			self::log($message);
