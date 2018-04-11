@@ -6,9 +6,11 @@ require_once "../inc/bootstrap.inc.php";
 // Include some class
 use Dispatcher\ADispatcher;
 
-session_start();
+// Links with the phpbb forum
+$phpbb = \Utils\Handler\PhpBB::getInstance();
+
 if (array_key_exists("logout", $_GET)) {
-	session_destroy();
+	$phpbb->logout();
 	Utils\Handler\Session::deleteSession(NULL);
 	Utils\Handler\Cookie::deleteCookie(NULL);
 

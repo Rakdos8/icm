@@ -2,6 +2,9 @@
 
 namespace Utils;
 
+use phpbb\request\request_interface;
+use Utils\Handler\PhpBB;
+
 /**
  * Error Handler.
  *
@@ -39,7 +42,26 @@ final class ErrorHandler {
 		if (error_reporting() === 0) {
 			return;
 		}
-		$url = $_SERVER['HTTP_HOST'];
+		$request = PhpBB::getInstance()->getRequest();
+		// Retrieves the requested URL from $_SERVER through \phpbb\request\request
+		if (strcmp(self::getServerVariable($request, "HTTP_REFERER", "%%WRONG_URL%%"), "%%WRONG_URL%%") == 0) {
+			$url = self::getServerVariable($request, "REQUEST_SCHEME", "http") . "://" .
+				self::getServerVariable($request, "HTTP_HOST", "evemyadmin.com") .
+				self::getServerVariable(
+					$request,
+					"REQUEST_URI",
+					self::getServerVariable(
+						$request,
+						"REDIRECT_URL",
+						self::getServerVariable(
+							$request,
+							"REDIRECT_QUERY_STRING"
+						)
+					)
+				);
+		} else {
+			$url = self::getServerVariable($request, "HTTP_REFERER", "Unknown URL");
+		}
 
 		// Only logs if the error is new
 		if (in_array($url . $errMessage, self::$ERRORS)) {
@@ -133,6 +155,18 @@ final class ErrorHandler {
 				return "E_ALL";
 		}
 		return "E_UNKNOWN";
+	}
+
+	/**
+	 * Retrieves the variable value from the request.
+	 *
+	 * @param \phpbb\request\request $request the request to retrieve data
+	 * @param string $varName the variable names
+	 * @param string $defValue the default value
+	 * @return string the value of the default value
+	 */
+	private static function getServerVariable($request, $varName, $defValue = "UNKNOWN") {
+		return $request->variable($varName, $defValue, true, request_interface::SERVER);
 	}
 
 }

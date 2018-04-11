@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use Utils\Handler\PhpBB;
 use Utils\Utils;
 
 // Inclusion du modèle principal gérant l'abstraction de la BDD
@@ -97,6 +98,13 @@ abstract class AController {
 	 */
 	public function show($params = array()) {
 		return AController::TREATMENT_ERROR;
+	}
+
+	/**
+	 * @return PhpBB the PhpBB Handler
+	 */
+	protected function getPhpbbUser() {
+		return PhpBB::getInstance();
 	}
 
 	/**

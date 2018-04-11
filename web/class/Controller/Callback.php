@@ -51,7 +51,7 @@ final class Callback extends AController {
 			return AController::TREATMENT_SUCCEED;
 		} catch (\Exception $ex) {
 			// Failed to get user details
-			debug($ex);
+			debug($ex, true);
 		}
 		return AController::TREATMENT_ERROR;
 	}

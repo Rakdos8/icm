@@ -81,8 +81,8 @@ ini_set("display_errors", $iniConfig['show_errors']);
 // Sets the temporary file (for upload) in the right folder
 ini_set("upload_tmp_dir", PATH_ROOT . "/tmp");
 
-// Raise PHP memory limit to 16MB
-ini_set("memory_limit", "16M");
+// Raise PHP memory limit to 32MB
+ini_set("memory_limit", "32M");
 // Sets the active domain to the current domain name
 ini_set("session.cookie_domain", "." . $iniConfig['domain']);
 session_set_cookie_params(0, "/", "." . $iniConfig['domain'], true, true);
@@ -116,12 +116,20 @@ define("ESI_CLIENT_ID", $iniConfig['client_id'], false);
 define("ESI_SECRET_KEY", $iniConfig['secret_key'], false);
 define("ESI_CALLBACK_URL", $iniConfig['callback_url'], false);
 
+define("PATH_PHPBB", $iniConfig['phpbb_path'], false);
+
 // Security measure
 unset($iniConfig);
 
 // Includes the class AutoLoader
 require_once PATH_UTILITY . "/AutoLoader.php";
 Utils\AutoLoader::register();
+// PhpBB links
+define("IN_PHPBB", true);
+$phpEx = "php";
+$phpbb_root_path = PATH_PHPBB . "/";
+require_once PATH_PHPBB . "/common." . $phpEx;
+
 require_once PATH_COMPOSER . "/autoload.php";
 
 // Includes the ErrorHandler

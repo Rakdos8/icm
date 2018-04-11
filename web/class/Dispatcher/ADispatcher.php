@@ -3,8 +3,9 @@
 namespace Dispatcher;
 
 use Controller\AController;
-use Controller\Errors;
-use Utils\Utils;
+use Utils\Handler\PhpBB;
+
+use phpbb\request\request_interface;
 
 require_once PATH_CONTROLLER . "/AController.php";
 
@@ -63,7 +64,7 @@ abstract class ADispatcher {
 			return self::$INSTANCE;
 		}
 
-		$page = self::getPage();
+		$page = self::getPage(PhpBB::getInstance()->getRequest());
 		self::$INSTANCE = self::getDispatcherType($page);
 		self::$INSTANCE->page = $page;
 		self::$INSTANCE->controller = AController::getInstance($page);
@@ -92,14 +93,11 @@ abstract class ADispatcher {
 	 * Retrieves the page from the $_GET.<br>
 	 * Also replaces "-" into "_".
 	 *
+	 * @param \phpbb\request\request $request the phpbb request
 	 * @return string the asked page
 	 */
-	private static final function getPage() {
-		if (array_key_exists("page", $_GET) && !empty($_GET['page'])) {
-			$page = $_GET['page'];
-		} else {
-			$page = ADispatcher::DEFAULT_CONTROLLER;
-		}
+	private static final function getPage($request) {
+		$page = $request->variable("page", ADispatcher::DEFAULT_CONTROLLER);
 		return str_replace("-", "_", strtolower($page));
 	}
 
@@ -110,8 +108,10 @@ abstract class ADispatcher {
 	 * @return string the template to print
 	 */
 	public final function dispatch() {
-		$this->action = self::getAction();
-		$this->values = self::getParameters();
+		$request = PhpBB::getInstance()->getRequest();
+		$this->action = self::getAction($request);
+		$this->values = self::getParameters($request);
+
 
 		$status = AController::CONTROLLER_MISSING;
 		if ($this->controller != NULL) {
@@ -124,14 +124,11 @@ abstract class ADispatcher {
 	 * Retrieves the action from the $_GET.<br>
 	 * Also replaces "-" into "_".
 	 *
+	 * @param \phpbb\request\request $request the phpbb request
 	 * @return string the asked action
 	 */
-	public static final function getAction() {
-		if (array_key_exists("action", $_GET) && !empty($_GET['action'])) {
-			$action = $_GET['action'];
-		} else {
-			$action = AController::DEFAULT_ACTION;
-		}
+	public static final function getAction($request) {
+		$action = $request->variable("action", AController::DEFAULT_ACTION);
 		return str_replace("-", "_", strtolower($action));
 	}
 
@@ -139,10 +136,15 @@ abstract class ADispatcher {
 	 * Merge GET and POST values into one single array.<br>
 	 * Also removes value from page and action used by ADispatcher and AController
 	 *
+	 * @param \phpbb\request\request $request the phpbb request
 	 * @return array every values
 	 */
-	public static final function getParameters() {
-		$values = array_merge_recursive(array(), $_GET, $_POST);
+	public static final function getParameters($request) {
+		$values = array_merge_recursive(
+			array(),
+			$request->get_super_global(request_interface::GET),
+			$request->get_super_global(request_interface::POST)
+		);
 		if (array_key_exists("page", $values) && !empty($values['page'])) {
 			unset($values['page']);
 		}
@@ -150,9 +152,10 @@ abstract class ADispatcher {
 			unset($values['action']);
 		}
 
-		if (array_key_exists("params", $_GET) && !empty($_GET['params'])) {
+		$getParams = $request->variable("params", AController::DEFAULT_ACTION);
+		if (is_array($getParams)) {
 			$params = array();
-			foreach (explode("/", $_GET['params']) as $param) {
+			foreach (explode("/", $getParams) as $param) {
 				if (empty($param)) {
 					continue;
 				}
