@@ -112,7 +112,6 @@ abstract class ADispatcher {
 		$this->action = self::getAction($request);
 		$this->values = self::getParameters($request);
 
-
 		$status = AController::CONTROLLER_MISSING;
 		if ($this->controller != NULL) {
 			$status = $this->controller->executeAction($this->action, $this->values);
