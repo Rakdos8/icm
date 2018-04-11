@@ -24,6 +24,9 @@ class Utils {
 		foreach ($stackTrace as $node) {
 			$i++;
 
+			if (!array_key_exists("file", $node)) {
+				continue;
+			}
 			$file = substr($node['file'], strpos($node['file'], "web"));
 			$message .= $prefix . "#" . $i . " " . $file . "::";
 			$message .= $node['function'] . "(";
@@ -36,6 +39,9 @@ class Utils {
 				if ($j < (count($node['args']) - 1)) {
 					$message .= ", ";
 				}
+			}
+			if (!array_key_exists("line", $node)) {
+				continue;
 			}
 			$message .= ")@" . $node['line'] . PHP_EOL;
 		}

@@ -47,6 +47,7 @@ define("PATH_LOG_PHP_ERROR", PATH_ROOT . "/log/php_errors.log", false);
 define("PATH_LOG_SQL_ERROR", PATH_ROOT . "/log/sql_errors.log", false);
 
 define("PATH_INCLUDE", PATH_PROJECT . "/inc", false);
+define("PATH_COMPOSER", PATH_PROJECT . "/vendor", false);
 define("PATH_CONFIG", PATH_PROJECT . "/conf", false);
 define("PATH_CLASS", PATH_PROJECT . "/class", false);
 define("PATH_UTILITY", PATH_CLASS . "/Utils", false);
@@ -88,14 +89,11 @@ session_set_cookie_params(0, "/", "." . $iniConfig['domain'], true, true);
 
 // Domain and application config
 define("DOMAIN", $iniConfig['domain'], false);
+define("FULL_DOMAIN", "http://" . DOMAIN, false);
 
 // Cookie configuration
 define("DISCLAIMER_NAME", $iniConfig['disclaimer_name'], false);
 define("COOKIE_DEFAULT_EXPIRATION", $iniConfig['default_expiration'], false);
-
-// Define of RE-CAPTCHA v2 from Google
-define("RE-CAPTCHA_PUBLIC", $iniConfig['recaptcha_public'], false);
-define("RE-CAPTCHA_PRIVATE", $iniConfig['recaptcha_private'], false);
 
 // Mail addresses in case of error
 define("MAIL_DEVELOPER", $iniConfig['developer'], false);
@@ -108,12 +106,23 @@ define("DB_URL", $iniConfig['url'], false);
 define("DB_PORT", $iniConfig['port'], false);
 define("DB_NAME", $iniConfig['schema_name'], false);
 
+// Define of RE-CAPTCHA v2 from Google
+define("RE-CAPTCHA_PUBLIC", $iniConfig['recaptcha_public'], false);
+define("RE-CAPTCHA_PRIVATE", $iniConfig['recaptcha_private'], false);
+
+// Define of EVE Online ESI system
+define("ESI_LOGIN_BASE_URL", "https://login.eveonline.com", false);
+define("ESI_CLIENT_ID", $iniConfig['client_id'], false);
+define("ESI_SECRET_KEY", $iniConfig['secret_key'], false);
+define("ESI_CALLBACK_URL", $iniConfig['callback_url'], false);
+
 // Security measure
 unset($iniConfig);
 
 // Includes the class AutoLoader
 require_once PATH_UTILITY . "/AutoLoader.php";
 Utils\AutoLoader::register();
+require_once PATH_COMPOSER . "/autoload.php";
 
 // Includes the ErrorHandler
 Utils\ErrorHandler::register();

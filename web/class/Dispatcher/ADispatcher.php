@@ -100,16 +100,6 @@ abstract class ADispatcher {
 		} else {
 			$page = ADispatcher::DEFAULT_CONTROLLER;
 		}
-		// If the page is a number: HTTP error (404, 501, else)
-		if (is_numeric($page)) {
-			$rawController = Errors::class;
-			// Retrieve the real class name without it's namespace prefix
-			$page = substr(
-				strtolower($rawController),
-				Utils::lastIndexOf($rawController, '\\') + 1,
-				strlen($rawController)
-			);
-		}
 		return str_replace("-", "_", strtolower($page));
 	}
 
@@ -153,11 +143,22 @@ abstract class ADispatcher {
 	 */
 	public static final function getParameters() {
 		$values = array_merge_recursive(array(), $_GET, $_POST);
-		if (array_key_exists("page", $values)) {
+		if (array_key_exists("page", $values) && !empty($values['page'])) {
 			unset($values['page']);
 		}
-		if (array_key_exists("action", $values)) {
+		if (array_key_exists("action", $values) && !empty($values['action'])) {
 			unset($values['action']);
+		}
+
+		if (array_key_exists("params", $_GET) && !empty($_GET['params'])) {
+			$params = array();
+			foreach (explode("/", $_GET['params']) as $param) {
+				if (empty($param)) {
+					continue;
+				}
+				$params[] = $param;
+			}
+			$values['params'] = $params;
 		}
 		return $values;
 	}

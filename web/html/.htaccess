@@ -6,9 +6,9 @@ Options -Indexes
 	Deny From All
 </Files>
 
-ErrorDocument 403 /403
-ErrorDocument 404 /404
-ErrorDocument 501 /501
+ErrorDocument 403 /errors/403
+ErrorDocument 404 /errors/404
+ErrorDocument 501 /errors/501
 
 # Turn on URL rewriting
 RewriteEngine On
@@ -34,6 +34,7 @@ RewriteRule ^(.*) %{REQUEST_URI}/ [R=301,L]
 # Rewrite if the URI is nor a file nor a directory
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^([a-zA-Z0-9\-]+)/?$ 									index.php?page=$1
-RewriteRule ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/?$ 					index.php?page=$1&action=$2
-RewriteRule ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/?$ 	index.php?page=$1&action=$2&params=$3
+# General rules
+RewriteRule ^([a-zA-Z0-9\-]+)/?$										index.php?page=$1
+RewriteRule ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/?$						index.php?page=$1&action=$2
+RewriteRule ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-/]+/?)+$	index.php?page=$1&action=$2&params=$3

@@ -1,0 +1,16 @@
+{
+	"name": "rakdos8/evemyadmin",
+	"description": "STUFF",
+	"license": "PRIVATE",
+	"authors": [
+		{
+			"name": "Bla",
+			"email": "lol@rakdos.net",
+			"homepage": "https://rakdos.net"
+		}
+	],
+	"require": {
+		"php": ">=5.5.0",
+		"league/oauth2-client": "~1.0"
+	}
+}

@@ -3,7 +3,8 @@
 namespace Utils;
 
 /**
- * AutoLoader handler.
+ * AutoLoader.<br>
+ * Automatically includes class when being created.
  *
  * @see spl_autoload_register()
  */
@@ -17,13 +18,16 @@ class AutoLoader {
 	}
 
 	/**
-	 * Creates the auto loader class by their name.
+	 * Loads the class according to its full name
 	 *
 	 * @param string $className the full class name
 	 * @return bool true if the class exists and is included, false otherwise
 	 */
 	public static function loader($className) {
-		$filePath = PATH_CLASS . "/" . str_replace("\\", DIRECTORY_SEPARATOR, $className) . ".php";
+		$classToPath = str_replace("\\", DIRECTORY_SEPARATOR, $className);
+
+		// Self class
+		$filePath = PATH_CLASS . "/" . $classToPath . ".php";
 		if (file_exists($filePath)) {
 			include_once $filePath;
 			return class_exists($className);

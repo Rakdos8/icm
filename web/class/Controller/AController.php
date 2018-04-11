@@ -56,7 +56,6 @@ abstract class AController {
 		$controllerFile = PATH_CONTROLLER . "/" . $page . ".php";
 		// If the Controller is found, include it
 		if (is_file($controllerFile)) {
-			require_once $controllerFile;
 			// Update the class name with the namespace of the current one: Controller
 			$className = __NAMESPACE__ . "\\" . $page;
 			self::$INSTANCE = new $className();
@@ -64,7 +63,7 @@ abstract class AController {
 			// Log that the template was not found
 			Utils::callStack();
 			Utils::log("Controller " . $controllerFile . " does not exist !", time());
-			Utils::redirect("/404");
+			Utils::redirect("/errors/404");
 		}
 		return self::$INSTANCE;
 	}
@@ -129,7 +128,7 @@ abstract class AController {
 	 * @return mixed the value if exists, null otherwise
 	 */
 	public final function __get($name) {
-		if (array_key_exists($name, $this->values) && !empty($this->values[$name])) {
+		if (array_key_exists($name, $this->values)) {
 			return $this->values[$name];
 		}
 		return NULL;

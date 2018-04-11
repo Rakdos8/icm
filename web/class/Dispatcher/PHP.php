@@ -17,7 +17,7 @@ final class PHP extends ADispatcher {
 			// Log that the template was not found
 			Utils::callStack();
 			Utils::log("Template " . $templateView . " does not exist !", time());
-			Utils::redirect("/404");
+			Utils::redirect("/errors/404");
 		} else {
 			// Retrieves values from AController
 			$controllerValues = $this->controller->getTemplateValues();
