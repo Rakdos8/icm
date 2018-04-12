@@ -13,7 +13,13 @@ abstract class Model {
 	 * Primary field name
 	 * @var string
 	 */
-	protected $pkID;
+	protected $primaryField;
+
+	/**
+	 * Unique fields (columns names)
+	 * @var array
+	 */
+	protected $uniqueFields;
 
 	/**
 	 * @var string $table the table name
@@ -24,11 +30,17 @@ abstract class Model {
 	 * Creates a common Model bean
 	 *
 	 * @param string $table the table name with the schema
-	 * @param string $pkID the name of column of the primary key
+	 * @param array $uniqueFields list of unique field (column names)
+	 * @param string $primaryField the name of column of the primary key
 	 */
-	public function __construct($table, $pkID = "id") {
+	public function __construct(
+		$table,
+		$uniqueFields = array(),
+		$primaryField = "id"
+	) {
 		$this->table = $table;
-		$this->pkID = $pkID;
+		$this->uniqueFields = $uniqueFields;
+		$this->primaryField = $primaryField;
 	}
 
 	/**
@@ -41,9 +53,12 @@ abstract class Model {
 	/**
 	 * Inserts new line in DataBase.
 	 *
+	 * @param bool $ignore should it be an insert ignore ? (false by default)
 	 * @return integer the number of inserted bean
 	 */
-	public final function insert() {
+	public final function insert(
+		$ignore = false
+	) {
 		$db = new MySQL();
 
 		$properties = self::getProperties($this);
@@ -54,22 +69,34 @@ abstract class Model {
 		foreach ($values as &$value) {
 			if (is_null($value)) {
 				$value = "NULL";
-			} else if (is_string($value)) {
+			} else if (!is_numeric($value) && is_string($value)) {
 				$value = $db->quote($value);
 			}
 		}
 
-		//TODO: IGNORE + ON DUPLICATE
+		$columnOnUpdate = array();
+		foreach ($columns as $column) {
+			if (strcmp($column, $this->primaryField) == 0 ||
+				in_array($column, $this->uniqueFields)
+			) {
+				continue;
+			}
+			$columnOnUpdate[] = $column . " = VALUES(" . $column . ")";
+		}
+
 		$sql = "
-	INSERT INTO
+	INSERT " . ($ignore ? "IGNORE " : "") . "INTO
 	" . $this->table . "
 	(" . implode(", ", $columns) . ")
 	VALUES
-	(" . implode(", ", $values) . ");";
+	(" . implode(", ", $values) . ")
+	ON DUPLICATE KEY UPDATE
+	" . implode(", ", $columnOnUpdate) . ";";
 
 		$nbInsert = $db->rawExec($sql);
 		if ($nbInsert !== NULL) {
-			$this->{$this->pkID} = $db->lastInsertId();
+			// Sets the ID
+			$this->{$this->primaryField} = $db->lastInsertId();
 			return $nbInsert;
 		}
 		return -1;
@@ -114,7 +141,7 @@ abstract class Model {
 		if ($lienBDD != NULL) {
 			$clauseSet = array();
 			foreach ($this->tuple as $champ => $valeur) {
-				if ($champ != $this->pkID) {
+				if ($champ != $this->primaryField) {
 					// Sécurisation des valeurs à mettre à jour !
 					$clauseSet[] = $champ . " = " . $lienBDD->encodeEtSecurise($valeur, false);
 				}
@@ -126,7 +153,7 @@ abstract class Model {
 				SET
 					" . implode(", ", $clauseSet) . "
 				WHERE
-					" . $this->pkID . " = " . $lienBDD->encodeEtSecurise($this->tuple[$this->pkID], false) . "
+					" . $this->primaryField . " = " . $lienBDD->encodeEtSecurise($this->tuple[$this->primaryField], false) . "
 				;";
 
 			$nbLigneAffecte = $lienBDD->exec($sql);

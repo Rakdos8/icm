@@ -62,8 +62,11 @@ class OAuth2Users extends Model {
 		$id_character = NULL,
 		$id_forum_user = NULL
 	) {
-		parent::__construct(DB_NAME . "." . "`oauth2_users`");
-		$this->pkID = "id";
+		parent::__construct(
+			DB_NAME . "." . "`oauth2_users`",
+			array("id_character", "id_forum_user"),
+			"id"
+		);
 
 		$this->id = $id;
 		$this->access_token = $access_token;
