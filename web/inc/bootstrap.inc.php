@@ -127,6 +127,7 @@ unset($iniConfig);
 // Includes the class AutoLoader
 require_once PATH_UTILITY . "/AutoLoader.php";
 Utils\AutoLoader::register();
+
 // PhpBB links
 define("IN_PHPBB", true);
 $phpEx = "php";
@@ -136,4 +137,4 @@ require_once PATH_PHPBB . "/common." . $phpEx;
 require_once PATH_COMPOSER . "/autoload.php";
 
 // Includes the ErrorHandler
-Utils\ErrorHandler::register();
+Utils\Handler\ErrorHandler::register();

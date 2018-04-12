@@ -13,14 +13,6 @@ use Utils\Utils;
 final class ErrorHandler implements Handler {
 
 	/**
-	 * Saved errors of the session to avoid error spam.
-	 *
-	 * @var string[]
-	 * @static
-	 */
-	private static $ERRORS = array();
-
-	/**
 	 * Register the custom error handler
 	 */
 	public static function register() {
@@ -32,16 +24,29 @@ final class ErrorHandler implements Handler {
 	 * Logs the message/error and send a debug mail to MAIL_DEVELOPER if not a E_NOTICE.
 	 *
 	 * @param integer $number error number
-	 * @param string $errMessage error message
+	 * @param string $message error message
 	 * @param string $file file path
 	 * @param integer $line line in the file
-	 * @param mixed $vars vars
+	 * @throws \ErrorException
 	 */
-	public static function log($number, $errMessage, $file, $line, $vars) {
+	public static function log($number, $message, $file, $line) {
 		// Silent operator (@) activated ?
-		if (error_reporting() === 0) {
-			return;
+		if (error_reporting() > 0) {
+			throw new \ErrorException($message, $number, $number, $file, $line);
 		}
+	}
+
+	/**
+	 * Logs the Exception and send a debug mail to MAIL_DEVELOPER if not an INFO.
+	 *
+	 * @param \Exception $exception the exception thrown
+	 */
+	public static function logException($exception) {
+		ob_start("ob_gzhandler");
+		self::dumpException($exception);
+		$dump = ob_get_clean();
+		ob_end_flush();
+
 		$request = PhpBB::getInstance()->getRequest();
 		// Retrieves the requested URL from $_SERVER through \phpbb\request\request
 		if (strcmp(self::getServerVariable($request, "HTTP_REFERER", "%%WRONG_URL%%"), "%%WRONG_URL%%") == 0) {
@@ -63,54 +68,146 @@ final class ErrorHandler implements Handler {
 			$url = self::getServerVariable($request, "HTTP_REFERER", "Unknown URL");
 		}
 
-		// Only logs if the error is new
-		if (in_array($url . $errMessage, self::$ERRORS)) {
-			return;
-		}
-		self::$ERRORS[] = $url . $errMessage;
-
+		$number = $exception->getCode();
 		$prefix = "[" . Utils::dateJJ_MM_AAAA(true, time()) . "] ";
-		$message = $prefix . "URL: " . $url . "\r\n";
-		$message .= $prefix . "Erreur: " . self::getPhpErrorFromNumber($number) . " (" . $number . ")" . "\r\n";
-		$message .= $prefix . "Message: " . $errMessage . "\r\n";
-		$message .= $prefix . "\r\n";
-		$message .= $prefix . "Stack trace:" . "\r\n";
+		$message = $prefix . "URL: " . $url . "\n";
+		$message .= $prefix . "Erreur: " . self::getPhpErrorFromNumber($number) . " (" . $number . ")" . "\n";
+		$message .= $prefix . "Message: " . $exception->getMessage() . "\n";
+		$message .= $prefix . "Stack trace:" . "\n";
 		$message .= Utils::callStack(false);
-
 		// Save the error in the file
 		Utils::log($message . str_repeat("=", 60));
 
-		$message = str_replace("\r\n", "<br>", $message);
-		$message = str_replace(
-			array($prefix . "Stack trace:<br>"),
-			array($prefix . "Stack trace:<br><pre>"),
-			$message
-		);
-		$message .= "</pre>";
-
 		Utils::sendMail(
 			"EMA - Erreur le " . Utils::dateJJ_MM_AAAA(true, time()),
-			"<html><body><h1>Une erreur PHP est survenue sur le site de EVEMyAdmin !</h1>" . $message .
-			"<br><br>Cette erreur a aussi été loggé dans le fichier " . PATH_LOG_PHP_ERROR . ".</body></html>",
+			$dump,
 			MAIL_DEVELOPER
 		);
 	}
 
 	/**
-	 * Logs the Exception and send a debug mail to MAIL_DEVELOPER if not an INFO.
+	 * Dumps the Exception into HTML.
 	 *
-	 * @param \Exception $exception the exception thrown
+	 * @param \Exception $exception the exception to dump
 	 */
-	public static function logException($exception) {
-		//TODO: the log function must throw an Exception ad handling done here
-		//(with recursive due to previous Exception if any)
-		self::log(
-			$exception->getCode(),
-			$exception->getMessage(),
-			$exception->getFile(),
-			$exception->getLine(),
-			$exception->getTraceAsString()
-		);
+	private static function dumpException($exception) {
+		$file = $exception->getFile();
+		$line = $exception->getLine();
+
+		if (file_exists($file)) {
+			$lines = file($file);
+		}
+
+?>
+		<html>
+		<head>
+			<title><?= $exception->getMessage(); ?></title>
+			<style type="text/css">
+				body {
+					width: 800px;
+					margin: auto;
+				}
+
+				ul.code {
+					border: inset 1px;
+				}
+
+				ul.code li {
+					white-space: pre;
+					list-style-type: none;
+					font-family: monospace;
+				}
+
+				ul.code li.line {
+					color: red;
+				}
+
+				table.trace {
+					width: 100%;
+					border-collapse: collapse;
+					border: solid 1px black;
+				}
+
+				table.thead tr {
+					background: rgb(240, 240, 240);
+				}
+
+				table.trace tr.odd {
+					background: white;
+				}
+
+				table.trace tr.even {
+					background: rgb(250, 250, 250);
+				}
+
+				table.trace td {
+					padding: 2px 4px 2px 4px;
+				}
+			</style>
+		</head>
+		<body>
+			<h1>Uncaught <?= get_class($exception); ?></h1>
+			<h2><?= $exception->getMessage(); ?></h2>
+			<p>
+				An uncaught <b><?= get_class($exception); ?></b> was thrown on line
+				<b><?= $line; ?></b> of file <b><?= basename($file); ?></b> that
+				prevented further execution of this request.
+			</p>
+			<h2>Where it happened:</h2>
+			<?php if (isset($lines)) : ?>
+				<code><?= $file . "@" . $line; ?></code>
+				<ul class="code">
+					<?php for ($i = $line - 3; $i < $line + 3; $i++) : ?>
+						<?php if ($i > 0 && $i < count($lines)) : ?>
+							<?php if ($i == $line - 1) : ?>
+								<li class="line"><?= str_replace("\n", "", $lines[$i]); ?></li>
+							<?php else : ?>
+								<li><?= str_replace("\n", "", $lines[$i]); ?></li>
+							<?php endif; ?>
+						<?php endif; ?>
+					<?php endfor; ?>
+				</ul>
+			<?php endif; ?>
+
+			<?php if (is_array($exception->getTrace())) : ?>
+				<h2>Stack trace:</h2>
+				<table class="trace">
+					<thead>
+					<tr>
+						<td>File</td>
+						<td>Line</td>
+						<td>Class</td>
+						<td>Function</td>
+						<td>Arguments</td>
+					</tr>
+					</thead>
+					<tbody>
+					<?php foreach ($exception->getTrace() as $i => $trace) : ?>
+						<tr class="<?= $i % 2 == 0 ? 'even' : 'odd'; ?>">
+							<td><?= isset($trace['file']) ? basename($trace['file']) : ''; ?></td>
+							<td><?= isset($trace['line']) ? $trace['line'] : ''; ?></td>
+							<td><?= isset($trace['class']) ? $trace['class'] : ''; ?></td>
+							<td><?= isset($trace['function']) ? $trace['function'] : ''; ?></td>
+							<td>
+								<?php if (isset($trace['args'])) : ?>
+									<?php foreach ($trace['args'] as $j => $arg) : ?>
+										<span title="<?= var_export($arg, true); ?>"><?= gettype($arg); ?></span>
+										<?= $j < count($trace['args']) - 1 ? ',' : ''; ?>
+									<?php endforeach; ?>
+								<?php else : ?>
+									NULL
+								<?php endif; ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+					</tbody>
+				</table>
+			<?php else : ?>
+				<pre><?= $exception->getTraceAsString(); ?></pre>
+			<?php endif; ?>
+		</body>
+		</html>
+<?php
 	}
 
 	/**
