@@ -10,11 +10,6 @@ use Utils\Utils;
 final class MySQL extends \PDO {
 
 	/**
-	 * @var string current SQL query
-	 */
-	private $sqlQuery = NULL;
-
-	/**
 	 * BDD constructor.
 	 */
 	public function __construct() {
@@ -68,10 +63,11 @@ final class MySQL extends \PDO {
 	 * @param \PDOStatement $statement PDOStatement or NULL if it was a raw query
 	 */
 	public final function logSqlError($statement = NULL) {
-		if (!is_null($statement) && $statement instanceof \PDOStatement) {
-			$this->sqlQuery = $statement->queryString;
-		} else {
-			$statement = $this;
+		$sqlQuery = "UNKNOWN";
+		if (!is_null($statement) &&
+			$statement instanceof \PDOStatement
+		) {
+			$sqlQuery = $statement->queryString;
 		}
 		$errorLog = $statement->errorInfo();
 
@@ -79,7 +75,7 @@ final class MySQL extends \PDO {
 		$message = $prefix . "SQLSTATE: " . $errorLog[0] . "\n";
 		$message .= $prefix . "Erreur numéro: " . $errorLog[1] . "\n";
 		$message .= $prefix . "Message d'erreur: " . $errorLog[2] . "\n";
-		$message .= $prefix . "Requête SQL: '" . $this->sqlQuery . "'\n";
+		$message .= $prefix . "Requête SQL: '" . $sqlQuery . "'\n";
 		$message .= Utils::callStack(false);
 		$message .= str_repeat("=", 60) . "\n";
 
