@@ -65,11 +65,11 @@ class PhpBB implements Handler {
 	}
 
 	/**
-	 * @return bool true if the user is a real one, false if he is not logged
+	 * @return bool true if the user is not logged in, false otherwise
 	 */
-	public function isNotAnonymous() {
+	public function isAnonymous() {
 		//ANONYMOUS is a define on phpbb side which is equals to 1
-		return $this->user->data['user_id'] != ANONYMOUS;
+		return $this->user->data['user_id'] == ANONYMOUS;
 	}
 
 	/**

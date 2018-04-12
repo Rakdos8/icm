@@ -9,6 +9,3 @@
 	<br>
 	<input type="submit" value="!! Show me DAT Magic NOW !!">
 </form>
-<?php
-	debug($valeurs);
-?>

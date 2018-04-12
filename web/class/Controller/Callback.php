@@ -58,7 +58,6 @@ final class Callback extends AController {
 				parent::getPhpbbHandler()->getUser()->data['user_id']
 			);
 			$oauthUser->insert();
-			Session::setSession("test", 42);
 			Utils::redirect("/");
 			return AController::TREATMENT_SUCCEED;
 		} catch (\Exception $ex) {

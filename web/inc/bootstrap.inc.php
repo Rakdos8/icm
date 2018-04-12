@@ -20,6 +20,9 @@ function createMissingFile($filePath = "") {
 	}
 }
 
+// Init the $_SESSION
+session_start();
+
 // Sets language, charset, TimeZone and other funny stuff
 header("charset=UTF-8");
 mb_internal_encoding("UTF-8");
@@ -81,8 +84,8 @@ ini_set("display_errors", $iniConfig['show_errors']);
 // Sets the temporary file (for upload) in the right folder
 ini_set("upload_tmp_dir", PATH_ROOT . "/tmp");
 
-// Raise PHP memory limit to 32MB
-ini_set("memory_limit", "32M");
+// Raise PHP memory limit to 64MB
+ini_set("memory_limit", "64M");
 // Sets the active domain to the current domain name
 ini_set("session.cookie_domain", "." . $iniConfig['domain']);
 session_set_cookie_params(0, "/", "." . $iniConfig['domain'], true, true);
