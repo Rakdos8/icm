@@ -2,6 +2,8 @@
 
 namespace Utils\Handler;
 
+use phpbb\request\request_interface;
+
 /**
  * Cookie handler. Avoid $_COOKIE call.
  *
@@ -44,7 +46,8 @@ class Cookie implements Handler {
 	 * @return mixed the value if found or NULL
 	 */
 	public static final function getCookie($name) {
-		return array_key_exists($name, $_COOKIE) ? $_COOKIE[$name] : NULL;
+		$request = PhpBB::getInstance()->getRequest();
+		return $request->variable($name, NULL, true, request_interface::COOKIE);
 	}
 
 	/**
@@ -55,16 +58,17 @@ class Cookie implements Handler {
 	 */
 	public static final function deleteCookie($name) {
 		$nbCookie = 0;
+		$cookie = PhpBB::getInstance()->getRequest()->get_super_global(request_interface::COOKIE);
 
 		if (is_null($name)) {
 			// Retrieves all variables names
-			$availableKeys = array_keys($_SESSION);
+			$availableKeys = array_keys($cookie);
 			// Removes every keys
 			foreach ($availableKeys as $key) {
 				$nbCookie++;
 				self::setCookie($key, NULL, -1);
 			}
-		} else if (array_key_exists($name, $_SESSION)){
+		} else if (array_key_exists($name, $cookie)){
 			$nbCookie++;
 			self::setCookie($name, NULL, -1);
 		}

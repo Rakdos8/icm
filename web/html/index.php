@@ -5,16 +5,18 @@ require_once "../inc/bootstrap.inc.php";
 
 // Include some class
 use Dispatcher\ADispatcher;
+use Utils\Utils;
+use Utils\Handler\PhpBB;
 
 // Links with the phpbb forum
-$phpbb = \Utils\Handler\PhpBB::getInstance();
+$phpbb = PhpBB::getInstance();
 
 $request = $phpbb->getRequest();
 if (strcmp($request->variable("page", "index"), "logout") == 0) {
 	$phpbb->logout();
 
 	// Return to the home page
-	Utils\Utils::redirect("/");
+	Utils::redirect("/");
 }
 
 $template = ADispatcher::getInstance()->dispatch();
@@ -153,8 +155,6 @@ $template = ADispatcher::getInstance()->dispatch();
 				<div class="col-xs-offset-3 col-xs-6" style="background-color: green;">
 <?php
 echo $template;
-echo "<br>";
-debug(\Utils\Handler\Session::getSession("test"));
 ?>
 				</div>
 			</div>
