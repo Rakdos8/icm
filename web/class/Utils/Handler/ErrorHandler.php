@@ -3,6 +3,7 @@
 namespace Utils;
 
 use phpbb\request\request_interface;
+use Utils\Handler\Handler;
 use Utils\Handler\PhpBB;
 
 /**
@@ -10,7 +11,7 @@ use Utils\Handler\PhpBB;
  *
  * @see set_error_handler()
  */
-final class ErrorHandler {
+final class ErrorHandler implements Handler {
 
 	/**
 	 * Saved errors of the session to avoid error spam.

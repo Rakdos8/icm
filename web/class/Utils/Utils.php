@@ -7,7 +7,7 @@ namespace Utils;
  *
  * @package Utils
  */
-class Utils {
+final class Utils {
 
 	/**
 	 * Retrieves the stacktrace call.

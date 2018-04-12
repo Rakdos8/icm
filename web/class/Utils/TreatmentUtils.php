@@ -5,7 +5,7 @@ namespace Utils;
 /**
  * Treatment utility class handler
  */
-class TreatmentUtils {
+final class TreatmentUtils {
 
 	/**
 	 * When did the treatment started.

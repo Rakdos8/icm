@@ -7,7 +7,7 @@ namespace Utils\Handler;
  *
  * @package Utils\Handler
  */
-class Session implements Handler {
+final class Session implements Handler {
 
 	/**
 	 * Sets the given value on the given (variable) name.

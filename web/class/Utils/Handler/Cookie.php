@@ -9,7 +9,7 @@ use phpbb\request\request_interface;
  *
  * @package Utils\Handler
  */
-class Cookie implements Handler {
+final class Cookie implements Handler {
 
 	/**
 	 * Checks if the cookie were accepted by the user

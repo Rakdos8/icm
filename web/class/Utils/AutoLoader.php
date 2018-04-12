@@ -8,7 +8,7 @@ namespace Utils;
  *
  * @see spl_autoload_register()
  */
-class AutoLoader {
+final class AutoLoader {
 
 	/**
 	 * Register the custom spl loader.
@@ -29,7 +29,7 @@ class AutoLoader {
 		// Self class
 		$filePath = PATH_CLASS . "/" . $classToPath . ".php";
 		if (file_exists($filePath)) {
-			include_once $filePath;
+			require_once $filePath;
 			return class_exists($className);
 		}
 		return false;
