@@ -153,9 +153,7 @@ $template = ADispatcher::getInstance()->dispatch();
 
 			<div class="row">
 				<div class="col-xs-offset-3 col-xs-6" style="background-color: green;">
-<?php
-echo $template;
-?>
+<?= $template; ?>
 				</div>
 			</div>
 
