@@ -51,10 +51,11 @@ abstract class Model {
 	}
 
 	/**
-	 * Inserts new line in DataBase.
+	 * Inserts new line in DataBase.<br>
+	 * In case of duplicate entry, it will update non unique fields.
 	 *
 	 * @param bool $ignore should it be an insert ignore ? (false by default)
-	 * @return integer the number of inserted bean
+	 * @return bool true if the insert is done, false otherwise
 	 */
 	public final function insert(
 		$ignore = false
@@ -64,15 +65,6 @@ abstract class Model {
 		$properties = self::getProperties($this);
 		$columns = array_keys($properties);
 		$values = array_values($properties);
-
-		// Quoting all value which is not null and a string in case
-		foreach ($values as &$value) {
-			if (is_null($value)) {
-				$value = "NULL";
-			} else if (!is_numeric($value) && is_string($value)) {
-				$value = $db->quote($value);
-			}
-		}
 
 		$columnOnUpdate = array();
 		foreach ($columns as $column) {
@@ -89,17 +81,19 @@ abstract class Model {
 	" . $this->table . "
 	(" . implode(", ", $columns) . ")
 	VALUES
-	(" . implode(", ", $values) . ")
+	(" . implode(", ", self::createBindingArray($columns)) . ")
 	ON DUPLICATE KEY UPDATE
 	" . implode(", ", $columnOnUpdate) . ";";
 
-		$nbInsert = $db->rawExec($sql);
-		if ($nbInsert !== NULL) {
-			// Sets the ID
+		$statement = $db->prepare($sql);
+		$status = $statement->execute($values);
+		$statement = NULL;
+
+		// Sets back the ID
+		if ($status) {
 			$this->{$this->primaryField} = $db->lastInsertId();
-			return $nbInsert;
 		}
-		return -1;
+		return $status;
 	}
 
 	/**
@@ -162,6 +156,23 @@ abstract class Model {
 			}
 		}
 		return -1;
+	}
+
+	/**
+	 * Creates the array of "?" for SQL query.
+	 *
+	 * @param array $array the column/value array
+	 * @return array the array of question marks
+	 */
+	private static function createBindingArray($array = array()) {
+		if (!is_array($array) || is_null($array) || empty($array)) {
+			return array();
+		}
+		$ret = array();
+		for ($i = 0; $i < count($array); $i++) {
+			$ret[] = "?";
+		}
+		return $ret;
 	}
 
 	/**
