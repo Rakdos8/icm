@@ -9,6 +9,10 @@ namespace Utils\Handler;
  */
 final class PhpBB implements Handler {
 
+	/**
+	 * @var PhpBB
+	 * @static
+	 */
 	private static $INSTANCE = NULL;
 
 	/**
@@ -20,14 +24,6 @@ final class PhpBB implements Handler {
 	 * @var \phpbb\request\request $request the way to retrieve value from GET and POST from PhpBB
 	 */
 	private $request;
-
-	public static function getInstance() {
-		if (!is_null(self::$INSTANCE)) {
-			return self::$INSTANCE;
-		}
-		self::$INSTANCE = new PhpBB();
-		return self::$INSTANCE;
-	}
 
 	private function __construct() {
 		/**
@@ -48,6 +44,19 @@ final class PhpBB implements Handler {
 		 */
 		global $request;
 		$this->request = $request;
+	}
+
+	/**
+	 * Creates or retrieves the instance of PhpBB.
+	 *
+	 * @return PhpBB
+	 */
+	public static function getInstance() {
+		if (!is_null(self::$INSTANCE)) {
+			return self::$INSTANCE;
+		}
+		self::$INSTANCE = new PhpBB();
+		return self::$INSTANCE;
 	}
 
 	/**

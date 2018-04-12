@@ -3,9 +3,8 @@
 namespace Dispatcher;
 
 use Controller\AController;
-use Utils\Handler\PhpBB;
-
 use phpbb\request\request_interface;
+use Utils\Handler\PhpBB;
 
 require_once PATH_CONTROLLER . "/AController.php";
 

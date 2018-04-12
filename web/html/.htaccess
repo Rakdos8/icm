@@ -17,9 +17,6 @@ RewriteEngine On
 #RewriteCond %{HTTPS} off
 #RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Log out redirect rule
-RewriteRule logout index.php?logout
-
 # Do not process images or CSS files further
 RewriteRule \.(gif|jpe?g|png|js|css|swf|ico|txt|pdf|json)$ - [L]
 

@@ -5,8 +5,8 @@ require_once "../inc/bootstrap.inc.php";
 
 // Include some class
 use Dispatcher\ADispatcher;
-use Utils\Utils;
 use Utils\Handler\PhpBB;
+use Utils\Utils;
 
 // Links with the phpbb forum
 $phpbb = PhpBB::getInstance();
@@ -22,7 +22,7 @@ if (strcmp($request->variable("page", "index"), "logout") == 0) {
 $template = ADispatcher::getInstance()->dispatch();
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="wide wow-animation">
 	<head>
 		<title>EVEMyAdmin &bull; Pingouin DTG</title>
 		<!-- Les CSS -->
