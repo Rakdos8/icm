@@ -44,22 +44,6 @@ final class MySQL extends \PDO {
 	}
 
 	/**
-	 * Executes the given SQL query.
-	 *
-	 * @param string $sql the SQL query
-	 * @return int number of row modified by the query
-	 */
-	public final function rawExec($sql) {
-		try {
-			$this->sqlQuery = $sql;
-			return parent::exec($sql);
-		} catch (\PDOException $ex) {
-			$this->logSqlError();
-		}
-		return NULL;
-	}
-
-	/**
 	 * Execute the SQL query and returns a bean.
 	 *
 	 * @param string $sql sql query to send
