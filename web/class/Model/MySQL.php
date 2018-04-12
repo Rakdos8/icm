@@ -95,7 +95,7 @@ final class MySQL extends \PDO {
 		$message = $prefix . "SQLSTATE: " . $errorLog[0] . "\n";
 		$message .= $prefix . "Erreur numéro: " . $errorLog[1] . "\n";
 		$message .= $prefix . "Message d'erreur: " . $errorLog[2] . "\n";
-		$message .= $prefix . "Requête SQL utilisée: '" . $this->sqlQuery . "'\n";
+		$message .= $prefix . "Requête SQL: '" . $this->sqlQuery . "'\n";
 		$message .= Utils::callStack(false);
 		$message .= str_repeat("=", 60) . "\n";
 

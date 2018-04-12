@@ -3,9 +3,9 @@
 namespace Utils;
 
 /**
- * Classe servant de base pour les fonctions utilitaires.
+ * Utility class
  *
- * @package web.class.utils
+ * @package Utils
  */
 class Utils {
 
@@ -49,6 +49,7 @@ class Utils {
 	 * @param integer $timestamp Timestamp (temps UNIX) à convertir. Si NULL ce sera le temps courant
 	 * @return string La date sous forme JJ/MM/ANNE[ HH:MM:SS]
 	 */
+	//TODO: Put in dedicated DateUtils class with 2 format: date and datetime
 	public static final function dateJJ_MM_AAAA($heure = false, $timestamp = NULL) {
 		if (is_null($timestamp) || !is_numeric($timestamp)) {
 			$timestamp = time();
@@ -78,99 +79,6 @@ class Utils {
 		}
 
 		return mktime(0, 0, 0, $mois, $jour, $annee);
-	}
-
-	/**
-	 * Fonction permettant d'afficher la date sous forme littérale (Mercredi 06 Août 2014)
-	 *
-	 * @param integer $timestamp Timestamp (temps UNIX) à convertir
-	 * @param boolean $heure L'heure est à afficher ? Format HH:MM:SS
-	 * @return string La date sous forme littérale
-	 */
-	public static final function dateLitterale($timestamp, $heure = false) {
-		$retDate = date('l', $timestamp);
-		if ($retDate == "Monday") {
-			$jour = "Lundi";
-		} else {
-			if ($retDate == "Tuesday") {
-				$jour = "Mardi";
-			} else {
-				if ($retDate == "Wednesday") {
-					$jour = "Mercredi";
-				} else {
-					if ($retDate == "Thursday") {
-						$jour = "Jeudi";
-					} else {
-						if ($retDate == "Friday") {
-							$jour = "Vendredi";
-						} else {
-							if ($retDate == "Saturday") {
-								$jour = "Samedi";
-							} else {
-								$jour = "Dimanche";
-							}
-						}
-					}
-				}
-			}
-		}
-
-		$retDate = date('m', $timestamp);
-		if ($retDate == 1) {
-			$mois = "Janvier";
-		} else {
-			if ($retDate == 2) {
-				$mois = "Février";
-			} else {
-				if ($retDate == 3) {
-					$mois = "Mars";
-				} else {
-					if ($retDate == 4) {
-						$mois = "Avril";
-					} else {
-						if ($retDate == 5) {
-							$mois = "Mai";
-						} else {
-							if ($retDate == 6) {
-								$mois = "Juin";
-							} else {
-								if ($retDate == 7) {
-									$mois = "Juillet";
-								} else {
-									if ($retDate == 8) {
-										$mois = "Août";
-									} else {
-										if ($retDate == 9) {
-											$mois = "Septembre";
-										} else {
-											if ($retDate == 10) {
-												$mois = "Octobre";
-											} else {
-												if ($retDate == 11) {
-													$mois = "Novembre";
-												} else {
-													$mois = "Décembre";
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		$nb = date('d', $timestamp);
-		$annee = date('Y', $timestamp);
-		$dateComplete = $jour . " " . $nb . " " . $mois . " " . $annee;
-
-		if ($heure) {
-			$dateComplete .= " à " . date('H\hi', $timestamp);
-		}
-
-		return $dateComplete;
 	}
 
 	/**
@@ -219,40 +127,6 @@ class Utils {
 			return (strlen($string) - $pos) - 1;
 		}
 		return false;
-	}
-
-	/**
-	 * Vérifie que le nombre donné est valable
-	 *
-	 * @param string $verif Nombre à vérifier
-	 * @param string $defaut Nombre par défaut à retourner si il n'est pas correct
-	 * @return string Le nombre "vérifié" ou le nombre par défaut si incorrect
-	 */
-	public static final function verifierNombre($verif, $defaut) {
-		if (!empty($verif) && $verif != NULL && is_numeric($verif)) {
-			return $verif;
-		}
-		return $defaut;
-	}
-
-	/**
-	 * Permet de transformer un caractère (alphabétique) en entier A = 0, Z = 26, AA = 27, ...
-	 *
-	 * @param string $chaine Chaine à transformer
-	 * @return integer Transormation de la chaine en entier
-	 */
-	public static final function strToInt($chaine) {
-		$res = 0;
-		$ind = strlen($chaine) - 1;
-		for ($i = 0; $i < strlen($chaine); $i++) {
-			$char = strtoupper($chaine[$i]);
-			if ($char >= 'A' && $char <= 'Z') {
-				$valASCII = (ord($char) - 65) + 1;
-				$res += $valASCII * pow(26, $ind);
-				$ind--;
-			}
-		}
-		return --$res;
 	}
 
 	/**

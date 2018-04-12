@@ -4,8 +4,6 @@ namespace Controller;
 
 use EVEOnline\OAuth\Login;
 use Model\table\OAuth2Users;
-use Utils\Handler\PhpBB;
-use Utils\Handler\Session;
 use Utils\Utils;
 
 /**

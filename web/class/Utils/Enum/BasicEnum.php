@@ -38,7 +38,7 @@ abstract class BasicEnum {
 			return array_key_exists($name, $constants);
 		}
 
-		$keys = array_map('strtolower', array_keys($constants));
+		$keys = array_map("strtolower", array_keys($constants));
 		return in_array(strtolower($name), $keys);
 	}
 

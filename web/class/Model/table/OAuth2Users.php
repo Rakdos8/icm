@@ -78,7 +78,7 @@ class OAuth2Users extends Model {
 			FROM
 				" . self::SCHEMA . "." . self::TABLE . "
 			WHERE
-				id_forum_user = ?
+				`id_forum_user` = ?
 			;";
 		$db = new MySQL();
 		return $db->objExec($sqlQuery, __CLASS__, array($userId));
