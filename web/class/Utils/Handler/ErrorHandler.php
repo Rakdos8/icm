@@ -111,13 +111,11 @@ final class ErrorHandler implements Handler {
 				ul.code {
 					border: inset 1px;
 				}
-
 				ul.code li {
 					white-space: pre;
 					list-style-type: none;
 					font-family: monospace;
 				}
-
 				ul.code li.line {
 					color: red;
 				}
@@ -127,19 +125,15 @@ final class ErrorHandler implements Handler {
 					border-collapse: collapse;
 					border: solid 1px black;
 				}
-
 				table.thead tr {
 					background: rgb(240, 240, 240);
 				}
-
 				table.trace tr.odd {
 					background: white;
 				}
-
 				table.trace tr.even {
 					background: rgb(250, 250, 250);
 				}
-
 				table.trace td {
 					padding: 2px 4px 2px 4px;
 				}
