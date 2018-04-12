@@ -1,10 +1,9 @@
 <?php
 
-namespace Utils;
+namespace Utils\Handler;
 
 use phpbb\request\request_interface;
-use Utils\Handler\Handler;
-use Utils\Handler\PhpBB;
+use Utils\Utils;
 
 /**
  * Error Handler.

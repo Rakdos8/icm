@@ -2,7 +2,7 @@
 
 namespace Model;
 
-use Utils\ErrorHandler;
+use Utils\Handler\ErrorHandler;
 
 /**
  * Handles every bean in the DataBase
