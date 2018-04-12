@@ -64,12 +64,13 @@ final class MySQL extends \PDO {
 	 *
 	 * @param string $sql sql query to send
 	 * @param string $className the class name
+	 * @param array $bindings the array for value bindings
 	 * @return array array of bean that match the SQL query
 	 */
-	public final function objExec($sql, $className) {
+	public final function objExec($sql, $className, $bindings = array()) {
 		$statement = parent::prepare($sql);
 		try {
-			$statement->execute();
+			$statement->execute($bindings);
 			return $statement->fetchAll(\PDO::FETCH_CLASS, $className);
 		} catch (\PDOException $ex) {
 			$this->logSqlError($statement);

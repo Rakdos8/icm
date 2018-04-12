@@ -3,6 +3,8 @@
 namespace Model\table;
 
 use Model\Model;
+use Model\MySQL;
+use Utils\Handler\PhpBB;
 
 /**
  * Class OAuth2Users
@@ -17,63 +19,69 @@ class OAuth2Users extends Model {
 	/**
 	 * @var integer $id the primary ID
 	 */
-	public $id;
+	public $id = NULL;
 
 	/**
 	 * @var string $access_token the access token
 	 */
-	public $access_token;
+	public $access_token = "";
 
 	/**
 	 * @var string $refresh_token the refresh token
 	 */
-	public $refresh_token;
+	public $refresh_token = "";
 
 	/**
 	 * @var integer $expire_time the expiration time
 	 */
-	public $expire_time;
+	public $expire_time = -1;
 
 	/**
 	 * @var integer $id_character the character ID of EVE
 	 */
-	public $id_character;
+	public $id_character = NULL;
 
 	/**
 	 * @var integer $id_forum_user the forum user ID
 	 */
-	public $id_forum_user;
+	public $id_forum_user = NULL;
 
 	/**
 	 * OAuth2Users constructor.
-	 *
-	 * @param int $id
-	 * @param string $access_token
-	 * @param string $refresh_token
-	 * @param int $expire_time
-	 * @param int $id_character
-	 * @param int $id_forum_user
 	 */
-	public function __construct(
-		$id = NULL,
-		$access_token = "",
-		$refresh_token = "",
-		$expire_time = -1,
-		$id_character = NULL,
-		$id_forum_user = NULL
-	) {
+	public function __construct() {
 		parent::__construct(
-			DB_NAME . "." . "`oauth2_users`",
+			self::SCHEMA . "." . self::TABLE,
 			array("id_character", "id_forum_user"),
 			"id"
 		);
+	}
 
-		$this->id = $id;
-		$this->access_token = $access_token;
-		$this->refresh_token = $refresh_token;
-		$this->expire_time = $expire_time;
-		$this->id_character = $id_character;
-		$this->id_forum_user = $id_forum_user;
+	/**
+	 * Retrieves the OAuth2Users from the given user id (forum user).
+	 *
+	 * @param integer $userId the forum user ID (by default the connected user)
+	 * @return OAuth2Users[] Every registered character
+	 */
+	public static function getCharacterFromUserId($userId = NULL) {
+		if (is_null($userId)) {
+			$userId = PhpBB::getInstance()->getUser()->data['user_id'];
+		}
+
+		if (!is_numeric($userId) || $userId <= 0) {
+			return array();
+		}
+
+		$sqlQuery = "
+			SELECT
+				*
+			FROM
+				" . self::SCHEMA . "." . self::TABLE . "
+			WHERE
+				id_forum_user = ?
+			;";
+		$db = new MySQL();
+		return $db->objExec($sqlQuery, __CLASS__, array($userId));
 	}
 
 }

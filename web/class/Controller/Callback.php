@@ -43,20 +43,17 @@ final class Callback extends AController {
 		);
 		$token = $tokenRetriever->getAccessToken("authorization_code", array("code" => $code));
 
-
 		// Now we have a token, get simple data to check that's OK
 		try {
 			// We got an access token, let's now get the user's details
 			$user = $tokenRetriever->getResourceOwner($token);
 			// Save in DataBase access + refresh tokens and character
-			$oauthUser = new OAuth2Users(
-				NULL,
-				$token->getToken(),
-				$token->getRefreshToken(),
-				$token->getExpires(),
-				$user->getId(),
-				parent::getPhpbbHandler()->getUser()->data['user_id']
-			);
+			$oauthUser = new OAuth2Users();
+			$oauthUser->access_token = $token->getToken();
+			$oauthUser->refresh_token = $token->getRefreshToken();
+			$oauthUser->expire_time = $token->getExpires();
+			$oauthUser->id_character = $user->getId();
+			$oauthUser->id_forum_user = parent::getPhpbbHandler()->getUser()->data['user_id'];
 			$oauthUser->insert();
 			Utils::redirect("/");
 			return AController::TREATMENT_SUCCEED;

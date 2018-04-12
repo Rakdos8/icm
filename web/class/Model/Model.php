@@ -176,6 +176,8 @@ abstract class Model {
 	}
 
 	/**
+	 * Retrieves properties of the given object.
+	 *
 	 * @param object $object any object
 	 * @return array the properties on its column name and its value
 	 */
