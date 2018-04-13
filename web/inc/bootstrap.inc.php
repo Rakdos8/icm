@@ -119,6 +119,9 @@ define("ESI_CLIENT_ID", $iniConfig['client_id'], false);
 define("ESI_SECRET_KEY", $iniConfig['secret_key'], false);
 define("ESI_CALLBACK_URL", $iniConfig['callback_url'], false);
 
+// Define of EVE Online utility stuff
+define("IMAGE_SERVER_URL", $iniConfig['image_server_url'], false);
+
 // PhpBB config part
 define("PHPBB_URL", $iniConfig['phpbb_url'], false);
 define("PATH_PHPBB", $iniConfig['phpbb_path'], false);

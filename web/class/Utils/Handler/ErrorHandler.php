@@ -43,8 +43,8 @@ final class ErrorHandler implements Handler {
 	 */
 	public static function logException($exception) {
 		ob_start(
-			in_array("ob_gzhandler", ob_list_handlers()) ?
-				"" : "ob_gzhandler"
+			!in_array("ob_gzhandler", ob_list_handlers()) ?
+				"ob_gzhandler" : NULL
 		);
 		self::dumpException($exception);
 		$dump = ob_get_clean();
@@ -162,9 +162,9 @@ final class ErrorHandler implements Handler {
 					<?php for ($i = $line - 3; $i < $line + 3; $i++) : ?>
 						<?php if ($i > 0 && $i < count($lines)) : ?>
 							<?php if ($i == $line - 1) : ?>
-								<li class="line"><?= str_replace("\n", "", $lines[$i]); ?></li>
+								<li class="line"><?= htmlentities(str_replace("\n", "", $lines[$i])); ?></li>
 							<?php else : ?>
-								<li><?= str_replace("\n", "", $lines[$i]); ?></li>
+								<li><?= htmlentities(str_replace("\n", "", $lines[$i])); ?></li>
 							<?php endif; ?>
 						<?php endif; ?>
 					<?php endfor; ?>

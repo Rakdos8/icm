@@ -27,7 +27,7 @@ abstract class AController {
 	 * Values to give to template
 	 * @var array
 	 */
-	private $values = array();
+	protected $values = array();
 
 	/**
 	 * Current instance of AController
@@ -111,32 +111,6 @@ abstract class AController {
 	 */
 	public final function __toString() {
 		return get_class(self::$INSTANCE);
-	}
-
-	/**
-	 * When a set is done, will include it in the template values.
-	 *
-	 * @param string $name name in the array
-	 * @param mixed $value value
-	 * @return string the old value in the field, NULL if new
-	 */
-	public final function __set($name, $value) {
-		$oldValue = $this->__get($name);
-		$this->values[$name] = $value;
-		return $oldValue;
-	}
-
-	/**
-	 * Retrieves the value in the template values.
-	 *
-	 * @param string $name name in the array
-	 * @return mixed the value if exists, null otherwise
-	 */
-	public final function __get($name) {
-		if (array_key_exists($name, $this->values)) {
-			return $this->values[$name];
-		}
-		return NULL;
 	}
 
 }

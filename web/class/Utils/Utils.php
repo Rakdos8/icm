@@ -148,7 +148,7 @@ final class Utils {
 	 * @param string $word the word
 	 * @return string the number and the word (with a s if required)
 	 */
-	function plural($nb, $word) {
+	public static final function plural($nb, $word) {
 		if ($nb > 1) {
 			return $nb . " " . str_replace(" ", "s ", $word) . "s";
 		}

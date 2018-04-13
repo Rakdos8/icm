@@ -58,6 +58,22 @@ class OAuth2Users extends Model {
 	}
 
 	/**
+	 * Retrieves all the OAuth2Users.
+	 *
+	 * @return OAuth2Users[] Every registered character
+	 */
+	public static function getAllCharacters() {
+		$sqlQuery = "
+			SELECT
+				*
+			FROM
+				" . self::SCHEMA . "." . self::TABLE . "
+			;";
+		$db = new MySQL();
+		return $db->objExec($sqlQuery, __CLASS__);
+	}
+
+	/**
 	 * Retrieves the OAuth2Users from the given user id (forum user).
 	 *
 	 * @param integer $userId the forum user ID (by default the connected user)
