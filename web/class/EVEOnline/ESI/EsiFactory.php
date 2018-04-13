@@ -10,7 +10,7 @@ use Seat\Eseye\Eseye;
 /**
  * Main class which handles HTTP query, login, and other stuff.
  *
- * @package EVEOnline\EsiFactory
+ * @package EVEOnline\ESI
  */
 class EsiFactory {
 
