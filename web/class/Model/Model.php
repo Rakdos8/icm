@@ -60,8 +60,6 @@ abstract class Model {
 	public final function insert(
 		$ignore = false
 	) {
-		$db = new MySQL();
-
 		$properties = self::getProperties($this);
 		$columns = array_keys($properties);
 		$values = array_values($properties);
@@ -85,6 +83,7 @@ abstract class Model {
 	ON DUPLICATE KEY UPDATE
 	" . implode(", ", $columnOnUpdate) . ";";
 
+		$db = new MySQL();
 		$statement = $db->prepare($sql);
 		$status = $statement->execute($values);
 		$statement = NULL;

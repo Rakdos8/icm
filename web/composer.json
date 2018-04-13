@@ -12,6 +12,7 @@
 	"require": {
 		"php": ">=5.5.0",
 		"league/oauth2-client": "~1.0",
-		"phpbb/phpbb-core": "3.3.x-dev"
+		"phpbb/phpbb-core": "3.3.x-dev",
+		"eveseat/eseye": "^0.0.11"
 	}
 }

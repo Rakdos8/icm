@@ -113,11 +113,15 @@ define("DB_NAME", "`" . $iniConfig['schema_name'] . "`", false);
 define("RE-CAPTCHA_PUBLIC", $iniConfig['recaptcha_public'], false);
 define("RE-CAPTCHA_PRIVATE", $iniConfig['recaptcha_private'], false);
 
-// Define of EVE Online ESI system
+// Define of EVE Online EsiFactory system
+define("ESI_BASE_URL", $iniConfig['esi_base_url'], false);
 define("ESI_LOGIN_BASE_URL", "https://login.eveonline.com", false);
 define("ESI_CLIENT_ID", $iniConfig['client_id'], false);
 define("ESI_SECRET_KEY", $iniConfig['secret_key'], false);
 define("ESI_CALLBACK_URL", $iniConfig['callback_url'], false);
+
+define("PATH_ESI_CACHE", PATH_PROJECT . "/esi-cache/", false);
+define("PATH_ESI_LOG", PATH_ROOT . "/log/esi.log", false);
 
 // Define of EVE Online utility stuff
 define("IMAGE_SERVER_URL", $iniConfig['image_server_url'], false);
