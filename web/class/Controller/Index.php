@@ -8,7 +8,10 @@ namespace Controller;
 final class Index extends AController {
 
 	public function show($params = array()) {
-		return AController::TREATMENT_ERROR;
+		if ($this->getPhpbbHandler()->isAnonymous()) {
+			return AController::TREATMENT_ERROR;
+		}
+		return AController::TREATMENT_SUCCEED;
 	}
 
 }

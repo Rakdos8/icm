@@ -42,7 +42,10 @@ final class ErrorHandler implements Handler {
 	 * @param \Exception $exception the exception thrown
 	 */
 	public static function logException($exception) {
-		ob_start("ob_gzhandler");
+		ob_start(
+			in_array("ob_gzhandler", ob_list_handlers()) ?
+				"" : "ob_gzhandler"
+		);
 		self::dumpException($exception);
 		$dump = ob_get_clean();
 		ob_end_flush();

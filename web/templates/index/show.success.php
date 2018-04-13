@@ -1,11 +1,3 @@
-<form method="POST" action="index.php?action=magic">
-<?php
-	foreach ($valeurs['characters'] as $character) {
-?>
-	<input type="radio" name="characterID" value="<?php echo $character['characterID']; ?>"><?php echo $character['characterName']; ?>
-<?php
-	}
-?>
-	<br>
-	<input type="submit" value="!! Show me DAT Magic NOW !!">
-</form>
+<a href="<?= ESI_LOGIN_BASE_URL ?>/oauth/authorize?response_type=code&redirect_uri=<?= urlencode(FULL_DOMAIN . "/" . ESI_CALLBACK_URL); ?>&client_id=<?= ESI_CLIENT_ID ?>&scope=characterMailRead characterAccountRead">
+	<img src="https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-large.png" alt="EVE SSO login">
+</a>

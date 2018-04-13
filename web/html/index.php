@@ -151,7 +151,7 @@ $template = ADispatcher::getInstance()->dispatch();
 			<hr style="border-color: #000;">
 
 			<div class="row">
-				<div class="col-xs-offset-3 col-xs-6" style="background-color: green;">
+				<div class="col-xs-offset-3 col-xs-6" style="text-align: center;">
 <?= $template; ?>
 				</div>
 			</div>
