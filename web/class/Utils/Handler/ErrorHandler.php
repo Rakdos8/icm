@@ -76,8 +76,13 @@ final class ErrorHandler implements Handler {
 		$message .= $prefix . "Stack trace:" . "\n";
 		$message .= Utils::callStack(false);
 		// Save the error in the file
+		//TODO: Rotate to have 1 file per error to have more visibility
 		Utils::log($message . str_repeat("=", 60));
 
+		// If it's in debug purpose, print the error directly
+		if (ini_get('display_errors')) {
+			echo $dump;
+		}
 		Utils::sendMail(
 			"EMA - Erreur le " . Utils::dateJJ_MM_AAAA(true, time()),
 			$dump,

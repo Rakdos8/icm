@@ -14,7 +14,6 @@ $phpbb = PhpBB::getInstance();
 $request = $phpbb->getRequest();
 if (strcmp($request->variable("page", "index"), "logout") == 0) {
 	$phpbb->logout();
-
 	// Return to the home page
 	Utils::redirect("/");
 }

@@ -78,8 +78,8 @@ ini_set("log_errors", 1);
 ini_set("log_errors_max_len", 1024);
 // Sets the file path for PHP NOTICE, WARNING, FATAL, etc.
 ini_set("error_log", PATH_LOG_PHP_ERROR);
-// Don't print error on web page directly
-ini_set("display_errors", $iniConfig['show_errors']);
+// Print error if asked for
+ini_set("display_errors", $iniConfig['show_errors'] ? "1" : "0");
 
 // Sets the temporary file (for upload) in the right folder
 ini_set("upload_tmp_dir", PATH_ROOT . "/tmp");
