@@ -71,6 +71,7 @@ final class CharacterDetails {
 
 	/**
 	 * CharacterDetails constructor.
+	 *
 	 * @param int $characterId
 	 * @param string $birthday
 	 * @param string $name
@@ -201,6 +202,32 @@ final class CharacterDetails {
 	 */
 	public function getFactionId() {
 		return $this->factionId;
+	}
+
+	/**
+	 * Creates a CharacterDetails from the associative json array.
+	 *
+	 * @param integer $characterId the character ID
+	 * @param array $json the json associative array
+	 * @return CharacterDetails
+	 */
+	public static function create($characterId, array $json) {
+		return new CharacterDetails(
+			$characterId,
+			$json['birthday'],
+			$json['name'],
+			$json['gender'],
+			$json['description'],
+			$json['race_id'],
+			$json['bloodline_id'],
+			$json['corporation_id'],
+			array_key_exists("alliance_id", $json) ?
+				$json['alliance_id'] : NULL,
+			$json['ancestry_id'],
+			$json['security_status'],
+			array_key_exists("faction_id", $json) ?
+				$json['faction_id'] : NULL
+		);
 	}
 
 }
