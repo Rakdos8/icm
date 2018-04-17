@@ -14,10 +14,14 @@ use Seat\Eseye\Eseye;
  */
 class EsiFactory {
 
-	/**
-	 * @var string User-Agent in HTTP header to give contact in case of error for EVE devs
-	 */
-	const USER_AGENT = "User-Agent: EVEMyAdmin (Beta). Contact Freyers In-Game";
+	/** @var string User-Agent in HTTP header to give contact in case of error for EVE developers */
+	private static $USER_AGENT = "User-Agent: EVEMyAdmin (Beta). Contact Freyers In-Game";
+
+	/** @var Configuration the ESI configuration (user agent, etc) */
+	private static $CONFIGURATION = null;
+
+	/** @var EsiAuthentication[] the ESI authentication by character id */
+	private static $AUTHENTICATIONS = array();
 
 	/**
 	 * Creates an Eseye connection.
@@ -32,22 +36,29 @@ class EsiFactory {
 		if (is_null($oauthUser)) {
 			throw new \InvalidArgumentException("You must provide a character.");
 		}
-		// Set specific configuration
-		$configuration = Configuration::getInstance();
-		$configuration->http_user_agent = self::USER_AGENT;
-		$configuration->logfile_location = PATH_ESI_LOG;
-		$configuration->file_cache_location = PATH_ESI_CACHE;
 
-		// Creates an authentication for ESI
-		$authentication = new EsiAuthentication(
-			array(
-				"client_id" => ESI_CLIENT_ID,
-				"secret" => ESI_SECRET_KEY,
-				"refresh_token" => $oauthUser->refresh_token
-			)
-		);
+		// Prepares the configuration of ESI
+		if (is_null(self::$CONFIGURATION)) {
+			self::$CONFIGURATION = Configuration::getInstance();
+			self::$CONFIGURATION->http_user_agent = self::$USER_AGENT;
+			self::$CONFIGURATION->logfile_location = PATH_ESI_LOG;
+			self::$CONFIGURATION->file_cache_location = PATH_ESI_CACHE;
+		}
+
+		// Creates an authentication for ESI if not done yet
+		$idCharacter = $oauthUser->id_character;
+		if (!array_key_exists($idCharacter, self::$AUTHENTICATIONS)) {
+			self::$AUTHENTICATIONS[$idCharacter] = new EsiAuthentication(
+				array(
+					"client_id" => ESI_CLIENT_ID,
+					"secret" => ESI_SECRET_KEY,
+					"refresh_token" => $oauthUser->refresh_token
+				)
+			);
+		}
+
 		// Creates the connection
-		return new Eseye($authentication);
+		return new Eseye(self::$AUTHENTICATIONS[$idCharacter]);
 	}
 
 }
