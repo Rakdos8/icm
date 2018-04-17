@@ -2,31 +2,30 @@
 
 namespace Dispatcher;
 
-use Controller\AController;
 use Utils\Utils;
+use View\Errors\Error404;
+use View\ErrorView;
 
 /**
  * Dispatcher for the AJAX
  */
 final class AJAX extends ADispatcher {
 
-	protected final function handleResponse($controllerStatus) {
+	protected final function handleResponse($view) {
 		$json = array();
 
 		// If the result is OK
-		if ($controllerStatus != AController::CONTROLLER_MISSING) {
-			$data = $this->controller->getTemplateValues();
+		if (!($view instanceof Error404)) {
 			// Removes the first value in the array
-			//TODO: What's the reason of that...?
-			$this->values = array_shift($data);
+			$values = $view->showTemplate();
 
 			// If the controller had an error
-			if ($controllerStatus == AController::TREATMENT_ERROR) {
+			if ($view instanceof ErrorView) {
 				$json['state'] = "error";
-				$json['error'] = $this->values;
+				$json['error'] = $values;
 			} else {
 				$json['state'] = "ok";
-				$json['value'] = $this->values;
+				$json['value'] = $values;
 			}
 		} else {
 			$json['state'] = "error";

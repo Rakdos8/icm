@@ -5,6 +5,7 @@ namespace Controller;
 use EVEOnline\ESI\Character\CharacterDetails;
 use EVEOnline\ESI\EsiFactory;
 use Model\table\OAuth2Users;
+use View\Index\Show\Success;
 
 /**
  * Handles the Index page
@@ -16,18 +17,19 @@ final class Index extends AController {
 			return AController::TREATMENT_ERROR;
 		}
 		// Retrieves characters from the player
-		$characters = OAuth2Users::getCharacterFromUserId();
-		foreach ($characters as $character) {
-			$esi = EsiFactory::createEsi($character);
+		$characters = array();
+		$charactersOAuth = OAuth2Users::getCharacterFromUserId();
+		foreach ($charactersOAuth as $characterOAuth) {
+			$esi = EsiFactory::createEsi($characterOAuth);
 			$res = $esi->invoke(
 				"get",
 				"/characters/{character_id}/",
-				array("character_id" => $character->id_character)
+				array("character_id" => $characterOAuth->id_character)
 			);
 			// Retrieve the raw JSON
 			$json = json_decode($res->raw, true);
-			$this->values['characters'][] = CharacterDetails::create(
-				$character->id_character,
+			$characters[] = CharacterDetails::create(
+				$characterOAuth->id_character,
 				$json
 			);
 
@@ -42,7 +44,7 @@ final class Index extends AController {
 //				$this->values['channels'][$character->id_character][] = Channel::create($channel);
 //			}
 		}
-		return AController::TREATMENT_SUCCEED;
+		return new Success($characters);
 	}
 
 }

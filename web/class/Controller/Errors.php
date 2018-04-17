@@ -2,6 +2,11 @@
 
 namespace Controller;
 
+use View\Errors\Error403;
+use View\Errors\Error404;
+use View\Errors\Error501;
+use View\ErrorView;
+
 /**
  * Handles the Errors page
  */
@@ -12,13 +17,13 @@ final class Errors extends AController {
 			$_GET['page'] :
 			"403";
 		if (strcmp($page, "403")) {
-			return AController::CONTROLLER_FORBIDDEN;
+			return new Error403();
 		} else if (strcmp($page, "404")) {
-			return AController::CONTROLLER_MISSING;
+			return new Error404();
 		} else if (strcmp($page, "501")) {
-			return AController::ACTION_MISSING;
+			return new Error501();
 		}
-		return AController::TREATMENT_ERROR;
+		return new ErrorView();
 	}
 
 }

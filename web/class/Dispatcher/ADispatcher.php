@@ -5,6 +5,8 @@ namespace Dispatcher;
 use Controller\AController;
 use phpbb\request\request_interface;
 use Utils\Handler\PhpBB;
+use View\Errors\Error404;
+use View\View;
 
 require_once PATH_CONTROLLER . "/AController.php";
 
@@ -38,12 +40,6 @@ abstract class ADispatcher {
 	 * @var \Controller\AController
 	 */
 	protected $controller;
-
-	/**
-	 * Values for template
-	 * @var array
-	 */
-	protected $values;
 
 	/**
 	 * Instance of the dispatcher
@@ -108,13 +104,11 @@ abstract class ADispatcher {
 	public final function dispatch() {
 		$request = PhpBB::getInstance()->getRequest();
 		$this->action = self::getAction($request);
-		$this->values = self::getParameters($request);
 
-		$status = AController::CONTROLLER_MISSING;
 		if ($this->controller != NULL) {
-			$status = $this->controller->executeAction($this->action, $this->values);
+			return $this->handleResponse($this->controller->executeAction($this->action, self::getParameters($request)));
 		}
-		return $this->handleResponse($status);
+		return $this->handleResponse(new Error404());
 	}
 
 	/**
@@ -166,9 +160,9 @@ abstract class ADispatcher {
 	/**
 	 * Handles the response accordingly.
 	 *
-	 * @param string $controllerStatus the controller status
+	 * @param View $view the view
 	 * @return mixed the value to be printed
 	 */
-	protected abstract function handleResponse($controllerStatus);
+	protected abstract function handleResponse($view);
 
 }

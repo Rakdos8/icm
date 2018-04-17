@@ -1,1 +1,0 @@
-<p class="erreur">L'action demandée n'est pas encore implentée.</p>

@@ -1,1 +1,0 @@
-Vous n'êtes pas connecté sur le <a href="<?= PHPBB_URL; ?>" target="_blank">forum</a>.

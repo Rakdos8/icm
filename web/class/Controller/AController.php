@@ -4,30 +4,20 @@ namespace Controller;
 
 use Utils\Handler\PhpBB;
 use Utils\Utils;
+use View\Errors\Error501;
+use View\View;
 
 /**
  * Handles every Controller from this abstract class.
  */
 abstract class AController {
 
-	// Access refused
-	const CONTROLLER_FORBIDDEN = "403";
-	// Missing Controller
-	const CONTROLLER_MISSING = "404";
-	// Missing action
-	const ACTION_MISSING = "501";
 	// Treatment failed
 	const TREATMENT_ERROR = "error";
 	// Treatment succeed
 	const TREATMENT_SUCCEED = "success";
 	// Default action on every controller
 	const DEFAULT_ACTION = "show";
-
-	/**
-	 * Values to give to template
-	 * @var array
-	 */
-	protected $values = array();
 
 	/**
 	 * Current instance of AController
@@ -71,20 +61,13 @@ abstract class AController {
 	 *
 	 * @param string $action asked action
 	 * @param array $params parameters in an array
-	 * @return string the AController treatment status
+	 * @return View the view according to the controller
 	 */
 	public final function executeAction($action = self::DEFAULT_ACTION, $params = array()) {
 		if (method_exists($this, $action)) {
 			return $this->$action($params);
 		}
-		return self::ACTION_MISSING;
-	}
-
-	/**
-	 * @return array template values provided
-	 */
-	public final function getTemplateValues() {
-		return $this->values;
+		return new Error501();
 	}
 
 	/**
@@ -94,7 +77,7 @@ abstract class AController {
 	 * @return string treatment state
 	 */
 	public function show($params = array()) {
-		return AController::TREATMENT_ERROR;
+		return new Error501();
 	}
 
 	/**
