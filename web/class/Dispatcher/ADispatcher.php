@@ -8,8 +8,6 @@ use Utils\Handler\PhpBB;
 use View\Errors\Error404;
 use View\View;
 
-require_once PATH_CONTROLLER . "/AController.php";
-
 /**
  * Define a Dispatcher: a way to respond correctly to the user
  *
@@ -28,12 +26,6 @@ abstract class ADispatcher {
 	 * @var string
 	 */
 	protected $page;
-
-	/**
-	 * Asked action name
-	 * @var string
-	 */
-	protected $action;
 
 	/**
 	 * Current AController
@@ -90,7 +82,7 @@ abstract class ADispatcher {
 	 * @param \phpbb\request\request $request the phpbb request
 	 * @return string the asked page
 	 */
-	private static final function getPage($request) {
+	private static final function getPage(\phpbb\request\request $request) {
 		$page = $request->variable("page", ADispatcher::DEFAULT_CONTROLLER);
 		return str_replace("-", "_", strtolower($page));
 	}
@@ -103,10 +95,14 @@ abstract class ADispatcher {
 	 */
 	public final function dispatch() {
 		$request = PhpBB::getInstance()->getRequest();
-		$this->action = self::getAction($request);
 
 		if ($this->controller != NULL) {
-			return $this->handleResponse($this->controller->executeAction($this->action, self::getParameters($request)));
+			return $this->handleResponse(
+				$this->controller->executeAction(
+					self::getAction($request),
+					self::getParameters($request)
+				)
+			);
 		}
 		return $this->handleResponse(new Error404());
 	}
@@ -118,7 +114,7 @@ abstract class ADispatcher {
 	 * @param \phpbb\request\request $request the phpbb request
 	 * @return string the asked action
 	 */
-	public static final function getAction($request) {
+	public static final function getAction(\phpbb\request\request $request) {
 		$action = $request->variable("action", AController::DEFAULT_ACTION);
 		return str_replace("-", "_", strtolower($action));
 	}
@@ -130,7 +126,7 @@ abstract class ADispatcher {
 	 * @param \phpbb\request\request $request the phpbb request
 	 * @return array every values
 	 */
-	public static final function getParameters($request) {
+	public static final function getParameters(\phpbb\request\request $request) {
 		$values = array_merge_recursive(
 			array(),
 			$request->get_super_global(request_interface::GET),
@@ -163,6 +159,6 @@ abstract class ADispatcher {
 	 * @param View $view the view
 	 * @return mixed the value to be printed
 	 */
-	protected abstract function handleResponse($view);
+	protected abstract function handleResponse(View $view);
 
 }

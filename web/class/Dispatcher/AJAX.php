@@ -5,13 +5,14 @@ namespace Dispatcher;
 use Utils\Utils;
 use View\Errors\Error404;
 use View\ErrorView;
+use View\View;
 
 /**
  * Dispatcher for the AJAX
  */
 final class AJAX extends ADispatcher {
 
-	protected final function handleResponse($view) {
+	protected final function handleResponse(View $view) {
 		$json = array();
 
 		// If the result is OK

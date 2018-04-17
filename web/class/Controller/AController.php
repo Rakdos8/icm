@@ -63,7 +63,7 @@ abstract class AController {
 	 * @param array $params parameters in an array
 	 * @return View the view according to the controller
 	 */
-	public final function executeAction($action = self::DEFAULT_ACTION, $params = array()) {
+	public final function executeAction($action = self::DEFAULT_ACTION, array $params = array()) {
 		if (method_exists($this, $action)) {
 			return $this->$action($params);
 		}
@@ -76,7 +76,7 @@ abstract class AController {
 	 * @param array $params parameters in an array
 	 * @return string treatment state
 	 */
-	public function show($params = array()) {
+	public function show(array $params = array()) {
 		return new Error501();
 	}
 

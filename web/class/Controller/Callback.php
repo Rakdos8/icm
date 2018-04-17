@@ -11,7 +11,7 @@ use Utils\Utils;
  */
 final class Callback extends AController {
 
-	public function show($params = array()) {
+	public function show(array $params = array()) {
 		Utils::redirect("/");
 	}
 
@@ -21,7 +21,7 @@ final class Callback extends AController {
 	 * @param array $params
 	 * @return string state of the controller
 	 */
-	public function login($params = array()) {
+	public function login(array $params = array()) {
 		// The code was not given, might be a manual call to this page.
 		if (!array_key_exists("code", $params)) {
 			Utils::redirect("/");

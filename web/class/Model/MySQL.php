@@ -46,7 +46,7 @@ final class MySQL extends \PDO {
 	 * @param array $bindings the array for value bindings
 	 * @return array array of bean that match the SQL query
 	 */
-	public final function objExec($sql, $className, $bindings = array()) {
+	public final function objExec($sql, $className, array $bindings = array()) {
 		$statement = parent::prepare($sql);
 		try {
 			$statement->execute($bindings);
@@ -62,7 +62,7 @@ final class MySQL extends \PDO {
 	 *
 	 * @param \PDOStatement $statement PDOStatement or NULL if it was a raw query
 	 */
-	public final function logSqlError($statement = NULL) {
+	public final function logSqlError(\PDOStatement $statement = NULL) {
 		$sqlQuery = "UNKNOWN";
 		if (!is_null($statement) &&
 			$statement instanceof \PDOStatement

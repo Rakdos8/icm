@@ -68,7 +68,7 @@ class Login extends AbstractProvider {
 	 * @return array
 	 */
 	protected function getDefaultScopes() {
-		return [];
+		return array();
 	}
 
 	/**

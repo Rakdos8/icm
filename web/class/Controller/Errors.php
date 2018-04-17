@@ -12,7 +12,7 @@ use View\ErrorView;
  */
 final class Errors extends AController {
 
-	public function show($params = array()) {
+	public function show(array $params = array()) {
 		$page = array_key_exists("page", $_GET) && !empty($_GET['page']) ?
 			$_GET['page'] :
 			"403";

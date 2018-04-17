@@ -5,6 +5,7 @@ namespace Controller;
 use EVEOnline\ESI\Character\CharacterDetails;
 use EVEOnline\ESI\EsiFactory;
 use Model\table\OAuth2Users;
+use View\Index\Show\Error;
 use View\Index\Show\Success;
 
 /**
@@ -12,9 +13,9 @@ use View\Index\Show\Success;
  */
 final class Index extends AController {
 
-	public function show($params = array()) {
+	public function show(array $params = array()) {
 		if ($this->getPhpbbHandler()->isAnonymous()) {
-			return AController::TREATMENT_ERROR;
+			return new Error();
 		}
 		// Retrieves characters from the player
 		$characters = array();
