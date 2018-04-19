@@ -96,65 +96,66 @@ abstract class Model {
 	}
 
 	/**
+	 * Updates the current bean from DataBase
+	 *
+	 * @return bool true if the insert is done, false otherwise
+	 */
+	public final function update() {
+		$properties = self::getProperties($this);
+		$columns = array_keys($properties);
+		$values = array_values($properties);
+
+		$setArray = array();
+		for ($i = 0; $i < count($properties); $i++) {
+			$column = $columns[$i];
+			if (strcmp($column, $this->primaryField) == 0 ||
+				in_array($column, $this->uniqueFields)
+			) {
+				// Remove the value for binding
+				unset($values[$i]);
+				continue;
+			}
+			$setArray[] = $column . " = ?";
+		}
+
+		$sql = "
+	UPDATE
+		" . $this->table . "
+	SET
+		" . implode(", ", $setArray) . "
+	WHERE
+		" . $this->primaryField . " = ?
+	;";
+		// Adds the primary key binding
+		$values[] = $this->{$this->primaryField};
+
+		$db = new MySQL();
+		$statement = $db->prepare($sql);
+		$status = $statement->execute($values);
+		$statement = NULL;
+
+		return $status;
+	}
+
+	/**
 	 * Removes the current bean from Database
 	 *
 	 * @return integer the number of deleted bean, -1 in case of error
 	 */
 	public final function delete() {
-		$lienBDD = new MySQL();
+		$sql = "
+	DELETE FROM
+		" . $this->table . "
+	WHERE
+		" . $this->primaryField . " = ?
+	;";
 
-		if ($lienBDD != NULL) {
-			$clauseWhere = array();
-			foreach ($this->tuple as $champ => $valeur) {
-				$clauseWhere[] = $champ . " = " . $lienBDD->encodeEtSecurise($valeur, false);
-			}
-			$sql = "
-				DELETE FROM
-					" . get_class($this) . "
-				WHERE
-					" . implode(" AND ", $clauseWhere) . "
-			";
+		$db = new MySQL();
+		$statement = $db->prepare($sql);
+		$status = $statement->execute(array($this->{$this->primaryField}));
+		$statement = NULL;
 
-			$nbLigneAffecte = $lienBDD->exec($sql);
-			if ($nbLigneAffecte !== NULL) {
-				return $nbLigneAffecte;
-			}
-		}
-		return -1;
-	}
-
-	/**
-	 * Updates the current bean from DataBase
-	 *
-	 * @return integer the number of update bean, -1 in case of error
-	 */
-	public final function update() {
-		$lienBDD = new MySQL();
-
-		if ($lienBDD != NULL) {
-			$clauseSet = array();
-			foreach ($this->tuple as $champ => $valeur) {
-				if ($champ != $this->primaryField) {
-					// Sécurisation des valeurs à mettre à jour !
-					$clauseSet[] = $champ . " = " . $lienBDD->encodeEtSecurise($valeur, false);
-				}
-			}
-
-			$sql = "
-				UPDATE
-					" . get_class($this) . " 
-				SET
-					" . implode(", ", $clauseSet) . "
-				WHERE
-					" . $this->primaryField . " = " . $lienBDD->encodeEtSecurise($this->tuple[$this->primaryField], false) . "
-				;";
-
-			$nbLigneAffecte = $lienBDD->exec($sql);
-			if ($nbLigneAffecte !== NULL) {
-				return $nbLigneAffecte;
-			}
-		}
-		return -1;
+		return $status;
 	}
 
 	/**
