@@ -25,16 +25,16 @@ $template = ADispatcher::getInstance()->dispatch();
 	<head>
 		<title>EVEMyAdmin &bull; Pingouin DTG</title>
 		<!-- Les CSS -->
-		<link rel="stylesheet" type="text/css" href="css/id.css">
-		<link rel="stylesheet" type="text/css" href="css/type.css">
-		<link rel="stylesheet" type="text/css" href="css/class.css">
+		<link rel="stylesheet" type="text/css" href="/css/id.css">
+		<link rel="stylesheet" type="text/css" href="/css/type.css">
+		<link rel="stylesheet" type="text/css" href="/css/class.css">
 
-		<link rel="stylesheet" type="text/css" href="css/jquery/jquery-ui.css">
-		<link rel="stylesheet" type="text/css" href="css/jquery/jquery-ui.theme.css">
-		<link rel="stylesheet" type="text/css" href="css/jquery/jquery-ui.structure.css">
+		<link rel="stylesheet" type="text/css" href="/css/jquery/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="/css/jquery/jquery-ui.theme.css">
+		<link rel="stylesheet" type="text/css" href="/css/jquery/jquery-ui.structure.css">
 
-		<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css">
-		<link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap-theme.css">
+		<link rel="stylesheet" type="text/css" href="/css/bootstrap/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="/css/bootstrap/bootstrap-theme.css">
 		<!-- Les meta -->
 		<meta charset="UTF-8">
 		<meta name="author" content="Freyers in EVE Online">
@@ -47,7 +47,7 @@ $template = ADispatcher::getInstance()->dispatch();
 		<!-- BootStrap -->
 		<script src="js/bootstrap/bootstrap.js" charset="UTF-8"></script>
 		<!-- L'icone -->
-		<link rel="icon" type="ico" href="favicon.ico">
+		<link rel="icon" type="ico" href="/favicon.ico">
 	</head>
 
 	<body>
@@ -60,7 +60,7 @@ $template = ADispatcher::getInstance()->dispatch();
 				</button>
 
 				<a class="navbar-brand navbar-left" href="/" title="EVEMyAdmin">
-					<img src="img/smiles/blink.gif">
+					<img src="/img/smiles/blink.gif">
 				</a>
 				<p class="navbar-text navbar-left">
 					<i>ICE is Coming to EVE</i>
@@ -90,8 +90,8 @@ $template = ADispatcher::getInstance()->dispatch();
 								<span class="glyphicon glyphicon-flag"></span> Langue <span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="#"><img class="drapeau" src="img/design/drapeaux/fr.png"> Français</a></li>
-								<li><a href="#"><img class="drapeau" src="img/design/drapeaux/en.png"> English</a></li>
+								<li><a href="#"><img class="drapeau" src="/img/design/drapeaux/fr.png"> Français</a></li>
+								<li><a href="#"><img class="drapeau" src="/img/design/drapeaux/en.png"> English</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -103,21 +103,21 @@ $template = ADispatcher::getInstance()->dispatch();
 			<div class="row" style="margin-bottom: 15px;">
 				<div class="col-xs-4 col-md-offset-1 col-md-2" style="text-align: center;">
 					<div class="metier">
-						<img class="hidden-xs img_metier" src="img/design/metiers_corp/navy.png">
+						<img class="hidden-xs img_metier" src="/img/design/metiers_corp/navy.png">
 						<span class="titre_metier">Navy</span>
 						<span class="directeur_metier">Rommhh</span>
 					</div>
 				</div>
 				<div class="col-xs-4 col-md-offset-2 col-md-2" style="text-align: center;">
 					<div class="metier">
-						<img class="hidden-xs img_metier" src="img/design/metiers_corp/logi.png">
+						<img class="hidden-xs img_metier" src="/img/design/metiers_corp/logi.png">
 						<span class="titre_metier">Logistique</span>
 						<span class="directeur_metier">Zephina</span>
 					</div>
 				</div>
 				<div class="col-xs-4 col-md-offset-2 col-md-2" style="text-align: center;">
 					<div class="metier">
-						<img class="hidden-xs img_metier" src="img/design/metiers_corp/rh.png">
+						<img class="hidden-xs img_metier" src="/img/design/metiers_corp/rh.png">
 						<span class="titre_metier">RH</span>
 						<span class="directeur_metier">Malory</span>
 					</div>
@@ -127,21 +127,21 @@ $template = ADispatcher::getInstance()->dispatch();
 			<div class="row">
 				<div class="col-xs-4 col-md-offset-1 col-md-2" style="text-align: center;">
 					<div class="metier">
-						<img class="hidden-xs img_metier" src="img/design/metiers_corp/indus.png">
+						<img class="hidden-xs img_metier" src="/img/design/metiers_corp/indus.png">
 						<span class="titre_metier">Indus</span>
 						<span class="directeur_metier">Xydon</span>
 					</div>
 				</div>
 				<div class="col-xs-4 col-md-offset-2 col-md-2" style="text-align: center;">
 					<div class="metier">
-						<img class="hidden-xs img_metier" src="img/design/metiers_corp/market.png">
+						<img class="hidden-xs img_metier" src="/img/design/metiers_corp/market.png">
 						<span class="titre_metier">Market</span>
 						<span class="directeur_metier">Popol</span>
 					</div>
 				</div>
 				<div class="col-xs-4 col-md-offset-2 col-md-2" style="text-align: center;">
 					<div class="metier">
-						<img class="hidden-xs img_metier" src="img/design/metiers_corp/pos.png">
+						<img class="hidden-xs img_metier" src="/img/design/metiers_corp/pos.png">
 						<span class="titre_metier">POS</span>
 						<span class="directeur_metier">Le meuble</span>
 					</div>
@@ -152,6 +152,7 @@ $template = ADispatcher::getInstance()->dispatch();
 
 			<div class="row">
 				<div class="col-xs-offset-3 col-xs-6" style="text-align: center;">
+					<a href="/">Index</a><br>
 <?= $template; ?>
 				</div>
 			</div>
