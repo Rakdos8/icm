@@ -140,15 +140,14 @@ abstract class ADispatcher {
 		}
 
 		$getParams = $request->variable("params", AController::DEFAULT_ACTION);
-		if (is_array($getParams)) {
-			$params = array();
+		if (is_string($getParams)) {
+			unset($values['params']);
 			foreach (explode("/", $getParams) as $param) {
 				if (empty($param)) {
 					continue;
 				}
-				$params[] = $param;
+				$values[] = $param;
 			}
-			$values['params'] = $params;
 		}
 		return $values;
 	}
