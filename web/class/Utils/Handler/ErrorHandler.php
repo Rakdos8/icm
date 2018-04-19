@@ -39,14 +39,14 @@ final class ErrorHandler implements Handler {
 	/**
 	 * Logs the Exception and send a debug mail to MAIL_DEVELOPER if not an INFO.
 	 *
-	 * @param \Exception $exception the exception thrown
+	 * @param \Throwable $throwable the exception thrown
 	 */
-	public static function logException($exception) {
+	public static function logException(\Throwable $throwable) {
 		ob_start(
 			!in_array("ob_gzhandler", ob_list_handlers()) ?
 				"ob_gzhandler" : NULL
 		);
-		self::dumpException($exception);
+		self::dumpException($throwable);
 		$dump = ob_get_clean();
 		ob_end_flush();
 
@@ -71,11 +71,11 @@ final class ErrorHandler implements Handler {
 			$url = self::getServerVariable($request, "HTTP_REFERER", "Unknown URL");
 		}
 
-		$number = $exception->getCode();
+		$number = $throwable->getCode();
 		$prefix = "[" . Utils::dateJJ_MM_AAAA(true, time()) . "] ";
 		$message = $prefix . "URL: " . $url . "\n";
 		$message .= $prefix . "Erreur: " . self::getPhpErrorFromNumber($number) . " (" . $number . ")" . "\n";
-		$message .= $prefix . "Message: " . $exception->getMessage() . "\n";
+		$message .= $prefix . "Message: " . $throwable->getMessage() . "\n";
 		$message .= $prefix . "Stack trace:" . "\n";
 		$message .= Utils::callStack(false);
 		// Save the error in the file
@@ -96,11 +96,11 @@ final class ErrorHandler implements Handler {
 	/**
 	 * Dumps the Exception into HTML.
 	 *
-	 * @param \Exception $exception the exception to dump
+	 * @param \Throwable $throwable the exception to dump
 	 */
-	private static function dumpException($exception) {
-		$file = $exception->getFile();
-		$line = $exception->getLine();
+	private static function dumpException(\Throwable $throwable) {
+		$file = $throwable->getFile();
+		$line = $throwable->getLine();
 
 		if (file_exists($file)) {
 			$lines = file($file);
@@ -109,7 +109,7 @@ final class ErrorHandler implements Handler {
 ?>
 		<html>
 		<head>
-			<title><?= $exception->getMessage(); ?></title>
+			<title><?= $throwable->getMessage(); ?></title>
 			<style type="text/css">
 				body {
 					width: 800px;
@@ -148,10 +148,10 @@ final class ErrorHandler implements Handler {
 			</style>
 		</head>
 		<body>
-			<h1>Uncaught <?= get_class($exception); ?></h1>
-			<h2><?= $exception->getMessage(); ?></h2>
+			<h1>Uncaught <?= get_class($throwable); ?></h1>
+			<h2><?= $throwable->getMessage(); ?></h2>
 			<p>
-				An uncaught <b><?= get_class($exception); ?></b> was thrown on line
+				An uncaught <b><?= get_class($throwable); ?></b> was thrown on line
 				<b><?= $line; ?></b> of file <b><?= basename($file); ?></b> that
 				prevented further execution of this request.
 			</p>
@@ -171,7 +171,7 @@ final class ErrorHandler implements Handler {
 				</ul>
 			<?php endif; ?>
 
-			<?php if (is_array($exception->getTrace())) : ?>
+			<?php if (is_array($throwable->getTrace())) : ?>
 				<h2>Stack trace:</h2>
 				<table class="trace">
 					<thead>
@@ -184,7 +184,7 @@ final class ErrorHandler implements Handler {
 					</tr>
 					</thead>
 					<tbody>
-					<?php foreach ($exception->getTrace() as $i => $trace) : ?>
+					<?php foreach ($throwable->getTrace() as $i => $trace) : ?>
 						<tr class="<?= $i % 2 == 0 ? 'even' : 'odd'; ?>">
 							<td><?= isset($trace['file']) ? basename($trace['file']) : ''; ?></td>
 							<td><?= isset($trace['line']) ? $trace['line'] : ''; ?></td>
@@ -205,7 +205,7 @@ final class ErrorHandler implements Handler {
 					</tbody>
 				</table>
 			<?php else : ?>
-				<pre><?= $exception->getTraceAsString(); ?></pre>
+				<pre><?= $throwable->getTraceAsString(); ?></pre>
 			<?php endif; ?>
 		</body>
 		</html>
