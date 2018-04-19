@@ -82,7 +82,7 @@ final class CharacterDetails {
 	 * @param int $corporationId
 	 * @param int $allianceId
 	 * @param int $ancestryId
-	 * @param float $securityStatus
+	 * @param double $securityStatus
 	 * @param int $factionId
 	 */
 	public function __construct(
@@ -184,7 +184,7 @@ final class CharacterDetails {
 	}
 
 	/**
-	 * @return float
+	 * @return double
 	 */
 	public function getSecurityStatus() {
 		return $this->securityStatus;
