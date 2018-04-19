@@ -100,4 +100,31 @@ class OAuth2Users extends Model {
 		return $db->objExec($sqlQuery, __CLASS__, array($userId));
 	}
 
+	/**
+	 * Retrieves the OAuth2Users from the given EVEOnline character id.
+	 *
+	 * @param integer $characterId the EVEOnline character ID
+	 * @return OAuth2Users the registered character
+	 */
+	public static function getCharacterFromCharacterId($characterId) {
+		if (is_null($characterId) || !is_numeric($characterId) || $characterId <= 0) {
+			return null;
+		}
+
+		$sqlQuery = "
+			SELECT
+				*
+			FROM
+				" . self::SCHEMA . "." . self::TABLE . "
+			WHERE
+				`id_character` = ?
+			;";
+		$db = new MySQL();
+		$ret = $db->objExec($sqlQuery, __CLASS__, array($characterId));
+		if ($ret !== false && !empty($ret)) {
+			return $ret[0];
+		}
+		return $ret;
+	}
+
 }
