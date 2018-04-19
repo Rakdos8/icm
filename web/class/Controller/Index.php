@@ -63,8 +63,8 @@ final class Index extends AController {
 		// Retrieve the raw JSON
 		$channels = array();
 		$rawChannels = json_decode($res->raw, true);
-		foreach ($rawChannels as $channel) {
-			$channels[] = Channel::create($channel);
+		foreach ($rawChannels as $rawChannel) {
+			$channels[] = Channel::create($rawChannel);
 		}
 		return new \View\Index\Channels\Success($channels);
 	}
