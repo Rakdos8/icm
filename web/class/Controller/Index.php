@@ -20,14 +20,14 @@ final class Index extends AController {
 		}
 		// Retrieves characters from the player
 		$characters = array();
-		$charactersOAuth = OAuth2Users::getCharacterFromUserId();
-		foreach ($charactersOAuth as $characterOAuth) {
-			$esi = EsiFactory::createEsi($characterOAuth);
+		$charactersOAuth = OAuth2Users::getCharacterFromUserId($this->getPhpbbHandler()->getUser()->data['user_id']);
+		foreach ($charactersOAuth as $character) {
+			$esi = EsiFactory::createEsi($character);
 			try {
 				$res = $esi->invoke(
 					"get",
 					"/characters/{character_id}/",
-					array("character_id" => $characterOAuth->id_character)
+					array("character_id" => $character->id_character)
 				);
 			} catch (RequestFailedException $ex) {
 				$res = false;
@@ -38,7 +38,7 @@ final class Index extends AController {
 				// Retrieve the raw JSON
 				$json = json_decode($res->raw, true);
 				$characters[] = CharacterDetails::create(
-					$characterOAuth->id_character,
+					$character->id_character,
 					$json
 				);
 			}

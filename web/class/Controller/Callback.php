@@ -52,6 +52,7 @@ final class Callback extends AController {
 		$oauthUser->id_forum_user = parent::getPhpbbHandler()->getUser()->data['user_id'];
 		$oauthUser->insert();
 		Utils::redirect("/");
+		return NULL;
 	}
 
 }

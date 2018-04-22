@@ -87,10 +87,8 @@ final class ChannelDetails {
 		return new ChannelDetails(
 			$json['accessor_id'],
 			$json['accessor_type'],
-			array_key_exists("reason", $json) ?
-				$json['reason'] : "",
-			array_key_exists("end_at", $json) ?
-				$json['end_at'] : ""
+			array_key_exists("reason", $json) ? $json['reason'] : "",
+			array_key_exists("end_at", $json) ? $json['end_at'] : ""
 		);
 	}
 

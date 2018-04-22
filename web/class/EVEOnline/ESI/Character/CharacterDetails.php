@@ -221,12 +221,10 @@ final class CharacterDetails {
 			$json['race_id'],
 			$json['bloodline_id'],
 			$json['corporation_id'],
-			array_key_exists("alliance_id", $json) ?
-				$json['alliance_id'] : NULL,
+			array_key_exists("alliance_id", $json) ? $json['alliance_id'] : NULL,
 			$json['ancestry_id'],
 			$json['security_status'],
-			array_key_exists("faction_id", $json) ?
-				$json['faction_id'] : NULL
+			array_key_exists("faction_id", $json) ? $json['faction_id'] : NULL
 		);
 	}
 

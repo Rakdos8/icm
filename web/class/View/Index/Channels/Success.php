@@ -6,7 +6,7 @@ use EVEOnline\ESI\Character\Channel;
 use View\View;
 
 /**
- * Class Success for the show in Index controller
+ * Class UpdatePhpbb for the show in Index controller
  *
  * @package View\Index\Show
  */
@@ -16,7 +16,7 @@ class Success implements View {
 	private $channels;
 
 	/**
-	 * Success constructor.
+	 * UpdatePhpbb constructor.
 	 *
 	 * @param Channel[] $channels
 	 */

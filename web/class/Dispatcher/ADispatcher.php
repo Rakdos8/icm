@@ -66,7 +66,9 @@ abstract class ADispatcher {
 	 */
 	private static final function getDispatcherType($page) {
 		// List here every AJAX pages
-		$pagesAJAX = array();
+		$pagesAJAX = array(
+			"cron"
+		);
 
 		// If the page is in the array
 		if (in_array($page, $pagesAJAX)) {

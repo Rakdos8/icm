@@ -124,7 +124,7 @@ class OAuth2Users extends Model {
 		if ($ret !== false && !empty($ret)) {
 			return $ret[0];
 		}
-		return $ret;
+		return NULL;
 	}
 
 }

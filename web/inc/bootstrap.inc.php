@@ -129,6 +129,11 @@ define("IMAGE_SERVER_URL", $iniConfig['image_server_url'], false);
 define("PHPBB_URL", $iniConfig['phpbb_url'], false);
 define("PATH_PHPBB", $iniConfig['phpbb_path'], false);
 
+// Some define for link between ESI and phpBB
+define("CORPORATION_ID", $iniConfig['corporation_id'], false);
+define("PHPBB_GROUP_VERIFIED_ID", $iniConfig['phpbb_group_verified_id'], false);
+define("PHPBB_GROUP_DIRECTOR_ID", $iniConfig['phpbb_group_director_id'], false);
+
 // Security measure
 unset($iniConfig);
 
