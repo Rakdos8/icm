@@ -7,6 +7,7 @@ use EVEOnline\ESI\Character\CharacterDetails;
 use EVEOnline\ESI\EsiFactory;
 use Model\table\OAuth2Users;
 use Seat\Eseye\Exceptions\EsiScopeAccessDeniedException;
+use Seat\Eseye\Exceptions\RequestFailedException;
 
 /**
  * Handles the Index page
@@ -22,17 +23,25 @@ final class Index extends AController {
 		$charactersOAuth = OAuth2Users::getCharacterFromUserId();
 		foreach ($charactersOAuth as $characterOAuth) {
 			$esi = EsiFactory::createEsi($characterOAuth);
-			$res = $esi->invoke(
-				"get",
-				"/characters/{character_id}/",
-				array("character_id" => $characterOAuth->id_character)
-			);
-			// Retrieve the raw JSON
-			$json = json_decode($res->raw, true);
-			$characters[] = CharacterDetails::create(
-				$characterOAuth->id_character,
-				$json
-			);
+			try {
+				$res = $esi->invoke(
+					"get",
+					"/characters/{character_id}/",
+					array("character_id" => $characterOAuth->id_character)
+				);
+			} catch (RequestFailedException $ex) {
+				$res = false;
+			}
+
+			//TODO: Handles properly the API lost
+			if ($res !== false) {
+				// Retrieve the raw JSON
+				$json = json_decode($res->raw, true);
+				$characters[] = CharacterDetails::create(
+					$characterOAuth->id_character,
+					$json
+				);
+			}
 		}
 		return new \View\Index\Show\Success($characters);
 	}
