@@ -43,7 +43,7 @@ final class Cron extends AController {
 				// If the character is in the right corporation
 				if ($character->getCorporationId() == CORPORATION_ID) {
 					$inCorp = self::addUserInGroup($characterOAuth->id_forum_user, PHPBB_GROUP_VERIFIED_ID);
-					$updateStatus[$character->getCharacterId()]['in_corp'] = $inCorp === false ? "yes" : $inCorp;
+					$updateStatus[$character->getCharacterId()]['in_corp'] = $inCorp === false ? "yes" : "FAIL: " . $inCorp;
 				} else {
 					$updateStatus[$character->getCharacterId()]['in_corp'] = "no";
 				}
@@ -58,7 +58,7 @@ final class Cron extends AController {
 				$roles = CharacterRoles::create($json);
 				if (in_array("Director", $roles->getRoles())) {
 					$isDirector = self::addUserInGroup($characterOAuth->id_forum_user, PHPBB_GROUP_DIRECTOR_ID);
-					$updateStatus[$character->getCharacterId()]['is_director'] = $isDirector === false ? "true" : $isDirector;
+					$updateStatus[$character->getCharacterId()]['is_director'] = $isDirector === false ? "yes" : "FAIL: " . $isDirector;
 				} else {
 					$updateStatus[$character->getCharacterId()]['is_director'] = "no";
 				}
@@ -75,7 +75,7 @@ final class Cron extends AController {
 	 * @param integer $userId the user ID
 	 * @param integer $groupId the group ID
 	 * @param boolean $defaultGroup should it be his default group (true by default)
-	 * @return mixed false if no error occurred
+	 * @return mixed false if no error occurred, string of I18n from PhpBB in case of error
 	 */
 	private static function addUserInGroup($userId, $groupId, $defaultGroup = true) {
 		// If the guy is not in the group yet, add him
