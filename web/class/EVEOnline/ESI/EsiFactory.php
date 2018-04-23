@@ -23,6 +23,9 @@ class EsiFactory {
 	/** @var EsiAuthentication[] the ESI authentication by character id */
 	private static $AUTHENTICATIONS = array();
 
+	/** @var EsiAuthentication[] the ESI authentication by character id */
+	private static $ESEYES = array();
+
 	/**
 	 * Creates an Eseye connection.
 	 *
@@ -57,8 +60,11 @@ class EsiFactory {
 			);
 		}
 
+		if (!array_key_exists($idCharacter, self::$ESEYES)) {
+			self::$ESEYES[$idCharacter] = new Eseye(self::$AUTHENTICATIONS[$idCharacter]);
+		}
 		// Creates the connection
-		return new Eseye(self::$AUTHENTICATIONS[$idCharacter]);
+		return self::$ESEYES[$idCharacter];
 	}
 
 }
