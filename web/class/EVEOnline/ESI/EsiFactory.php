@@ -23,7 +23,7 @@ class EsiFactory {
 	/** @var EsiAuthentication[] the ESI authentication by character id */
 	private static $AUTHENTICATIONS = array();
 
-	/** @var EsiAuthentication[] the ESI authentication by character id */
+	/** @var Eseye[] the ESI handler by character id */
 	private static $ESEYES = array();
 
 	/**
