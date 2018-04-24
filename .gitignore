@@ -1,4 +1,5 @@
 *.iml
 *.idea
+web/conf/config.ini
 web/vendor/*
 web/composer.lock
