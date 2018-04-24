@@ -159,7 +159,7 @@ final class ErrorHandler implements Handler {
 			<?php if (isset($lines)) : ?>
 				<code><?= $file . "@" . $line; ?></code>
 				<ul class="code">
-					<?php for ($i = $line - 3; $i < $line + 3; $i++) : ?>
+					<?php for ($i = $line - 10; $i < $line + 5; $i++) : ?>
 						<?php if ($i > 0 && $i < count($lines)) : ?>
 							<?php if ($i == $line - 1) : ?>
 								<li class="line"><?= htmlentities(str_replace("\n", "", $lines[$i])); ?></li>
