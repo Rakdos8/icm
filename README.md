@@ -2,7 +2,8 @@
 ICE Is Coming To EVE website to handle API key through ESI system.
 
 ## Installation
-+ Update the web/conf/config.ini file
++ Copy the ``web/conf/config.sample.ini`` file to ``web/conf/config.ini``
++ Update the ``web/conf/config.ini``
 + Put all of those file in your web server (with PHP, see req.)
 + Run the composer command: `composer install`
 
