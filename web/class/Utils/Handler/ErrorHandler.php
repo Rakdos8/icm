@@ -54,7 +54,7 @@ final class ErrorHandler implements Handler {
 		// Retrieves the requested URL from $_SERVER through \phpbb\request\request
 		if (strcmp(self::getServerVariable($request, "HTTP_REFERER", "%%WRONG_URL%%"), "%%WRONG_URL%%") == 0) {
 			$url = self::getServerVariable($request, "REQUEST_SCHEME", "http") . "://" .
-				self::getServerVariable($request, "HTTP_HOST", "evemyadmin.com") .
+				self::getServerVariable($request, "HTTP_HOST", DOMAIN) .
 				self::getServerVariable(
 					$request,
 					"REQUEST_URI",
