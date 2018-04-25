@@ -45,10 +45,10 @@ $template = ADispatcher::getInstance()->dispatch();
 		<meta name="keywords" content="">
 		<meta name="viewport" content="width=device-height, initial-scale=1">
 		<!-- jQuery & jQuery UI -->
-		<script src="js/jquery/jquery.js" charset="UTF-8"></script>
-		<script src="js/jquery/jquery-ui.js" charset="UTF-8"></script>
+		<script src="/js/jquery/jquery.js" charset="UTF-8"></script>
+		<script src="/js/jquery/jquery-ui.js" charset="UTF-8"></script>
 		<!-- BootStrap -->
-		<script src="js/bootstrap/bootstrap.js" charset="UTF-8"></script>
+		<script src="/js/bootstrap/bootstrap.js" charset="UTF-8"></script>
 		<!-- L'icone -->
 		<link rel="icon" type="ico" href="/favicon.ico">
 	</head>
