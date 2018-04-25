@@ -16,9 +16,6 @@ use Utils\Handler\PhpBB;
  */
 class OAuth2Users extends Model {
 
-	const SCHEMA = DB_NAME;
-	const TABLE = "`oauth2_users`";
-
 	/**
 	 * @var integer $id the primary ID
 	 */
@@ -54,7 +51,7 @@ class OAuth2Users extends Model {
 	 */
 	public function __construct() {
 		parent::__construct(
-			self::SCHEMA . "." . self::TABLE,
+			DB_NAME . "." . "`oauth2_users`",
 			array("id_character", "id_forum_user"),
 			"id"
 		);
@@ -124,7 +121,7 @@ class OAuth2Users extends Model {
 			SELECT
 				*
 			FROM
-				" . self::SCHEMA . "." . self::TABLE . "
+				" . DB_NAME . ".`oauth2_users`
 			WHERE
 				" . $sqlExpression->toSql() . "
 			;";
