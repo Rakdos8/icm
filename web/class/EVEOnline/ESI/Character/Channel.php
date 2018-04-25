@@ -10,7 +10,7 @@ namespace EVEOnline\ESI\Character;
 final class Channel {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $channelId;
 
@@ -20,7 +20,7 @@ final class Channel {
 	private $name;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $ownerId;
 

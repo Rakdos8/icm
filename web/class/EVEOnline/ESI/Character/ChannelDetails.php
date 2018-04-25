@@ -11,7 +11,7 @@ use EVEOnline\ESI\Character\Enums\AccessorType;
 final class ChannelDetails {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $accessorId;
 

@@ -12,7 +12,7 @@ use EVEOnline\ESI\Character\Enums\Gender;
 final class CharacterDetails {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $characterId;
 
@@ -37,27 +37,27 @@ final class CharacterDetails {
 	private $biography;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $raceId;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $bloodLineId;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $corporationId;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $allianceId;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $ancestryId;
 
@@ -67,7 +67,7 @@ final class CharacterDetails {
 	private $securityStatus;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $factionId;
 
@@ -209,7 +209,7 @@ final class CharacterDetails {
 	/**
 	 * Creates a CharacterDetails from the associative json array.
 	 *
-	 * @param integer $characterId the character ID
+	 * @param int $characterId the character ID
 	 * @param array $json the json associative array
 	 * @return CharacterDetails
 	 */
