@@ -20,11 +20,11 @@ final class Errors extends AController {
 			true,
 			request_interface::GET
 		);
-		if (strcmp($action, "403")) {
+		if (strcmp($action, "403") == 0) {
 			return new Error403();
-		} else if (strcmp($action, "404")) {
+		} else if (strcmp($action, "404") == 0) {
 			return new Error404();
-		} else if (strcmp($action, "501")) {
+		} else if (strcmp($action, "501") == 0) {
 			return new Error501();
 		}
 		return new ErrorView();
