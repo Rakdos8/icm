@@ -1,0 +1,18 @@
+{
+	"name": "rakdos8/evemyadmin",
+	"description": "STUFF",
+	"license": "PRIVATE",
+	"authors": [
+		{
+			"name": "Bla",
+			"email": "lol@rakdos.net",
+			"homepage": "https://rakdos.net"
+		}
+	],
+	"require": {
+		"php": ">=7.0.0",
+		"league/oauth2-client": "~1.0",
+		"phpbb/phpbb": "3.3.x-dev",
+		"eveseat/eseye": "^0.0.11",
+	}
+}

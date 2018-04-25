@@ -1,0 +1,37 @@
+Options -Indexes
+
+# Protect hidden files from being viewed
+<Files .*>
+	Order Deny,Allow
+	Deny From All
+</Files>
+
+ErrorDocument 403 /errors/403
+ErrorDocument 404 /errors/404
+ErrorDocument 501 /errors/501
+
+# Turn on URL rewriting
+RewriteEngine On
+
+# HTTPS redirection if call done in HTTP
+#RewriteCond %{HTTPS} off
+#RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Do not process images or CSS files further
+RewriteRule \.(gif|jpe?g|png|js|css|swf|ico|txt|pdf|json)$ - [L]
+
+# Return a 301 error if the URI has no slash (/) nor dot (.)
+RewriteCond %{REQUEST_URI} !/$
+RewriteCond %{REQUEST_URI} !\.
+RewriteRule ^(.*) %{REQUEST_URI}/ [R=301,L]
+
+#######################################################
+#################### Cas généraux #####################
+#######################################################
+# Rewrite if the URI is nor a file nor a directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# General rules
+RewriteRule ^([a-zA-Z0-9\-]+)/?$										index.php?page=$1
+RewriteRule ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/?$						index.php?page=$1&action=$2
+RewriteRule ^([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-]+)/([a-zA-Z0-9\-/]+/?)+$	index.php?page=$1&action=$2&params=$3
