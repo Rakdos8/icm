@@ -13,7 +13,7 @@ class GreaterThan implements SqlExpression {
 
 	/** @var string $column */
 	private $column;
-	/** @var boolean $orEquals */
+	/** @var bool $orEquals */
 	private $orEquals;
 
 	/**
@@ -22,7 +22,7 @@ class GreaterThan implements SqlExpression {
 	 * @param string $column the column name
 	 * @param boolean $orEquals greater or equals ? false by default
 	 */
-	public function __construct($column, $orEquals = false) {
+	public function __construct(string $column, bool $orEquals = false) {
 		$this->column = $column;
 		$this->orEquals = $orEquals;
 	}

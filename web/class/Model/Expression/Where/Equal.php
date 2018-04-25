@@ -18,7 +18,7 @@ class Equal implements SqlExpression {
 	 *
 	 * @param string $column the column name
 	 */
-	public function __construct($column) {
+	public function __construct(string $column) {
 		$this->column = $column;
 	}
 

@@ -32,7 +32,7 @@ abstract class AController {
 	 * @param string $page page name
 	 * @return AController the right AController or NULL if any found
 	 */
-	public static final function getInstance($page) {
+	public static final function getInstance(string $page) {
 		// Retrieves the AController if already created
 		if (!is_null(self::$INSTANCE)) {
 			return self::$INSTANCE;
@@ -63,7 +63,7 @@ abstract class AController {
 	 * @param array $params parameters in an array
 	 * @return View the view according to the controller
 	 */
-	public final function executeAction($action = self::DEFAULT_ACTION, array $params = array()) {
+	public final function executeAction(string $action = self::DEFAULT_ACTION, array $params = array()) {
 		if (method_exists($this, $action)) {
 			return $this->$action($params);
 		}

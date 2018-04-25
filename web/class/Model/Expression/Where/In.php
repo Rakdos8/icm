@@ -24,7 +24,7 @@ class In implements SqlExpression {
 	 * @param string $column the column name
 	 * @param array $values values to match
 	 */
-	public function __construct($column, array $values) {
+	public function __construct(string $column, array $values) {
 		$this->column = $column;
 		$this->values = MySQL::createBindingArray($values);
 	}

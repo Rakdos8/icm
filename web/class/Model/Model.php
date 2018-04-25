@@ -34,9 +34,9 @@ abstract class Model {
 	 * @param string $primaryField the name of column of the primary key
 	 */
 	public function __construct(
-		$table,
-		$uniqueFields = array(),
-		$primaryField = "id"
+		string $table,
+		array $uniqueFields = array(),
+		string $primaryField = "id"
 	) {
 		$this->table = $table;
 		$this->uniqueFields = $uniqueFields;
@@ -58,7 +58,7 @@ abstract class Model {
 	 * @return bool true if the insert is done, false otherwise
 	 */
 	public final function insert(
-		$ignore = false
+		bool $ignore = false
 	) {
 		$properties = self::getProperties($this);
 		$columns = array_keys($properties);
@@ -140,7 +140,7 @@ abstract class Model {
 	/**
 	 * Removes the current bean from Database
 	 *
-	 * @return integer the number of deleted bean, -1 in case of error
+	 * @return bool true if the delete is done, false otherwise
 	 */
 	public final function delete() {
 		$sql = "

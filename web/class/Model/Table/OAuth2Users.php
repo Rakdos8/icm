@@ -17,7 +17,7 @@ use Utils\Handler\PhpBB;
 class OAuth2Users extends Model {
 
 	/**
-	 * @var integer $id the primary ID
+	 * @var int $id the primary ID
 	 */
 	public $id = NULL;
 
@@ -32,17 +32,17 @@ class OAuth2Users extends Model {
 	public $refresh_token = "";
 
 	/**
-	 * @var integer $expire_time the expiration time
+	 * @var int $expire_time the expiration time
 	 */
 	public $expire_time = -1;
 
 	/**
-	 * @var integer $id_character the character ID of EVE
+	 * @var int $id_character the character ID of EVE
 	 */
 	public $id_character = NULL;
 
 	/**
-	 * @var integer $id_forum_user the forum user ID
+	 * @var int $id_forum_user the forum user ID
 	 */
 	public $id_forum_user = NULL;
 
@@ -69,10 +69,10 @@ class OAuth2Users extends Model {
 	/**
 	 * Retrieves the OAuth2Users from the given user id (forum user).
 	 *
-	 * @param integer $userId the forum user ID (by default the connected user)
+	 * @param int $userId the forum user ID (by default the connected user)
 	 * @return OAuth2Users[] Every registered character
 	 */
-	public static function getCharacterFromUserId($userId = NULL) {
+	public static function getCharacterFromUserId(int $userId = NULL) {
 		if (is_null($userId)) {
 			$userId = PhpBB::getInstance()->getUser()->data['user_id'];
 		}
@@ -87,10 +87,10 @@ class OAuth2Users extends Model {
 	/**
 	 * Retrieves the OAuth2Users from the given EVEOnline character id.
 	 *
-	 * @param integer $characterId the EVEOnline character ID
+	 * @param int $characterId the EVEOnline character ID
 	 * @return OAuth2Users the registered character
 	 */
-	public static function getCharacterFromCharacterId($characterId) {
+	public static function getCharacterFromCharacterId(int $characterId) {
 		if (is_null($characterId) || !is_numeric($characterId) || $characterId <= 0) {
 			return null;
 		}

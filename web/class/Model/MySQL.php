@@ -45,7 +45,11 @@ final class MySQL extends \PDO {
 	 * @param array $bindings the array for value bindings
 	 * @return array array of bean that match the SQL query
 	 */
-	public final function objExec($sql, $className, array $bindings = array()) {
+	public final function objExec(
+		string $sql,
+		string $className,
+		array $bindings = array()
+	) {
 		$statement = parent::prepare($sql);
 		try {
 			$statement->execute($bindings);
@@ -62,7 +66,7 @@ final class MySQL extends \PDO {
 	 * @param array $array the column/value array
 	 * @return array the array of question marks
 	 */
-	public static function createBindingArray($array = array()) {
+	public static function createBindingArray(array $array = array()) {
 		if (!is_array($array) || is_null($array) || empty($array)) {
 			return array();
 		}

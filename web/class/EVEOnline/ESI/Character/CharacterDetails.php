@@ -2,6 +2,8 @@
 
 namespace EVEOnline\ESI\Character;
 
+use EVEOnline\ESI\Character\Enums\Gender;
+
 /**
  * Class CharacterDetails
  *
@@ -25,7 +27,7 @@ final class CharacterDetails {
 	private $name;
 
 	/**
-	 * @var string
+	 * @var Gender
 	 */
 	private $gender;
 
@@ -60,7 +62,7 @@ final class CharacterDetails {
 	private $ancestryId;
 
 	/**
-	 * @var double
+	 * @var float
 	 */
 	private $securityStatus;
 
@@ -75,29 +77,29 @@ final class CharacterDetails {
 	 * @param int $characterId
 	 * @param string $birthday
 	 * @param string $name
-	 * @param string $gender
+	 * @param Gender $gender
 	 * @param string $biography
 	 * @param int $raceId
 	 * @param int $bloodLineId
-	 * @param int $corporationId
-	 * @param int $allianceId
 	 * @param int $ancestryId
-	 * @param double $securityStatus
-	 * @param int $factionId
+	 * @param float $securityStatus
+	 * @param int $corporationId
+	 * @param int|null $allianceId
+	 * @param int|null $factionId
 	 */
 	public function __construct(
-		$characterId,
-		$birthday,
-		$name,
-		$gender,
-		$biography,
-		$raceId,
-		$bloodLineId,
-		$corporationId,
-		$allianceId,
-		$ancestryId,
-		$securityStatus,
-		$factionId
+		int $characterId,
+		string $birthday,
+		string $name,
+		Gender $gender,
+		string $biography,
+		int $raceId,
+		int $bloodLineId,
+		int $ancestryId,
+		float $securityStatus,
+		int $corporationId,
+		$allianceId = NULL,
+		$factionId = NULL
 	) {
 		$this->characterId = $characterId;
 		$this->birthday = $birthday;
@@ -106,10 +108,10 @@ final class CharacterDetails {
 		$this->biography = $biography;
 		$this->raceId = $raceId;
 		$this->bloodLineId = $bloodLineId;
-		$this->corporationId = $corporationId;
-		$this->allianceId = $allianceId;
 		$this->ancestryId = $ancestryId;
 		$this->securityStatus = $securityStatus;
+		$this->corporationId = $corporationId;
+		$this->allianceId = $allianceId;
 		$this->factionId = $factionId;
 	}
 
@@ -135,7 +137,7 @@ final class CharacterDetails {
 	}
 
 	/**
-	 * @return string
+	 * @return Gender
 	 */
 	public function getGender() {
 		return $this->gender;
@@ -165,6 +167,20 @@ final class CharacterDetails {
 	/**
 	 * @return int
 	 */
+	public function getAncestryId() {
+		return $this->ancestryId;
+	}
+
+	/**
+	 * @return float
+	 */
+	public function getSecurityStatus() {
+		return $this->securityStatus;
+	}
+
+	/**
+	 * @return int
+	 */
 	public function getCorporationId() {
 		return $this->corporationId;
 	}
@@ -174,20 +190,6 @@ final class CharacterDetails {
 	 */
 	public function getAllianceId() {
 		return $this->allianceId;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getAncestryId() {
-		return $this->ancestryId;
-	}
-
-	/**
-	 * @return double
-	 */
-	public function getSecurityStatus() {
-		return $this->securityStatus;
 	}
 
 	/**
@@ -216,14 +218,14 @@ final class CharacterDetails {
 			$characterId,
 			$json['birthday'],
 			$json['name'],
-			$json['gender'],
+			new Gender($json['gender']),
 			$json['description'],
 			$json['race_id'],
+			$json['ancestry_id'],
 			$json['bloodline_id'],
+			$json['security_status'],
 			$json['corporation_id'],
 			array_key_exists("alliance_id", $json) ? $json['alliance_id'] : NULL,
-			$json['ancestry_id'],
-			$json['security_status'],
 			array_key_exists("faction_id", $json) ? $json['faction_id'] : NULL
 		);
 	}
