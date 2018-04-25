@@ -13,7 +13,7 @@ class LessThan implements SqlExpression {
 
 	/** @var string $column */
 	private $column;
-	/** @var boolean $orEquals */
+	/** @var bool $orEquals */
 	private $orEquals;
 
 	/**

@@ -193,7 +193,7 @@ final class CharacterDetails {
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isInFactionalWarfare() {
 		return !is_null($this->factionId);

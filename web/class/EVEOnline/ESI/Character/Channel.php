@@ -30,7 +30,7 @@ final class Channel {
 	private $comparisonKey;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasPassword;
 

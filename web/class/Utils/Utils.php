@@ -90,7 +90,7 @@ final class Utils {
 	 * @param string $mailFrom the sender mail address
 	 * @param string $mailCopy the copied receiver (comma separated)
 	 * @param string $mailHiddenCopy the hidden copied receiver (comma separated)
-	 * @return boolean true if mail was sent, false otherwise
+	 * @return bool true if mail was sent, false otherwise
 	 * @see mail()
 	 */
 	public static final function sendMail(

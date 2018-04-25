@@ -20,7 +20,7 @@ class GreaterThan implements SqlExpression {
 	 * GreaterThan constructor.
 	 *
 	 * @param string $column the column name
-	 * @param boolean $orEquals greater or equals ? false by default
+	 * @param bool $orEquals greater or equals ? false by default
 	 */
 	public function __construct(string $column, bool $orEquals = false) {
 		$this->column = $column;

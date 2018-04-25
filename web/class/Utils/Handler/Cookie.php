@@ -14,7 +14,7 @@ final class Cookie implements Handler {
 	/**
 	 * Checks if the cookie were accepted by the user
 	 *
-	 * @return boolean true if the user accepted it, false if he must
+	 * @return bool true if the user accepted it, false if he must
 	 */
 	public static final function wasCookieUsageWarned() {
 		return strstr(self::getCookie(DISCLAIMER_NAME), "true") !== false;
