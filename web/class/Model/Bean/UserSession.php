@@ -117,12 +117,15 @@ class UserSession extends Model {
 	 *
 	 * @return EVECharacter|null the active character
 	 */
-	public final function getActiveCharacter(): EVECharacter {
+	public final function getActiveCharacter() {
 		// If not yet fetched or mismatching
 		if (is_null($this->mainCharacter) ||
 			$this->mainCharacter->getCharacterId() != $this->main_character_id
 		) {
-			$this->mainCharacter = new EVECharacter(OAuth2Users::getCharacterFromCharacterId($this->main_character_id));
+			$character = OAuth2Users::getCharacterFromCharacterId($this->main_character_id);
+			if (!is_null($character)) {
+				$this->mainCharacter = new EVECharacter($character);
+			}
 		}
 		return $this->mainCharacter;
 	}

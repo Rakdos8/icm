@@ -1,26 +1,24 @@
 <?php
 
-namespace Controller;
+namespace Pages\Cron\Update_phpbb_groups;
 
+use Controller\AController;
 use EVEOnline\ESI\Character\CharacterDetails;
 use EVEOnline\ESI\Character\CharacterRoles;
 use EVEOnline\ESI\EsiFactory;
 use Model\Bean\OAuth2Users;
 use Seat\Eseye\Exceptions\RequestFailedException;
 use Utils\Handler\PhpBB;
-use Utils\Utils;
 use View\JsonView;
 
 /**
- * Handles the Cron page
+ * Handles the Controller page
+ *
+ * @package Pages\Cron\Update_phpbb_groups
  */
-final class Cron extends AController {
+final class Controller extends AController {
 
-	public function show(array $params = array()) {
-		Utils::redirect("/");
-	}
-
-	public function update_phpbb_groups(array $params = array()) {
+	public function execute(array $params = array()) {
 		$characters = OAuth2Users::getAllCharacters();
 
 		$updateStatus = array();

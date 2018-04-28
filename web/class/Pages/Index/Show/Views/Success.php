@@ -1,6 +1,6 @@
 <?php
 
-namespace View\Index\Show;
+namespace Pages\Index\Show\Views;
 
 use EVEOnline\ESI\Character\CharacterDetails;
 use Utils\Builder\BreadcrumbBuilder;
@@ -9,7 +9,7 @@ use View\View;
 /**
  * Class Success for the show in Index controller
  *
- * @package View\Index\Show
+ * @package Pages\Index\Show\Views
  */
 class Success implements View {
 

@@ -1,25 +1,29 @@
 <?php
 
-namespace Controller;
+namespace Pages\Errors\All;
 
+use Controller\AController;
+use Pages\Errors\Views\Error403;
+use Pages\Errors\Views\Error404;
+use Pages\Errors\Views\Error501;
 use phpbb\request\request_interface;
-use View\Errors\Error403;
-use View\Errors\Error404;
-use View\Errors\Error501;
 use View\ErrorView;
 
 /**
  * Handles the Errors page
+ *
+ * @package Pages\Errors\All
  */
-final class Errors extends AController {
+final class Controller extends AController {
 
-	public function show(array $params = array()) {
+	public function execute(array $params = array()) {
 		$action = $this->getPhpbbHandler()->getRequest()->variable(
 			"action",
 			"403",
 			true,
 			request_interface::GET
 		);
+
 		if (strcmp($action, "403") == 0) {
 			return new Error403();
 		} else if (strcmp($action, "404") == 0) {

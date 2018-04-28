@@ -102,7 +102,7 @@ class OAuth2Users extends Model {
 	 */
 	public static function getCharacterFromCharacterId(int $characterId) {
 		if (is_null($characterId) || !is_numeric($characterId) || $characterId <= 0) {
-			return null;
+			return NULL;
 		}
 
 		$ret = self::getCharacterFromSqlExpression(new Equal("id_character"), array($characterId));

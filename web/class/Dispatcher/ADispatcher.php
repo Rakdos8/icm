@@ -51,10 +51,14 @@ abstract class ADispatcher {
 			return self::$INSTANCE;
 		}
 
-		$page = self::getPage(PhpBB::getInstance()->getRequest());
+		$request = PhpBB::getInstance()->getRequest();
+		$page = self::getPage($request);
 		self::$INSTANCE = self::getDispatcherType($page);
 		self::$INSTANCE->page = $page;
-		self::$INSTANCE->controller = AController::getInstance($page);
+		self::$INSTANCE->controller = AController::getInstance(
+			$page,
+			self::getAction($request)
+		);
 		return self::$INSTANCE;
 	}
 
@@ -91,6 +95,18 @@ abstract class ADispatcher {
 	}
 
 	/**
+	 * Retrieves the action from the $_GET.<br>
+	 * Also replaces "-" into "_".
+	 *
+	 * @param \phpbb\request\request $request the phpbb request
+	 * @return string the asked action
+	 */
+	public static final function getAction(\phpbb\request\request $request) {
+		$action = $request->variable("action", AController::DEFAULT_ACTION);
+		return str_replace("-", "_", strtolower($action));
+	}
+
+	/**
 	 * Dispatches the page, the action, and parameters to the
 	 * right AController.
 	 *
@@ -101,10 +117,7 @@ abstract class ADispatcher {
 
 		if ($this->controller != NULL) {
 			$view = $this->handleResponse(
-				$this->controller->executeAction(
-					self::getAction($request),
-					self::getParameters($request)
-				)
+				$this->controller->execute(self::getParameters($request))
 			);
 
 			// Sets the current URI in the cookie in case of callback redirection
@@ -120,18 +133,6 @@ abstract class ADispatcher {
 			return $view;
 		}
 		return $this->handleResponse(new Error404());
-	}
-
-	/**
-	 * Retrieves the action from the $_GET.<br>
-	 * Also replaces "-" into "_".
-	 *
-	 * @param \phpbb\request\request $request the phpbb request
-	 * @return string the asked action
-	 */
-	public static final function getAction(\phpbb\request\request $request) {
-		$action = $request->variable("action", AController::DEFAULT_ACTION);
-		return str_replace("-", "_", strtolower($action));
 	}
 
 	/**

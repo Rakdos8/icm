@@ -1,13 +1,13 @@
 <?php
 
-namespace View\Index\Show;
+namespace Pages\Index\Show\Views;
 
 use View\ErrorView;
 
 /**
  * Class Error for the show in Index controller
  *
- * @package View\Index\Show
+ * @package Pages\Index\Show\Views
  */
 class Error extends ErrorView {
 

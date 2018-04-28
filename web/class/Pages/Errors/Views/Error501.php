@@ -1,13 +1,13 @@
 <?php
 
-namespace View\Errors;
+namespace Pages\Errors\Views;
 
 use View\ErrorView;
 
 /**
  * Class Error501 for the show in Errors controller
  *
- * @package View\Index\Show
+ * @package Pages\Errors\Views
  */
 class Error501 extends ErrorView {
 
