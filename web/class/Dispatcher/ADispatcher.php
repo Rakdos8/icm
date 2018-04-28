@@ -4,9 +4,9 @@ namespace Dispatcher;
 
 use Controller\AController;
 use Model\Bean\UserSession;
+use Pages\Errors\Views\Error404;
 use phpbb\request\request_interface;
 use Utils\Handler\PhpBB;
-use View\Errors\Error404;
 use View\View;
 
 /**
