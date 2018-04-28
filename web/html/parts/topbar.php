@@ -1,5 +1,4 @@
 <div class="topbar">
-
 	<div class="topbar-left">
 		<div class="text-center">
 			<a href="/" class="logo"><i class="mdi mdi-radar"></i> <span>EVEMyAdmin</span></a>
@@ -7,9 +6,7 @@
 	</div>
 
 	<nav class="navbar-custom">
-
 		<ul class="list-inline float-right mb-0">
-
 			<li class="list-inline-item notification-list hide-phone">
 				<a class="nav-link waves-light waves-effect" href="#" id="btn-fullscreen">
 					<i class="mdi mdi-crop-free noti-icon"></i>
@@ -37,26 +34,31 @@
 					<!-- item-->
 					<a href="javascript:void(0);" class="dropdown-item notify-item">
 						<div class="notify-icon bg-success"><i class="mdi mdi-comment-account"></i></div>
-						<p class="notify-details">Robert S. Taylor commented on Admin<small class="text-muted">1 min ago</small></p>
+						<p class="notify-details">Robert S. Taylor commented on Admin
+							<small class="text-muted">1 min ago</small>
+						</p>
 					</a>
 
 					<!-- item-->
 					<a href="javascript:void(0);" class="dropdown-item notify-item">
 						<div class="notify-icon bg-info"><i class="mdi mdi-account"></i></div>
-						<p class="notify-details">New user registered.<small class="text-muted">1 min ago</small></p>
+						<p class="notify-details">New user registered.
+							<small class="text-muted">1 min ago</small>
+						</p>
 					</a>
 
 					<!-- item-->
 					<a href="javascript:void(0);" class="dropdown-item notify-item">
 						<div class="notify-icon bg-danger"><i class="mdi mdi-airplane"></i></div>
-						<p class="notify-details">Carlos Crouch liked <b>Admin</b><small class="text-muted">1 min ago</small></p>
+						<p class="notify-details">Carlos Crouch liked <b>Admin</b>
+							<small class="text-muted">1 min ago</small>
+						</p>
 					</a>
 
 					<!-- All-->
 					<a href="javascript:void(0);" class="dropdown-item notify-item notify-all">
 						View All
 					</a>
-
 				</div>
 			</li>
 
@@ -68,7 +70,9 @@
 				<div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
 					<!-- item-->
 					<div class="dropdown-item noti-title">
-						<h5 class="text-overflow"><small>Welcome ! John</small> </h5>
+						<h5 class="text-overflow">
+							<small>Welcome ! John</small>
+						</h5>
 					</div>
 
 					<!-- item-->
@@ -90,10 +94,8 @@
 					<a href="javascript:void(0);" class="dropdown-item notify-item">
 						<i class="mdi mdi-logout"></i> <span>Logout</span>
 					</a>
-
 				</div>
 			</li>
-
 		</ul>
 
 		<ul class="list-inline menu-left mb-0">
@@ -109,7 +111,5 @@
 				</form>
 			</li>
 		</ul>
-
 	</nav>
-
 </div>

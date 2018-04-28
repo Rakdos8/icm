@@ -10,7 +10,8 @@
 				</li>
 
 				<li class="has_sub">
-					<a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-paint-bucket"></i> <span> UI Kit </span>
+					<a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-paint-bucket"></i>
+						<span> UI Kit </span>
 						<span class="menu-arrow"></span></a>
 					<ul class="list-unstyled">
 						<li><a href="ui-buttons.html">Buttons</a></li>
@@ -33,7 +34,8 @@
 
 				<li class="has_sub">
 					<a href="javascript:void(0);" class="waves-effect waves-primary"><i
-								class="ti-light-bulb"></i><span> Components </span> <span class="menu-arrow"></span> </a>
+								class="ti-light-bulb"></i><span> Components </span> <span class="menu-arrow"></span>
+					</a>
 					<ul class="list-unstyled">
 						<li><a href="components-grid.html">Grid</a></li>
 						<li><a href="components-carousel.html">Carousel</a></li>
@@ -57,7 +59,8 @@
 				</li>
 
 				<li class="has_sub">
-					<a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-pencil-alt"></i><span> Forms </span> <span class="menu-arrow"></span></a>
+					<a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-pencil-alt"></i><span> Forms </span>
+						<span class="menu-arrow"></span></a>
 					<ul class="list-unstyled">
 						<li><a href="form-elements.html">General Elements</a></li>
 						<li><a href="form-advanced.html">Advanced Form</a></li>
@@ -73,7 +76,8 @@
 				<li class="menu-title">More</li>
 
 				<li class="has_sub">
-					<a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-menu-alt"></i><span> Tables </span> <span class="menu-arrow"></span></a>
+					<a href="javascript:void(0);" class="waves-effect waves-primary"><i class="ti-menu-alt"></i><span> Tables </span>
+						<span class="menu-arrow"></span></a>
 					<ul class="list-unstyled">
 						<li><a href="tables-basic.html">Basic Tables</a></li>
 						<li><a href="tables-datatable.html">Data Table</a></li>
@@ -156,10 +160,12 @@
 					</ul>
 				</li>
 				<li class="has_sub">
-					<a href="javascript:void(0);" class="waves-effect"><i class="ti-share"></i><span>Multi Level </span> <span class="menu-arrow"></span></a>
+					<a href="javascript:void(0);" class="waves-effect"><i class="ti-share"></i><span>Multi Level </span>
+						<span class="menu-arrow"></span></a>
 					<ul>
 						<li class="has_sub">
-							<a href="javascript:void(0);" class="waves-effect"><span>Menu Level 1.1</span>  <span class="menu-arrow"></span></a>
+							<a href="javascript:void(0);" class="waves-effect"><span>Menu Level 1.1</span>
+								<span class="menu-arrow"></span></a>
 							<ul>
 								<li><a href="javascript:void(0);"><span>Menu Level 2.1</span></a></li>
 								<li><a href="javascript:void(0);"><span>Menu Level 2.2</span></a></li>
@@ -171,9 +177,7 @@
 						</li>
 					</ul>
 				</li>
-
 			</ul>
-
 			<div class="clearfix"></div>
 		</div>
 		<div class="clearfix"></div>
