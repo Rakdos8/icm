@@ -3,6 +3,7 @@
 namespace Dispatcher;
 
 use Controller\AController;
+use Model\Bean\UserSession;
 use phpbb\request\request_interface;
 use Utils\Handler\PhpBB;
 use View\Errors\Error404;
@@ -99,12 +100,24 @@ abstract class ADispatcher {
 		$request = PhpBB::getInstance()->getRequest();
 
 		if ($this->controller != NULL) {
-			return $this->handleResponse(
+			$view = $this->handleResponse(
 				$this->controller->executeAction(
 					self::getAction($request),
 					self::getParameters($request)
 				)
 			);
+
+			// Sets the current URI in the cookie in case of callback redirection
+			UserSession::getSession()->setActiveUri(
+				$request->variable(
+					"REQUEST_URI",
+					"/",
+					true,
+					request_interface::SERVER
+				)
+			);
+
+			return $view;
 		}
 		return $this->handleResponse(new Error404());
 	}

@@ -15,12 +15,12 @@ trait EmptyBreadcrumb {
 	 * @return string the HTML breadcrumb
 	 */
 	public function getBreadcrumb() {
-?>
-		<ol class="breadcrumb float-right">
-			<!--<li class="breadcrumb-item"><a href="#">Minton</a></li>
-			<li class="breadcrumb-item active">Dashboard</li>-->
-		</ol>
-<?php
+		$breadcrumb = "<ol class=\"breadcrumb float-right\">";
+/*
+			<li class="breadcrumb-item"><a href="#">Minton</a></li>
+			<li class="breadcrumb-item active">Dashboard</li>
+*/
+		return $breadcrumb . "</ol>";
 	}
 
 }

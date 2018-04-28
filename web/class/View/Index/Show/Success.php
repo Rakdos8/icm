@@ -45,8 +45,8 @@ class Success implements View {
 Vous avez synchornisé <?= \Utils\Utils::plural(count($this->characters), "personnage"); ?>:<br>
 <?php foreach ($this->characters as $character) : ?>
 	<?php $urlPortrait = IMAGE_SERVER_URL . "/Character/" . $character->getCharacterId() . "_128.jpg"; ?>
-	<a href="/index/channels/<?= $character->getCharacterId(); ?>">
-		<img src="<?= $urlPortrait; ?>" alt="Portrait" title="<?= $character->getName(); ?>" style="border-radius: 50%;">
+	<a href="/index/channels/">
+		<img src="<?= $urlPortrait; ?>" alt="Portrait" title="<?= $character->getName(); ?>" class="rounded-circle">
 	</a>
 <?php endforeach; ?>
 <?php

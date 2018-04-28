@@ -2,7 +2,7 @@
 
 namespace EVEOnline\ESI;
 
-use Model\Table\OAuth2Users;
+use Model\Bean\OAuth2Users;
 use Seat\Eseye\Configuration;
 use Seat\Eseye\Containers\EsiAuthentication;
 use Seat\Eseye\Eseye;

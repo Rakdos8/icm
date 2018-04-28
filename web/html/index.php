@@ -3,9 +3,6 @@
 // Includes the main function script and set environment
 require_once "../inc/bootstrap.inc.php";
 
-// Init the $_SESSION
-session_start();
-
 // Include some class
 use Dispatcher\ADispatcher;
 use Utils\Handler\PhpBB;

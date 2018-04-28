@@ -138,7 +138,8 @@ final class Utils {
 	 */
 	public static final function redirect(string $uri) {
 		header("Location: " . $uri);
-		die;
+		session_write_close();
+		exit;
 	}
 
 	/**

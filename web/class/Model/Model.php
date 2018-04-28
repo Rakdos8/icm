@@ -85,6 +85,12 @@ abstract class Model {
 
 		$db = new MySQL();
 		$statement = $db->prepare($sql);
+		for ($i = 0; $i < count($values); $i++) {
+			$value = $values[$i];
+			if (is_bool($value)) {
+				$values[$i] = intval($value);
+			}
+		}
 		$status = $statement->execute($values);
 		$statement = NULL;
 
@@ -117,6 +123,7 @@ abstract class Model {
 			}
 			$setArray[] = $column . " = ?";
 		}
+		$values = array_values($values);
 
 		$sql = "
 	UPDATE
@@ -126,7 +133,7 @@ abstract class Model {
 	WHERE
 		" . $this->primaryField . " = ?
 	;";
-		// Adds the primary key binding
+		// Adds the primary key binding at the end
 		$values[] = $this->{$this->primaryField};
 
 		$db = new MySQL();
@@ -164,7 +171,7 @@ abstract class Model {
 	 * @param object $object any object
 	 * @return array the properties on its column name and its value
 	 */
-	private static function getProperties($object) {
+	private static function getProperties($object): array {
 		$properties = array();
 		try {
 			$reflect = new \ReflectionClass(get_class($object));

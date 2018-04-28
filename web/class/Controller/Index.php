@@ -5,7 +5,6 @@ namespace Controller;
 use EVEOnline\ESI\Character\Channel;
 use EVEOnline\ESI\Character\CharacterDetails;
 use EVEOnline\ESI\EsiFactory;
-use Model\Table\OAuth2Users;
 use Seat\Eseye\Exceptions\EsiScopeAccessDeniedException;
 
 /**
@@ -17,10 +16,10 @@ final class Index extends AController {
 		if ($this->getPhpbbHandler()->isAnonymous()) {
 			return new \View\Index\Show\Error();
 		}
+
 		// Retrieves characters from the player
 		$characters = array();
-		$charactersOAuth = OAuth2Users::getCharacterFromUserId($this->getPhpbbHandler()->getUser()->data['user_id']);
-		foreach ($charactersOAuth as $character) {
+		foreach ($this->charactersOAuth as $character) {
 			$esi = EsiFactory::createEsi($character);
 			//TODO: Handles properly the API lost
 			$res = $esi->invoke(
@@ -40,19 +39,17 @@ final class Index extends AController {
 	}
 
 	public function channels(array $params = array()) {
-		if ($this->getPhpbbHandler()->isAnonymous() ||
-			empty($params)
-		) {
-			return new \View\Index\Channels\Error("Vous devez être connecté sur le forum");
+		if ($this->getPhpbbHandler()->isAnonymous()) {
+			return new \View\Index\Show\Error();
 		}
 
 		// Retrieves characters from the player
-		$characterOAuth = OAuth2Users::getCharacterFromCharacterId($params[0]);
-		if (is_null($characterOAuth)) {
+		$activeCharacter = $this->session->getActiveCharacter();
+		if (is_null($activeCharacter)) {
 			return new \View\Index\Channels\Error("Vous devez sélectionner un personnage");
 		}
 
-		$esi = EsiFactory::createEsi($characterOAuth);
+		$esi = EsiFactory::createEsi($activeCharacter->getOauthUser());
 		try {
 			// Thanks to CCP, it will be removed on 18th May 2018
 			// https://github.com/ccpgames/esi-issues/commit/cfb95bad543de779354abd51c66bf01252a732fb
@@ -60,7 +57,7 @@ final class Index extends AController {
 			$res = $esi->invoke(
 				"get",
 				"/characters/{character_id}/chat_channels/",
-				array("character_id" => $characterOAuth->id_character)
+				array("character_id" => $activeCharacter->getCharacterId())
 			);
 		} catch (EsiScopeAccessDeniedException $ex) {
 			return new \View\Index\Channels\Error("Vous n'avez pas autorisé la lecture des channels depuis l'ESI");

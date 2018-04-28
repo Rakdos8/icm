@@ -220,10 +220,10 @@ final class ErrorHandler implements Handler {
 	/**
 	 * Retrieves the type of error according to its level.
 	 *
-	 * @param int $errorNumber error value
+	 * @param int|string $errorNumber error value
 	 * @return string error type
 	 */
-	private static function getPhpErrorFromNumber(int $errorNumber) {
+	private static function getPhpErrorFromNumber($errorNumber) {
 		switch ($errorNumber) {
 			case E_ERROR:
 				return "E_ERROR";

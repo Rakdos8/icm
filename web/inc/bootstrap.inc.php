@@ -91,6 +91,10 @@ define("FULL_DOMAIN", "http://" . DOMAIN, false);
 // Cookie configuration
 define("DISCLAIMER_NAME", $iniConfig['disclaimer_name'], false);
 define("COOKIE_DEFAULT_EXPIRATION", $iniConfig['default_expiration'], false);
+// Session architecture
+define("SESSION_CURRENT_URI", "current_uri", false);
+define("SESSION_EVE_CHARACTERS", "characters", false);
+define("SESSION_MAIN_CHARACTER", "main_character", false);
 
 // Mail addresses in case of error
 define("MAIL_DEVELOPER", $iniConfig['developer'], false);

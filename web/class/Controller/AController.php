@@ -2,6 +2,9 @@
 
 namespace Controller;
 
+use Model\Bean\OAuth2Users;
+use Model\Bean\UserSession;
+use Model\Session\EVECharacter;
 use Utils\Handler\PhpBB;
 use Utils\Utils;
 use View\Errors\Error501;
@@ -21,6 +24,16 @@ abstract class AController {
 	 * @static
 	 */
 	private static $INSTANCE = NULL;
+
+	/**
+	 * @var UserSession $session the current User Session
+	 */
+	protected $session;
+
+	/**
+	 * @var OAuth2Users[] $charactersOAuth linked characters
+	 */
+	protected $charactersOAuth = array();
 
 	/**
 	 * Retrieves the AController that can handle the asked page.
@@ -49,6 +62,8 @@ abstract class AController {
 			Utils::log("Controller " . $controllerFile . " does not exist !", time());
 			Utils::redirect("/errors/404");
 		}
+		self::$INSTANCE->session = UserSession::getSession();
+		self::$INSTANCE->getActiveCharacterFromUser();
 		return self::$INSTANCE;
 	}
 
@@ -76,6 +91,25 @@ abstract class AController {
 	 */
 	public function show(array $params = array()) {
 		return new Error501();
+	}
+
+	/**
+	 * Retrieves current linked characters + prepares the UserSession with it.
+	 */
+	private function getActiveCharacterFromUser() {
+		if (!$this->getPhpbbHandler()->isAnonymous()) {
+			$this->charactersOAuth = OAuth2Users::getCharacterFromUserId(
+				$this->getPhpbbHandler()->getUser()->data['user_id']
+			);
+		}
+
+		foreach ($this->charactersOAuth as $character) {
+			$eveCharacter = new EVECharacter($character);
+			if ($character->is_main_character && is_null($this->session->getActiveCharacter())) {
+				$this->session->setActiveCharacter($eveCharacter);
+			}
+			$this->session->addEVECharacter($eveCharacter);
+		}
 	}
 
 	/**

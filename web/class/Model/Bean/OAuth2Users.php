@@ -1,6 +1,6 @@
 <?php
 
-namespace Model\Table;
+namespace Model\Bean;
 
 use Model\Expression\SqlExpression;
 use Model\Expression\Where\Equal;
@@ -12,7 +12,7 @@ use Utils\Handler\PhpBB;
 /**
  * Class OAuth2Users
  *
- * @package Model\table
+ * @package Model\Bean
  */
 class OAuth2Users extends Model {
 
@@ -37,14 +37,24 @@ class OAuth2Users extends Model {
 	public $expire_time = -1;
 
 	/**
-	 * @var int $id_character the character ID of EVE
+	 * @var int|null $id_character the character ID of EVE
 	 */
 	public $id_character = NULL;
 
 	/**
-	 * @var int $id_forum_user the forum user ID
+	 * @var int|null $id_forum_user the user ID from PhpBB
 	 */
 	public $id_forum_user = NULL;
+
+	/**
+	 * @var string $character_name the name of the character
+	 */
+	public $character_name = "";
+
+	/**
+	 * @var bool $is_main_character is he the main character ?
+	 */
+	public $is_main_character = false;
 
 	/**
 	 * OAuth2Users constructor.
@@ -124,6 +134,8 @@ class OAuth2Users extends Model {
 				" . DB_NAME . ".`oauth2_users`
 			WHERE
 				" . $sqlExpression->toSql() . "
+			ORDER BY
+				is_main_character DESC, character_name ASC
 			;";
 		$db = new MySQL();
 		return $db->objExec($sqlQuery, __CLASS__, $values);
