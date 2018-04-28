@@ -7,7 +7,7 @@ use View\ErrorView;
 /**
  * Class Error for the show in Index controller
  *
- * @package View\Index\Show
+ * @package View\Index\Channels
  */
 class Error extends ErrorView {
 

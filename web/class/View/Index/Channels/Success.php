@@ -3,12 +3,13 @@
 namespace View\Index\Channels;
 
 use EVEOnline\ESI\Character\Channel;
+use Utils\Builder\BreadcrumbBuilder;
 use View\View;
 
 /**
  * Class UpdatePhpbb for the show in Index controller
  *
- * @package View\Index\Show
+ * @package View\Index\Channels
  */
 class Success implements View {
 
@@ -24,6 +25,14 @@ class Success implements View {
 		array $channels
 	) {
 		$this->channels = $channels;
+	}
+
+	public function getPageTitle() {
+		return "Channels";
+	}
+
+	public function getBreadcrumb() {
+		return BreadcrumbBuilder::createBreadcrumb();
 	}
 
 	public function showTemplate() {

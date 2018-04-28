@@ -54,6 +54,9 @@ final class Index extends AController {
 
 		$esi = EsiFactory::createEsi($characterOAuth);
 		try {
+			// Thanks to CCP, it will be removed on 18th May 2018
+			// https://github.com/ccpgames/esi-issues/commit/cfb95bad543de779354abd51c66bf01252a732fb
+			$esi->setVersion("v1");
 			$res = $esi->invoke(
 				"get",
 				"/characters/{character_id}/chat_channels/",

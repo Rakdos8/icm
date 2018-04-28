@@ -43,10 +43,17 @@ class EsiFactory {
 
 		// Prepares the configuration of ESI
 		if (is_null(self::$CONFIGURATION)) {
-			self::$CONFIGURATION = Configuration::getInstance();
-			self::$CONFIGURATION->http_user_agent = self::$USER_AGENT;
-			self::$CONFIGURATION->logfile_location = PATH_ESI_LOG;
-			self::$CONFIGURATION->file_cache_location = PATH_ESI_CACHE;
+			try {
+				self::$CONFIGURATION = Configuration::getInstance();
+				self::$CONFIGURATION->http_user_agent = self::$USER_AGENT;
+				self::$CONFIGURATION->logfile_location = PATH_ESI_LOG;
+				self::$CONFIGURATION->file_cache_location = PATH_ESI_CACHE;
+			} catch (InvalidContainerDataException $ex) {
+				// This exception is thrown if the key of the array do not exist
+				// If so, we need to update this and every page is broken until update
+				ErrorHandler::logException($ex);
+				die;
+			}
 		}
 
 		// Creates an authentication for ESI if not done yet
