@@ -26,7 +26,9 @@
 
 				<li class="has_sub">
 					<a href="javascript:void(0);" class="waves-effect waves-primary">
-						<i class="fa fa-star-o"></i><span>More</span><span class="menu-arrow"></span>
+						<i class="fa fa-star-o"></i>
+						<span>More</span>
+						<span class="menu-arrow"></span>
 					</a>
 					<ul class="list-unstyled">
 						<li><a href="/global/contract"><i class="fa fa-pencil-square-o"></i><span>Contract</span></a></li>
