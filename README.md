@@ -19,12 +19,13 @@ Some of the feature are not implemented yet, so be patient, will come soon(TM).
 + log: log folder for apache/nginx and PHP and SQL
 + web: root folder for the web application
   + class: contains every class according to their namespaces
-    + Controller: Handles every call and prepare the View for the User
+    + Controller: Defines the core of every Controller.
     + Dispatcher: Handles how to print the response to the User (HTML, JSON, else)
     + EVEOnline: Handles the ESI communication through OAUth2
     + Model: Handles the link between the application and the DataBase
+    + Pages: Structure defining the ``Page``/``Action`` with its specific Controller and Views
     + Utils: Some utility class and methods (often in public static)
-    + View: View printed to user with variable to print and HTML with format
+    + View: Defines some standard Views
   + conf: contains ini file with config variables
   + html: contains the html, js, and css files (ONLY !)
   + inc: small scripts included at each call for each pages.

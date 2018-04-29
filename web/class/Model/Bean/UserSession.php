@@ -186,7 +186,7 @@ class UserSession extends Model {
 	 * @param array $values the binding array (empty by default)
 	 * @return UserSession[] user session matching the Sql expression
 	 */
-	public static function getSessionFromSqlExpression(
+	private static function getSessionFromSqlExpression(
 		SqlExpression $sqlExpression,
 		array $values = array()
 	) {
