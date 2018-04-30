@@ -166,6 +166,19 @@ abstract class Model {
 	}
 
 	/**
+	 * Replace any string by its enum value.
+	 *
+	 * @param string $column the column name
+	 * @param string $enumClassName the class name (with namespace) of the BasicEnum
+	 */
+	protected final function replaceStringByEnums(
+		string $column,
+		string $enumClassName
+	) {
+		$this->{$column} = new $enumClassName($this->{$column});
+	}
+
+	/**
 	 * Retrieves properties of the given object.
 	 *
 	 * @param object $object any object

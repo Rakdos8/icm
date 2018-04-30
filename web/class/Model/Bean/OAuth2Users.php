@@ -2,6 +2,7 @@
 
 namespace Model\Bean;
 
+use EVEOnline\OAuth\TokenType;
 use Model\Expression\SqlExpression;
 use Model\Expression\Where\Equal;
 use Model\Expression\Where\IsTrue;
@@ -35,6 +36,11 @@ class OAuth2Users extends Model {
 	 * @var int $expire_time the expiration time
 	 */
 	public $expire_time = -1;
+
+	/**
+	 * @var TokenType $token_type the token type
+	 */
+	public $token_type = NULL;
 
 	/**
 	 * @var int|null $id_character the character ID of EVE
@@ -138,7 +144,14 @@ class OAuth2Users extends Model {
 				is_main_character DESC, character_name ASC
 			;";
 		$db = new MySQL();
-		return $db->objExec($sqlQuery, __CLASS__, $values);
+		/** @var OAuth2Users[] $users */
+		$users = $db->objExec($sqlQuery, __CLASS__, $values);
+		if ($users !== false && !empty($users)) {
+			foreach ($users as $user) {
+				$user->replaceStringByEnums("token_type", TokenType::class);
+			}
+		}
+		return $users;
 	}
 
 }

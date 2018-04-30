@@ -27,10 +27,6 @@ abstract class BasicEnum {
 		$this->value = $value;
 	}
 
-	final public function __toString() {
-		return $this->value;
-	}
-
 	private function getConstants() {
 		if (empty($this->constCacheArray)) {
 			try {
@@ -43,7 +39,11 @@ abstract class BasicEnum {
 		return $this->constCacheArray;
 	}
 
-	public function __debugInfo() {
+	public final function __toString() {
+		return $this->value;
+	}
+
+	public final function __debugInfo() {
 		return array(
 			"value" => $this->value
 		);
