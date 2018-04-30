@@ -47,14 +47,14 @@ class OAuth2Users extends Model {
 	public $id_entity = NULL;
 
 	/**
-	 * @var int|null $id_forum_user the user ID from PhpBB
+	 * @var int $id_forum_user the user ID from PhpBB
 	 */
-	public $id_forum_user = NULL;
+	public $id_forum_user = ANONYMOUS;
 
 	/**
-	 * @var string $character_name the name of the character
+	 * @var string $entity_name the name of the character
 	 */
-	public $character_name = "";
+	public $entity_name = "";
 
 	/**
 	 * @var bool $is_main_character is he the main character ?
@@ -143,7 +143,7 @@ class OAuth2Users extends Model {
 			WHERE
 				" . $sqlExpression->toSql() . "
 			ORDER BY
-				is_main_character DESC, character_name ASC
+				is_main_character DESC, entity_name ASC
 			;";
 		$db = new MySQL();
 		/** @var OAuth2Users[] $users */
