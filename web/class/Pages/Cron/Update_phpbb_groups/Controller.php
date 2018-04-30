@@ -70,6 +70,16 @@ final class Controller extends AController {
 				PHPBB_GROUP_VERIFIED_ID,
 				$isInCorporation
 			);
+			// If the guy is in the corp, add him as a friend
+			if ($isInCorporation) {
+				$this->updateUserAndGroups(
+					$userId,
+					PHPBB_GROUP_FRIEND_ID,
+					// Never remove the group: manual configuration
+					true,
+					false
+				);
+			}
 			$updateStatus[$userId]['is_director'] = $this->updateUserAndGroups(
 				$userId,
 				PHPBB_GROUP_DIRECTOR_ID,
@@ -85,12 +95,14 @@ final class Controller extends AController {
 	 * @param int $userId the PhpBB user ID
 	 * @param int $phpbbGroup the ID of the PhpBB group
 	 * @param bool $match should he be in or out ?
+	 * @param bool $defaultGroup should the group be the default one ? (true by default)
 	 * @return string the result
 	 */
 	private function updateUserAndGroups(
 		int $userId,
 		int $phpbbGroup,
-		bool $match
+		bool $match,
+		bool $defaultGroup = true
 	) {
 		// The user is in, add the phpBB group
 		if ($match) {
@@ -98,7 +110,7 @@ final class Controller extends AController {
 			if (PhpBB::isUserInGroup($userId, $phpbbGroup)) {
 				return "already in";
 			} else {
-				$inCorp = PhpBB::addUserInGroup($userId, $phpbbGroup);
+				$inCorp = PhpBB::addUserInGroup($userId, $phpbbGroup, $defaultGroup);
 				return $inCorp === false ? "now in" : "FAIL: " . $inCorp;
 			}
 		}

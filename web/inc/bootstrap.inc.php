@@ -132,6 +132,7 @@ define("PATH_PHPBB", $iniConfig['phpbb_path'], false);
 define("CORPORATION_ID", $iniConfig['corporation_id'], false);
 define("PHPBB_GROUP_VERIFIED_ID", $iniConfig['phpbb_group_verified_id'], false);
 define("PHPBB_GROUP_DIRECTOR_ID", $iniConfig['phpbb_group_director_id'], false);
+define("PHPBB_GROUP_FRIEND_ID", $iniConfig['phpbb_group_friend_id'], false);
 
 // Security measure
 unset($iniConfig);
