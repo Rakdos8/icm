@@ -22,13 +22,13 @@
       } else if(!$("#wrapper").hasClass("enlarged") && $("body").hasClass("fixed-left-void")) {
         $("body").removeClass("fixed-left-void").addClass("fixed-left");
       }
-      
+
       if($("#wrapper").hasClass("enlarged")) {
         $(".left ul").removeAttr("style");
       } else {
         $(".subdrop").siblings("ul:first").show();
       }
-      
+
       toggle_slimscroll(".slimscrollleft");
       $("body").trigger("resize");
     },
@@ -37,13 +37,13 @@
        if(!$("#wrapper").hasClass("enlarged")){
         if($(this).parent().hasClass("has_sub")) {
 
-        }   
+        }
         if(!$(this).hasClass("subdrop")) {
           // hide any open menus and remove all other classes
           $("ul",$(this).parents("ul:first")).slideUp(350);
           $("a",$(this).parents("ul:first")).removeClass("subdrop");
           $("#sidebar-menu .pull-right i").removeClass("md-remove").addClass("md-add");
-          
+
           // open our new menu and add the open class
           $(this).next("ul").slideDown(350);
           $(this).addClass("subdrop");
@@ -54,7 +54,7 @@
           $(this).next("ul").slideUp(350);
           $(".pull-right i",$(this).parent()).removeClass("md-remove").addClass("md-add");
         }
-      } 
+      }
     },
 
     //init sidemenu
@@ -63,13 +63,13 @@
 
       var ua = navigator.userAgent,
         event = (ua.match(/iP/i)) ? "touchstart" : "click";
-      
+
       //bind on click
       this.$openLeftBtn.on(event, function(e) {
         e.stopPropagation();
         $this.openLeftBar();
 
-      
+
       });
 
       // LEFT SIDE MAIN NAVIGATION
@@ -81,7 +81,7 @@
 
     //init Sidemenu
     $.Sidemenu = new Sidemenu, $.Sidemenu.Constructor = Sidemenu
-    
+
 }(window.jQuery),
 
 
@@ -137,7 +137,7 @@ function($) {
     },
      //init FullScreen
     $.FullScreen = new FullScreen, $.FullScreen.Constructor = FullScreen
-    
+
 }(window.jQuery),
 
 
@@ -145,15 +145,15 @@ function($) {
 //main app module
  function($) {
     "use strict";
-    
+
     var App = function() {
         this.VERSION = "2.0.0",
-        this.AUTHOR = "Coderthemes", 
-        this.SUPPORT = "coderthemes@gmail.com", 
-        this.pageScrollElement = "html, body", 
+        this.AUTHOR = "Coderthemes",
+        this.SUPPORT = "coderthemes@gmail.com",
+        this.pageScrollElement = "html, body",
         this.$body = $("body")
     };
-    
+
      //on doc load
     App.prototype.onDocReady = function(e) {
       FastClick.attach(document.body);
@@ -161,9 +161,9 @@ function($) {
       resizefunc.push("changeptype");
 
       $('.animate-number').each(function(){
-        $(this).animateNumbers($(this).attr("data-value"), true, parseInt($(this).attr("data-duration"))); 
+        $(this).animateNumbers($(this).attr("data-value"), true, parseInt($(this).attr("data-duration")));
       });
-    
+
       //RUN RESIZE ITEMS
       $(window).resize(debounce(resizeitems,100));
       $("body").trigger("resize");
@@ -172,11 +172,11 @@ function($) {
       $('.right-bar-toggle').on('click', function(e){
 
           $('#wrapper').toggleClass('right-bar-enabled');
-      }); 
+      });
 
-      
+
     },
-    //initilizing 
+    //initilizing
     App.prototype.init = function() {
         var $this = this;
         //document load initialization
@@ -262,7 +262,7 @@ var debounce = function(func, wait, immediate) {
 }
 
 function resizeitems(){
-  if($.isArray(resizefunc)){  
+  if($.isArray(resizefunc)){
     for (i = 0; i < resizefunc.length; i++) {
         window[resizefunc[i]]();
     }

@@ -5,8 +5,8 @@ namespace Pages\Index\Show;
 use Controller\AController;
 use EVEOnline\ESI\Character\CharacterDetails;
 use EVEOnline\ESI\EsiFactory;
-use Pages\Index\Show\Views\Error;
 use Pages\Index\Show\Views\Success;
+use View\Errors\NotConnectedForumError;
 
 /**
  * Handles the show action in Index page
@@ -17,7 +17,7 @@ final class Controller extends AController {
 
 	public function execute(array $params = array()) {
 		if ($this->getPhpbbHandler()->isAnonymous()) {
-			return new Error();
+			return new NotConnectedForumError();
 		}
 
 		// Retrieves characters from the player

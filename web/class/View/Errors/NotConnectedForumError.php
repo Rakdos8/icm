@@ -1,15 +1,15 @@
 <?php
 
-namespace Pages\Index\Show\Views;
+namespace View\Errors;
 
 use View\ErrorView;
 
 /**
- * Class Error for the show in Index controller
+ * Global Error view if the user is not connected to the forum.
  *
- * @package Pages\Index\Show\Views
+ * @package View\Errors
  */
-class Error extends ErrorView {
+class NotConnectedForumError extends ErrorView {
 
 	public function showTemplate() {
 ?>
