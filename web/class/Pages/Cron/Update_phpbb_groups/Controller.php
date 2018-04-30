@@ -19,51 +19,98 @@ use View\JsonView;
 final class Controller extends AController {
 
 	public function execute(array $params = array()) {
-		$characters = OAuth2Users::getAllCharacters();
+		// Mapping EVE Character to PhpBB user
+		$charactersPerUser = array();
+		foreach (OAuth2Users::getAllCharacters() as $character) {
+			$charactersPerUser[$character->id_forum_user][] = $character;
+		}
 
 		$updateStatus = array();
-		foreach ($characters as $characterOAuth) {
-			$esi = EsiFactory::createEsi($characterOAuth);
-			try {
-				$res = $esi->invoke(
-					"get",
-					"/characters/{character_id}/",
-					array("character_id" => $characterOAuth->id_character)
-				);
+		foreach ($charactersPerUser as $userId => $characters) {
+			$isDirector = false;
+			$isInCorporation = false;
 
-				// Retrieve the raw JSON of the current player
-				$json = json_decode($res->raw, true);
-				$character = CharacterDetails::create(
-					$characterOAuth->id_character,
-					$json
-				);
-				// If the character is in the right corporation
-				if ($character->getCorporationId() == CORPORATION_ID) {
-					$inCorp = PhpBB::addUserInGroup($characterOAuth->id_forum_user, PHPBB_GROUP_VERIFIED_ID);
-					$updateStatus[$character->getCharacterId()]['in_corp'] = $inCorp === false ? "yes" : "FAIL: " . $inCorp;
-				} else {
-					$updateStatus[$character->getCharacterId()]['in_corp'] = "no";
-				}
+			foreach ($characters as $character) {
+				$esi = EsiFactory::createEsi($character);
+				try {
+					$res = $esi->invoke(
+						"get",
+						"/characters/{character_id}/",
+						array("character_id" => $character->id_character)
+					);
 
-				$res = $esi->invoke(
-					"get",
-					"/characters/{character_id}/roles/",
-					array("character_id" => $characterOAuth->id_character)
-				);
-				// Retrieve the raw JSON
-				$json = json_decode($res->raw, true);
-				$roles = CharacterRoles::create($json);
-				if (in_array("Director", $roles->getRoles())) {
-					$isDirector = PhpBB::addUserInGroup($characterOAuth->id_forum_user, PHPBB_GROUP_DIRECTOR_ID);
-					$updateStatus[$character->getCharacterId()]['is_director'] = $isDirector === false ? "yes" : "FAIL: " . $isDirector;
-				} else {
-					$updateStatus[$character->getCharacterId()]['is_director'] = "no";
+					// Retrieve the raw JSON of the current player
+					$json = json_decode($res->raw, true);
+					$eveCharacter = CharacterDetails::create(
+						$character->id_character,
+						$json
+					);
+
+					// At least 1 character must be in the corporation
+					$curIsInCorporation = $eveCharacter->getCorporationId() == CORPORATION_ID;
+					$isInCorporation = $isInCorporation || $curIsInCorporation;
+					// In right corp and not director (yet) ? Check if he's
+					if (!$isDirector && $curIsInCorporation) {
+						$res = $esi->invoke(
+							"get",
+							"/characters/{character_id}/roles/",
+							array("character_id" => $character->id_character)
+						);
+						// Retrieve the raw JSON
+						$json = json_decode($res->raw, true);
+						$roles = CharacterRoles::create($json);
+						$isDirector = $isDirector || in_array("Director", $roles->getRoles());
+					}
+				} catch (RequestFailedException $ex) {
+					;
 				}
-			} catch (RequestFailedException $ex) {
-				;
 			}
+			$updateStatus[$userId]['in_corp'] = $this->updateUserAndGroups(
+				$userId,
+				PHPBB_GROUP_VERIFIED_ID,
+				$isInCorporation
+			);
+			$updateStatus[$userId]['is_director'] = $this->updateUserAndGroups(
+				$userId,
+				PHPBB_GROUP_DIRECTOR_ID,
+				$isInCorporation && $isDirector
+			);
 		}
 		return new JsonView($updateStatus);
+	}
+
+	/**
+	 * Updates the user PhpBB groups.
+	 *
+	 * @param int $userId the PhpBB user ID
+	 * @param int $phpbbGroup the ID of the PhpBB group
+	 * @param bool $match should he be in or out ?
+	 * @return string the result
+	 */
+	private function updateUserAndGroups(
+		int $userId,
+		int $phpbbGroup,
+		bool $match
+	) {
+		// The user is in, add the phpBB group
+		if ($match) {
+			// If the user is already in the right PhpBB group
+			if (PhpBB::isUserInGroup($userId, $phpbbGroup)) {
+				return "already in";
+			} else {
+				$inCorp = PhpBB::addUserInGroup($userId, $phpbbGroup);
+				return $inCorp === false ? "now in" : "FAIL: " . $inCorp;
+			}
+		}
+		// The user is NOT in, remove his phpBB group
+		else {
+			if (PhpBB::isUserInGroup($userId, $phpbbGroup)) {
+				$inCorp = PhpBB::removeUserFromGroup($userId, $phpbbGroup);
+				return $inCorp === false ? "now out" : "FAIL: " . $inCorp;
+			} else {
+				return "already out";
+			}
+		}
 	}
 
 }

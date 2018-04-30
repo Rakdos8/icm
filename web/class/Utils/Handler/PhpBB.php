@@ -25,6 +25,12 @@ final class PhpBB implements Handler {
 	 */
 	private $request;
 
+	/**
+	 * @var array groups that the user is actually in
+	 * @static
+	 */
+	private static $USER_GROUPS = array();
+
 	private function __construct() {
 		/**
 		 * @var \phpbb\user $user the phpbb user
@@ -99,11 +105,20 @@ final class PhpBB implements Handler {
 		int $userId,
 		int $groupId
 	) {
-		// Require for checking group from the user
-		require_once PATH_PHPBB . "/includes/functions_user.php";
+		// only include if missing
+		if (!function_exists("group_memberships")) {
+			require_once PATH_PHPBB . "/includes/functions_user.php";
+		}
 
-		// If the guy is not in the group yet, add him
-		return group_memberships($groupId, $userId, true);
+		// If not cached yet, fetch and store them
+		if (!array_key_exists($userId, self::$USER_GROUPS)) {
+			$groups = group_memberships(false, $userId);
+			foreach ($groups as $group) {
+				self::$USER_GROUPS[$userId][] = $group['group_id'];
+			}
+		}
+		// Check if the user is in the group
+		return in_array($groupId, self::$USER_GROUPS[$userId]);
 	}
 
 	/**
@@ -120,9 +135,44 @@ final class PhpBB implements Handler {
 		bool $defaultGroup = true
 	) {
 		// If the guy is not in the group yet, add him
-		return !self::isUserInGroup($groupId, $userId) ?
+		if (!self::isUserInGroup($userId, $groupId)) {
 			// see https://wiki.phpbb.com/Function.group_user_add
-			group_user_add($groupId, $userId, false, false, $defaultGroup) :
+			$ret = group_user_add($groupId, $userId, false, false, $defaultGroup);
+			if ($ret !== false) {
+				return $ret;
+			}
+			// Adds the group in cache (in case)
+			self::$USER_GROUPS[$userId][] = $groupId;
+		}
+		return false;
+	}
+
+	/**
+	 * Removes the given user from the given phpbb group.
+	 *
+	 * @param int $userId the user ID
+	 * @param int $groupId the group ID
+	 * @return string|bool false if no error occurred, string of I18n from PhpBB in case of error
+	 */
+	public static function removeUserFromGroup(
+		int $userId,
+		int $groupId
+	) {
+		// If the guy is in the group, remove him
+		if (self::isUserInGroup($userId, $groupId)) {
+			// see https://wiki.phpbb.com/Function.group_user_del
+			$ret = group_user_del($groupId, $userId, false, false, true);
+			if ($ret !== false) {
+				return $ret;
+			}
+			// Removes the group from cache (in case)
+			if (($key = array_search($groupId, self::$USER_GROUPS[$userId])) !== false) {
+				unset(self::$USER_GROUPS[$userId][$key]);
+			}
+		}
+		return self::isUserInGroup($userId, $groupId) ?
+			// see https://wiki.phpbb.com/Function.group_user_del
+			group_user_del($groupId, $userId, false, false, true) :
 			false;
 	}
 

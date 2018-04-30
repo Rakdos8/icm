@@ -5,7 +5,6 @@ namespace Model\Bean;
 use EVEOnline\OAuth\TokenType;
 use Model\Expression\SqlExpression;
 use Model\Expression\Where\Equal;
-use Model\Expression\Where\IsTrue;
 use Model\Model;
 use Model\MySQL;
 use Utils\Handler\PhpBB;
@@ -74,12 +73,15 @@ class OAuth2Users extends Model {
 	}
 
 	/**
-	 * Retrieves all the OAuth2Users.
+	 * Retrieves all the OAuth2Users which is a character.
 	 *
 	 * @return OAuth2Users[] Every registered character
 	 */
 	public static function getAllCharacters() {
-		return self::getCharacterFromSqlExpression(new IsTrue());
+		return self::getCharacterFromSqlExpression(
+			new Equal("token_type"),
+			array(new TokenType(TokenType::CHARACTER))
+		);
 	}
 
 	/**
