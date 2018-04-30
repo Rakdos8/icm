@@ -28,13 +28,13 @@ final class Controller extends AController {
 			$res = $esi->invoke(
 				"get",
 				"/characters/{character_id}/",
-				array("character_id" => $character->id_character)
+				array("character_id" => $character->id_entity)
 			);
 
 			// Retrieve the raw JSON
 			$json = json_decode($res->raw, true);
 			$characters[] = CharacterDetails::create(
-				$character->id_character,
+				$character->id_entity,
 				$json
 			);
 		}

@@ -49,7 +49,7 @@ final class Controller extends AController {
 		$oauthUser->refresh_token = $token->getRefreshToken();
 		$oauthUser->expire_time = $token->getExpires();
 		$oauthUser->token_type = $user->getTokenType();
-		$oauthUser->id_character = $user->getId();
+		$oauthUser->id_entity = $user->getId();
 		$oauthUser->id_forum_user = parent::getPhpbbHandler()->getUser()->data['user_id'];
 		$oauthUser->character_name = $user->getName();
 		$oauthUser->is_main_character = empty($this->charactersOAuth) ? true : false;

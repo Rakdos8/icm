@@ -57,7 +57,7 @@ class EsiFactory {
 		}
 
 		// Creates an authentication for ESI if not done yet
-		$idCharacter = $oauthUser->id_character;
+		$idCharacter = $oauthUser->id_entity;
 		if (!array_key_exists($idCharacter, self::$AUTHENTICATIONS)) {
 			try {
 				self::$AUTHENTICATIONS[$idCharacter] = new EsiAuthentication(

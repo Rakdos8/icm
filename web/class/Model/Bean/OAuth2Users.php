@@ -42,9 +42,9 @@ class OAuth2Users extends Model {
 	public $token_type = NULL;
 
 	/**
-	 * @var int|null $id_character the character ID of EVE
+	 * @var int|null $id_entity the entity (character, corp, alliance) ID of EVE
 	 */
-	public $id_character = NULL;
+	public $id_entity = NULL;
 
 	/**
 	 * @var int|null $id_forum_user the user ID from PhpBB
@@ -67,7 +67,7 @@ class OAuth2Users extends Model {
 	public function __construct() {
 		parent::__construct(
 			DB_NAME . "." . "`oauth2_users`",
-			array("id_character", "id_forum_user"),
+			array("id_entity", "id_forum_user"),
 			"id"
 		);
 	}
@@ -113,7 +113,7 @@ class OAuth2Users extends Model {
 			return NULL;
 		}
 
-		$ret = self::getCharacterFromSqlExpression(new Equal("id_character"), array($characterId));
+		$ret = self::getCharacterFromSqlExpression(new Equal("id_entity"), array($characterId));
 		if ($ret !== false && !empty($ret)) {
 			return $ret[0];
 		}

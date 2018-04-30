@@ -173,7 +173,7 @@ class UserSession extends Model {
 		$ret = new UserSession();
 		$ret->id_forum_user = $userId;
 		$characters = OAuth2Users::getCharacterFromUserId($userId);
-		$ret->main_character_id = empty($characters) ? -1 : $characters[0]->id_character;
+		$ret->main_character_id = empty($characters) ? -1 : $characters[0]->id_entity;
 		$ret->current_page = "/";
 		$ret->insert();
 		return $ret;

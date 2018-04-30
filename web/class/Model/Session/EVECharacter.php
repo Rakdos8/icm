@@ -34,7 +34,7 @@ class EVECharacter {
 
 		$this->isMain = $oauthUser->is_main_character;
 		$this->name = $oauthUser->character_name;
-		$this->characterId = $oauthUser->id_character;
+		$this->characterId = $oauthUser->id_entity;
 	}
 
 	/**
