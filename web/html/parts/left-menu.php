@@ -3,7 +3,7 @@
 		<div id="sidebar-menu">
 			<ul>
 
-<?php if (\Utils\Handler\PhpBB::getInstance()->isDirector() || \Utils\Handler\PhpBB::getInstance()->getUser()->data['user_id'] == 48) : ?>
+<?php if (\Utils\Handler\PhpBB::getInstance()->isDirector()) : ?>
 				<li class="menu-title">Directeurs</li>
 
 				<li>
