@@ -102,6 +102,7 @@ abstract class AController {
 
 		// Security check to not allow user to see other player's character
 		if (!$this->getPhpbbHandler()->isDirector() &&
+			!is_null($this->session->getActiveCharacter()) &&
 			$this->session->getActiveCharacter()->getOauthUser()->id_forum_user != $currentUserId
 		) {
 			$this->session->setActiveCharacter(NULL);

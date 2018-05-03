@@ -35,8 +35,8 @@ $mainCharacter = $session->getActiveCharacter();
 						</h5>
 					</div>
 
-					<a href="#" class="dropdown-item notify-item">
-						<img src="https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-small.png" alt="login eve">
+					<a href="<?= OAUTH_LOGIN_URL ?>" class="dropdown-item notify-item">
+						<img src="https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-small.png" alt="EVE SSO login">
 					</a>
 
 					<!-- separator -->

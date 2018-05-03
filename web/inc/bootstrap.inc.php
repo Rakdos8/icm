@@ -117,6 +117,18 @@ define("ESI_LOGIN_BASE_URL", "https://login.eveonline.com", false);
 define("ESI_CLIENT_ID", $iniConfig['client_id'], false);
 define("ESI_SECRET_KEY", $iniConfig['secret_key'], false);
 define("ESI_CALLBACK_URL", $iniConfig['callback_url'], false);
+define("ESI_SCOPE", $iniConfig['esi_scope'], false);
+define(
+	"OAUTH_LOGIN_URL",
+	ESI_LOGIN_BASE_URL .
+		"/oauth/authorize?response_type=code&redirect_uri=" .
+		urlencode(FULL_DOMAIN . "/" . ESI_CALLBACK_URL) .
+		"&client_id=" .
+		ESI_CLIENT_ID .
+		"&scope=" .
+		ESI_SCOPE,
+	false
+);
 
 define("PATH_ESI_CACHE", PATH_PROJECT . "/esi-cache/", false);
 define("PATH_ESI_LOG", PATH_ROOT . "/log/esi.log", false);
