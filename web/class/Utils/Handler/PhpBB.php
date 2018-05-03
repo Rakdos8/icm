@@ -105,7 +105,7 @@ final class PhpBB implements Handler {
 		int $userId,
 		int $groupId
 	) {
-		// only include if missing
+		// Only include if missing
 		if (!function_exists("group_memberships")) {
 			require_once PATH_PHPBB . "/includes/functions_user.php";
 		}
