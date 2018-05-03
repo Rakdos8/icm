@@ -11,7 +11,9 @@ $mainCharacter = $session->getActiveCharacter();
 <div class="topbar">
 	<div class="topbar-left">
 		<div class="text-center">
-			<a href="/" class="logo"><i class="mdi mdi-radar"></i> <span>EVEMyAdmin</span></a>
+			<a href="/" class="logo">
+				<img src="<?= IMAGE_SERVER_URL . "/Corporation/" . CORPORATION_ID . "_64.png"; ?>" alt="logo"><span>EVEMyAdmin</span>
+			</a>
 		</div>
 	</div>
 
@@ -29,9 +31,16 @@ $mainCharacter = $session->getActiveCharacter();
 <?php if ($isLogged) : ?>
 					<div class="dropdown-item noti-title">
 						<h5 class="text-overflow">
-							<small>Welcome ! <?= $phpbb->getUser()->data['username']; ?></small>
+							<small>Welcome <?= $phpbb->getUser()->data['username']; ?> !</small>
 						</h5>
 					</div>
+
+					<a href="#" class="dropdown-item notify-item">
+						<img src="https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-small.png" alt="login eve">
+					</a>
+
+					<!-- separator -->
+					<hr>
 
 	<?php foreach ($characters as $character) : ?>
 		<?php if ($character->getCharacterId() != $mainCharacter->getCharacterId()) : ?>
@@ -75,12 +84,6 @@ $mainCharacter = $session->getActiveCharacter();
 				<button class="button-menu-mobile open-left waves-light waves-effect">
 					<i class="mdi mdi-menu"></i>
 				</button>
-			</li>
-			<li class="hide-phone app-search">
-				<form role="search" class="">
-					<input type="text" placeholder="Search..." class="form-control">
-					<a href=""><i class="fa fa-search"></i></a>
-				</form>
 			</li>
 		</ul>
 	</nav>
