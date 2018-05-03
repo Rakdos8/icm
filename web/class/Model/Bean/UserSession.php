@@ -44,7 +44,7 @@ class UserSession extends Model {
 
 	// Cache fields to get precomputed data easier and faster
 	/**
-	 * @var EVECharacter|null the main character
+	 * @var EVECharacter|NULL the main character
 	 */
 	private $mainCharacter = NULL;
 	/**
@@ -101,10 +101,12 @@ class UserSession extends Model {
 	/**
 	 * Adds the given EVECharacter into the Session.
 	 *
-	 * @param EVECharacter $eveCharacter
+	 * @param EVECharacter|NULL $eveCharacter
 	 */
-	public final function setActiveCharacter(EVECharacter $eveCharacter) {
-		if ($this->main_character_id != $eveCharacter->getCharacterId()) {
+	public final function setActiveCharacter(?EVECharacter $eveCharacter) {
+		if (is_null($eveCharacter)) {
+			$this->main_character_id = 0;
+		} else if ($this->main_character_id != $eveCharacter->getCharacterId()) {
 			$this->main_character_id = $eveCharacter->getCharacterId();
 			if ($this->id_forum_user != ANONYMOUS) {
 				$this->update();
@@ -115,9 +117,9 @@ class UserSession extends Model {
 	/**
 	 * Adds the given EVECharacter into the Session.
 	 *
-	 * @return EVECharacter|null the active character
+	 * @return EVECharacter|NULL the active character
 	 */
-	public final function getActiveCharacter() {
+	public final function getActiveCharacter(): ?EVECharacter {
 		// If not yet fetched or mismatching
 		if (is_null($this->mainCharacter) ||
 			$this->mainCharacter->getCharacterId() != $this->main_character_id
@@ -152,9 +154,9 @@ class UserSession extends Model {
 	 * Retrieves the UserSession from the given user id (forum user).
 	 *
 	 * @param int $userId the forum user ID (by default the connected user)
-	 * @return UserSession|null the UserSession
+	 * @return UserSession|NULL the UserSession
 	 */
-	private static function getSessionFromUserId(int $userId): UserSession {
+	private static function getSessionFromUserId(int $userId): ?UserSession {
 		// Wrong data given !
 		if (!is_numeric($userId) || $userId <= 0) {
 			return NULL;

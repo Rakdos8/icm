@@ -95,10 +95,16 @@ abstract class AController {
 	 * Retrieves current linked characters + prepares the UserSession with it.
 	 */
 	private function getActiveCharacterFromUser() {
+		$currentUserId = $this->getPhpbbHandler()->getUser()->data['user_id'];
 		if (!$this->getPhpbbHandler()->isAnonymous()) {
-			$this->charactersOAuth = OAuth2Users::getCharacterFromUserId(
-				$this->getPhpbbHandler()->getUser()->data['user_id']
-			);
+			$this->charactersOAuth = OAuth2Users::getCharacterFromUserId($currentUserId);
+		}
+
+		// Security check to not allow user to see other player's character
+		if (!$this->getPhpbbHandler()->isDirector() &&
+			$this->session->getActiveCharacter()->getOauthUser()->id_forum_user != $currentUserId
+		) {
+			$this->session->setActiveCharacter(NULL);
 		}
 
 		foreach ($this->charactersOAuth as $character) {
