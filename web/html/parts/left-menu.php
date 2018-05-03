@@ -2,8 +2,17 @@
 	<div class="sidebar-inner slimscrollleft">
 		<div id="sidebar-menu">
 			<ul>
-				<li class="menu-title">Global</li>
 
+<?php if (\Utils\Handler\PhpBB::getInstance()->isDirector() || \Utils\Handler\PhpBB::getInstance()->getUser()->data['user_id'] == 48) : ?>
+				<li class="menu-title">Directeurs</li>
+
+				<li>
+					<a href="/icm/" class="waves-effect waves-primary"><i class="mdi mdi-account-switch"></i><span>ICM</span></a>
+				</li>
+<?php endif; ?>
+
+				<li class="menu-title">Global</li>
+<!--
 				<li>
 					<a href="/entity/sheet/" class="waves-effect waves-primary"><i class="fa fa-id-card-o"></i><span>Sheet</span></a>
 				</li>
@@ -36,6 +45,7 @@
 						<li><a href="/entity/killmails/"><i class="fa fa-space-shuttle"></i><span>Killmails</span></a></li>
 					</ul>
 				</li>
+-->
 			</ul>
 			<div class="clearfix"></div>
 		</div>
