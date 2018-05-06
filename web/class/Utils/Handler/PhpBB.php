@@ -90,7 +90,7 @@ final class PhpBB implements Handler {
 	/**
 	 * @return bool true if the user is in the corporation, false otherwise
 	 */
-	public function isCorporationMember(): bool {
+	public function isVerified(): bool {
 		return $this->isInGroup(PHPBB_GROUP_VERIFIED_ID);
 	}
 
