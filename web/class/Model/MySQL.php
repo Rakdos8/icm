@@ -10,17 +10,29 @@ use Utils\Utils;
 final class MySQL extends \PDO {
 
 	/**
-	 * BDD constructor.
+	 * Creates a new Database connection.
+	 *
+	 * @param string $dbHost the hostname
+	 * @param string $dbName the name of the schema
+	 * @param int $dbPort the port of the server
+	 * @param string $dbLogin the login
+	 * @param string $dbPassword the password
 	 */
-	public function __construct() {
+	public function __construct(
+		string $dbHost = DB_URL,
+		string $dbName = DB_NAME,
+		int $dbPort = DB_PORT,
+		string $dbLogin = DB_LOGIN,
+		string $dbPassword = DB_PASSWORD
+	) {
 		try {
 			parent::__construct(
-				"mysql:dbname=" . str_replace("`", "", constant("DB_NAME")) . ";" .
-				"host=" . constant("DB_URL") . ";" .
-				"port=" . constant("DB_PORT") . ";" .
+				"mysql:dbname=" . str_replace("`", "", $dbName) . ";" .
+				"host=" . $dbHost . ";" .
+				"port=" . $dbPort . ";" .
 				"charset=utf8mb4;",
-				constant("DB_LOGIN"),
-				constant("DB_PASSWORD"),
+				$dbLogin,
+				$dbPassword,
 				array(
 					// Allows to return the real value of row updated instead of 0 if nothing changed
 					\PDO::MYSQL_ATTR_FOUND_ROWS => true,
@@ -29,7 +41,7 @@ final class MySQL extends \PDO {
 					// Better throw exception than silent errors
 					\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
 					\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-					\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
+					\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8MB4'"
 				)
 			);
 		} catch (\PDOException $ex) {
@@ -49,7 +61,7 @@ final class MySQL extends \PDO {
 		string $sql,
 		string $className,
 		array $bindings = array()
-	) {
+	): array {
 		$statement = parent::prepare($sql);
 		try {
 			$statement->execute($bindings);
@@ -57,7 +69,7 @@ final class MySQL extends \PDO {
 		} catch (\PDOException $ex) {
 			$this->logSqlError($statement);
 		}
-		return NULL;
+		return array();
 	}
 
 	/**
@@ -66,7 +78,7 @@ final class MySQL extends \PDO {
 	 * @param array $array the column/value array
 	 * @return array the array of question marks
 	 */
-	public static function createBindingArray(array $array = array()) {
+	public static function createBindingArray(array $array = array()): array {
 		if (!is_array($array) || is_null($array) || empty($array)) {
 			return array();
 		}
@@ -82,7 +94,7 @@ final class MySQL extends \PDO {
 	 *
 	 * @param \PDOStatement $statement PDOStatement or NULL if it was a raw query
 	 */
-	private function logSqlError(\PDOStatement $statement = NULL) {
+	private function logSqlError(\PDOStatement $statement = NULL): void {
 		$sqlQuery = "UNKNOWN";
 		if (!is_null($statement) &&
 			$statement instanceof \PDOStatement
