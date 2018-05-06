@@ -57,7 +57,7 @@ final class PhpBB implements Handler {
 	 *
 	 * @return PhpBB
 	 */
-	public static function getInstance() {
+	public static function getInstance(): PhpBB {
 		if (!is_null(self::$INSTANCE)) {
 			return self::$INSTANCE;
 		}
@@ -68,21 +68,21 @@ final class PhpBB implements Handler {
 	/**
 	 * @return \phpbb\user the connected user
 	 */
-	public function getUser() {
+	public function getUser(): \phpbb\user {
 		return $this->user;
 	}
 
 	/**
 	 * @return \phpbb\request\request
 	 */
-	public function getRequest() {
+	public function getRequest(): \phpbb\request\request {
 		return $this->request;
 	}
 
 	/**
 	 * @return bool true if the user is not logged in, false otherwise
 	 */
-	public function isAnonymous() {
+	public function isAnonymous(): bool {
 		//ANONYMOUS is a define on phpbb side which is equals to 1
 		return $this->user->data['user_id'] == ANONYMOUS;
 	}
@@ -90,7 +90,7 @@ final class PhpBB implements Handler {
 	/**
 	 * @return bool true if the user is a director, false otherwise
 	 */
-	public function isDirector() {
+	public function isDirector(): bool {
 		return self::isUserInGroup($this->user->data['user_id'], PHPBB_GROUP_DIRECTOR_ID);
 	}
 
@@ -104,7 +104,7 @@ final class PhpBB implements Handler {
 	public static function isUserInGroup(
 		int $userId,
 		int $groupId
-	) {
+	): bool {
 		// Only include if missing
 		if (!function_exists("group_memberships")) {
 			require_once PATH_PHPBB . "/includes/functions_user.php";
@@ -179,7 +179,7 @@ final class PhpBB implements Handler {
 	/**
 	 * Logs out the connected PhpBB user.
 	 */
-	public function logout() {
+	public function logout(): void {
 		$this->user->session_kill();
 	}
 
