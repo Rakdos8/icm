@@ -91,14 +91,13 @@ Il y a <?= Utils::plural(count($this->phpbbUsers), "utilisateur"); ?>:<br>
 <script src="/plugins/datatables/buttons.html5.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		//Buttons examples
-		var table = $('#datatable-phpbb-users').DataTable({
+		// Creates a datatable
+		$("#datatable-phpbb-users").DataTable({
+			// Allows to change the number of entry per page
 			lengthChange: true,
+			// Add button for export purpose
 			buttons: ['copy', 'excel', 'pdf']
 		});
-
-		table.buttons().container()
-			.appendTo('#datatable-phpbb-users_wrapper .col-md-6:eq(0)');
 	} );
 </script>
 <?php
