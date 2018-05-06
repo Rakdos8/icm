@@ -83,7 +83,7 @@ final class PhpBB implements Handler {
 	 * @return bool true if the user is not logged in, false otherwise
 	 */
 	public function isAnonymous(): bool {
-		//ANONYMOUS is a define on phpbb side which is equals to 1
+		// ANONYMOUS is a define on phpbb side which is equals to 1
 		return $this->user->data['user_id'] == ANONYMOUS;
 	}
 

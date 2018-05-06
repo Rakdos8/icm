@@ -7,6 +7,7 @@ use EVEOnline\ESI\EsiFactory;
 use View\DebugView;
 use View\Errors\NoActiveCharacterError;
 use View\Errors\NotConnectedForumError;
+use View\View;
 
 /**
  * Handles the show action in Index page
