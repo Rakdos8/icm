@@ -39,16 +39,11 @@ Il y a <?= \Utils\Utils::plural(count($this->phpbbUsers), "utilisateur"); ?>:<br
 <ul>
 <?php foreach ($this->phpbbUsers as $phpbbUser) : ?>
 	<li>
-		<?= $phpbbUser->username; ?> a lié <?= \Utils\Utils::plural(count($phpbbUser->characters), "personnage"); ?>
-		<?php if (!empty($phpbbUser->characters)) : ?>
-		: <?php
-			$characterNames = array();
-			foreach ($phpbbUser->characters as $character) {
-				$characterNames[] = $character->entity_name;
-			}
-			echo implode(", ", $characterNames);
-		?>
-		<?php endif; ?>
+		<a href="<?= PHPBB_URL ?>/memberlist.php?mode=viewprofile&u=<?= $phpbbUser->user_id; ?>"><?= $phpbbUser->username; ?></a>
+		a lié <?= \Utils\Utils::plural(count($phpbbUser->characters), "personnage"); ?>
+		<?php foreach ($phpbbUser->characters as $character) : ?>
+			<a href="/callback/change-character/<?= $character->id_entity; ?>"><?= $character->entity_name; ?></a>,
+		<?php endforeach; ?>
 	</li>
 <?php endforeach; ?>
 </ul>
