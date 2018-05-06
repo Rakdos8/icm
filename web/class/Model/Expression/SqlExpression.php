@@ -7,11 +7,15 @@ namespace Model\Expression;
  *
  * @package Model\Expression
  */
-interface SqlExpression {
+abstract class SqlExpression {
 
 	/**
 	 * @return string the SQL query
 	 */
-	public function toSql();
+	public abstract function toSql(): string;
+
+	public function __toString(): string {
+		return $this->toSql();
+	}
 
 }

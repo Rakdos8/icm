@@ -9,7 +9,7 @@ use Model\Expression\SqlExpression;
  *
  * @package Model\Expression\Where
  */
-class LessThan implements SqlExpression {
+class LessThan extends SqlExpression {
 
 	/** @var string $column */
 	private $column;
@@ -30,7 +30,7 @@ class LessThan implements SqlExpression {
 	/**
 	 * @return string the SQL query
 	 */
-	public function toSql() {
+	public function toSql(): string {
 		return $this->column . " " . ($this->orEquals ? "<=" : "<") . " ?";
 	}
 

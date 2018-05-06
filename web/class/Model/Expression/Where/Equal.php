@@ -9,7 +9,7 @@ use Model\Expression\SqlExpression;
  *
  * @package Model\Expression\Where
  */
-class Equal implements SqlExpression {
+class Equal extends SqlExpression {
 
 	private $column;
 
@@ -25,7 +25,7 @@ class Equal implements SqlExpression {
 	/**
 	 * @return string the SQL query
 	 */
-	public function toSql() {
+	public function toSql(): string {
 		return $this->column . " = ?";
 	}
 

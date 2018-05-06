@@ -10,7 +10,7 @@ use Model\MySQL;
  *
  * @package Model\Expression\Where
  */
-class In implements SqlExpression {
+class In extends SqlExpression {
 
 	/** @var string $column the column name*/
 	private $column;
@@ -32,7 +32,7 @@ class In implements SqlExpression {
 	/**
 	 * @return string the SQL query
 	 */
-	public function toSql() {
+	public function toSql(): string {
 		return $this->column . " IN (" . implode(", ", $this->values) . ")";
 	}
 

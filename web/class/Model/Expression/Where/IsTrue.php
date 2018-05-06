@@ -9,12 +9,12 @@ use Model\Expression\SqlExpression;
  *
  * @package Model\Expression\Where
  */
-class IsTrue implements SqlExpression {
+class IsTrue extends SqlExpression {
 
 	/**
 	 * @return string the SQL query
 	 */
-	public function toSql() {
+	public function toSql(): string {
 		return "1 = 1";
 	}
 
