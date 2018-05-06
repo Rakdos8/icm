@@ -1,3 +1,6 @@
+-- If the character set of the schema is not utf8mb4, please run the below query
+-- ALTER SCHEMA `evemyadmin` DEFAULT CHARACTER SET utf8mb4 ;
+
 CREATE TABLE `oauth2_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `access_token` varchar(1024) NOT NULL DEFAULT '',
