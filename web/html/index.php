@@ -40,6 +40,7 @@ $view = ADispatcher::getInstance()->dispatch();
 		<link href="/plugins/switchery/switchery.min.css" rel="stylesheet">
 
 		<script src="/js/modernizr.min.js"></script>
+		<script src="/js/jquery.min.js"></script>
 	</head>
 
 	<body class="fixed-left">
@@ -85,7 +86,6 @@ require_once "parts/right-menu.php";
 		<script>
 			var resizefunc = [];
 		</script>
-		<script src="/js/jquery.min.js"></script>
 		<script src="/js/popper.min.js"></script>
 		<script src="/js/bootstrap.min.js"></script>
 		<script src="/js/detect.js"></script>

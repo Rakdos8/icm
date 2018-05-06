@@ -103,7 +103,7 @@ final class MySQL extends \PDO {
 		}
 		$errorLog = $statement->errorInfo();
 
-		$prefix = "[" . Utils::dateJJ_MM_AAAA(true, time()) . "] ";
+		$prefix = "[" . Utils::formatDate(true, time()) . "] ";
 		$message = $prefix . "SQLSTATE: " . $errorLog[0] . "\n";
 		$message .= $prefix . "Erreur numéro: " . $errorLog[1] . "\n";
 		$message .= $prefix . "Message d'erreur: " . $errorLog[2] . "\n";
@@ -121,7 +121,7 @@ final class MySQL extends \PDO {
 		$message = "<html><body><h1>Une erreur SQL est survenue sur le site de EVEMyAdmin !</h1>" . $message;
 		$message .= "<br><br>Cette erreur a aussi été loggé dans le fichier " . PATH_LOG_SQL_ERROR . ".</body></html>";
 		Utils::sendMail(
-			"EMA - Erreur SQL le " . Utils::dateJJ_MM_AAAA(true, time()),
+			"EMA - Erreur SQL le " . Utils::formatDate(time(), true),
 			$message,
 			MAIL_DEVELOPER
 		);

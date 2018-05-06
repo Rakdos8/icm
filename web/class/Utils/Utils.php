@@ -33,7 +33,7 @@ final class Utils {
 	public static final function log(string $message, int $time = NULL) {
 		$messageDebug = str_repeat("-", 30) . "\r\n";
 		if ($time != NULL) {
-			$messageDebug .= "[" . self::dateJJ_MM_AAAA(true, $time) . "] ";
+			$messageDebug .= "[" . self::formatDate($time, true) . "] ";
 		}
 		$messageDebug .= $message . "\r\n";
 
@@ -43,18 +43,23 @@ final class Utils {
 	}
 
 	/**
-	 * Fonction permettant d'afficher la date sous forme de JJ/MM/ANNE
+	 * Format given timestamp to print the day, month then year: DD/MM/YYYY.
 	 *
-	 * @param bool $heure L'heure est à afficher ? Format HH:MM:SS
-	 * @param int $timestamp Timestamp (temps UNIX) à convertir. Si NULL ce sera le temps courant
-	 * @return string La date sous forme JJ/MM/ANNE[ HH:MM:SS]
+	 * @param int $timestamp unix timestamp (if negative given, will take the current time())
+	 * @param bool $showHour should it also prints hours and minutes ?
+	 * @return string formatted date as a string
 	 */
 	//TODO: Put in dedicated DateUtils class with 2 format: date and datetime
-	public static final function dateJJ_MM_AAAA(bool $heure = false, int $timestamp = NULL) {
-		if (is_null($timestamp) || !is_numeric($timestamp)) {
+	public static final function formatDate(
+		int $timestamp = -1,
+		bool $showHour = false
+	): string {
+		if (!is_numeric($timestamp) || $timestamp < 0) {
 			$timestamp = time();
 		}
-		return $heure ? date("d/m/Y à H:i:s", $timestamp) : date("d/m/Y", $timestamp);
+		return !$showHour ?
+			date("d/m/Y", $timestamp) :
+			date("d/m/Y H:i:s", $timestamp);
 	}
 
 	/**

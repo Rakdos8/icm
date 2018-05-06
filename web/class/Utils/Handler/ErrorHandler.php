@@ -77,7 +77,7 @@ final class ErrorHandler implements Handler {
 		}
 
 		$number = $throwable->getCode();
-		$prefix = "[" . Utils::dateJJ_MM_AAAA(true, time()) . "] ";
+		$prefix = "[" . Utils::formatDate(time(), true) . "] ";
 		$message = $prefix . "URL: " . $url . "\n";
 		$message .= $prefix . "Erreur: " . self::getPhpErrorFromNumber($number) . " (" . $number . ")" . "\n";
 		$message .= $prefix . "Message: " . $throwable->getMessage() . "\n";
@@ -92,7 +92,7 @@ final class ErrorHandler implements Handler {
 			echo $dump;
 		}
 		Utils::sendMail(
-			"EMA - Erreur le " . Utils::dateJJ_MM_AAAA(true, time()),
+			"EMA - Erreur le " . Utils::formatDate(time(), true),
 			$dump,
 			MAIL_DEVELOPER
 		);

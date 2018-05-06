@@ -30,6 +30,11 @@ class PhpBBUsers extends Model {
 	 */
 	public $username = "";
 
+	/**
+	 * @var int $user_lastvisit timestamp when user visit the forum for the last time
+	 */
+	public $user_lastvisit = 0;
+
 	/** @var OAuth2Users[] $characters list of OAuth2Users */
 	public $characters;
 
