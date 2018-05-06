@@ -3,7 +3,7 @@
 namespace Pages\Index\Show\Views;
 
 use EVEOnline\ESI\Character\CharacterDetails;
-use Utils\Builder\BreadcrumbBuilder;
+use View\DefaultBreadcrumb;
 use View\View;
 
 /**
@@ -12,6 +12,8 @@ use View\View;
  * @package Pages\Index\Show\Views
  */
 class Success implements View {
+
+	use DefaultBreadcrumb;
 
 	/** @var array $characters  */
 	private $characters;
@@ -29,10 +31,6 @@ class Success implements View {
 
 	public function getPageTitle() {
 		return "Players";
-	}
-
-	public function getBreadcrumb() {
-		return BreadcrumbBuilder::createBreadcrumb();
 	}
 
 	public function showTemplate() {
