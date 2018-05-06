@@ -8,6 +8,7 @@ use Pages\Errors\Views\Error404;
 use Pages\Errors\Views\Error501;
 use phpbb\request\request_interface;
 use View\ErrorView;
+use View\View;
 
 /**
  * Handles the Errors page
@@ -16,7 +17,7 @@ use View\ErrorView;
  */
 final class Controller extends AController {
 
-	public function execute(array $params = array()) {
+	public function execute(array $params = array()): View {
 		$action = $this->getPhpbbHandler()->getRequest()->variable(
 			"action",
 			"403",

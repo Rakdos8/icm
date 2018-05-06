@@ -10,6 +10,7 @@ use Model\Bean\OAuth2Users;
 use Seat\Eseye\Exceptions\RequestFailedException;
 use Utils\Handler\PhpBB;
 use View\JsonView;
+use View\View;
 
 /**
  * Handles the Controller page
@@ -18,7 +19,7 @@ use View\JsonView;
  */
 final class Controller extends AController {
 
-	public function execute(array $params = array()) {
+	public function execute(array $params = array()): View {
 		// Mapping EVE Character to PhpBB user
 		$charactersPerUser = array();
 		foreach (OAuth2Users::getAllCharacters() as $character) {

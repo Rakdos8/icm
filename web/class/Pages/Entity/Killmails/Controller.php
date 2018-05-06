@@ -7,6 +7,7 @@ use EVEOnline\ESI\EsiFactory;
 use View\DebugView;
 use View\Errors\NoActiveCharacterError;
 use View\Errors\NotConnectedForumError;
+use View\View;
 
 /**
  * Handles the show action in Index page
@@ -15,7 +16,7 @@ use View\Errors\NotConnectedForumError;
  */
 final class Controller extends AController {
 
-	public function execute(array $params = array()) {
+	public function execute(array $params = array()): View {
 		if ($this->getPhpbbHandler()->isAnonymous()) {
 			return new NotConnectedForumError();
 		}

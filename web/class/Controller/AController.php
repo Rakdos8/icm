@@ -89,7 +89,7 @@ abstract class AController {
 	 * @param array $params parameters in an array
 	 * @return View the view to print
 	 */
-	public abstract function execute(array $params = array());
+	public abstract function execute(array $params = array()): View;
 
 	/**
 	 * Retrieves current linked characters + prepares the UserSession with it.

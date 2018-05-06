@@ -21,7 +21,7 @@ final class Controller extends AController {
 	 * @param array $params
 	 * @return View the view, will always be null
 	 */
-	public function execute(array $params = array()) {
+	public function execute(array $params = array()): View {
 		// The code was not given, might be a manual call to this page.
 		if (!array_key_exists("code", $params)) {
 			Utils::redirect("/");
