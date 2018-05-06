@@ -44,10 +44,32 @@ abstract class Model {
 	}
 
 	/**
+	 * Only allow to update fields, not creating magic ones.
+	 *
+	 * @param string $name the name of the field
+	 * @param mixed $value the value of the field
+	 */
+	public function __set(string $name, $value): void {
+		$properties = self::getProperties($this);
+		if (array_key_exists($name, $properties)) {
+			$this->{$name} = $value;
+		}
+	}
+
+	/**
 	 * @return string the class name
 	 */
 	public final function __toString() {
 		return get_class($this);
+	}
+
+	/**
+	 * Hides non public fields.
+	 *
+	 * @return array the array of info to print
+	 */
+	public function __debugInfo() {
+		return self::getProperties($this);
 	}
 
 	/**
@@ -57,9 +79,9 @@ abstract class Model {
 	 * @param bool $ignore should it be an insert ignore ? (false by default)
 	 * @return bool true if the insert is done, false otherwise
 	 */
-	public final function insert(
+	public function insert(
 		bool $ignore = false
-	) {
+	): bool {
 		$properties = self::getProperties($this);
 		$columns = array_keys($properties);
 		$values = array_values($properties);
@@ -106,7 +128,7 @@ abstract class Model {
 	 *
 	 * @return bool true if the insert is done, false otherwise
 	 */
-	public final function update() {
+	public function update(): bool {
 		$properties = self::getProperties($this);
 		$columns = array_keys($properties);
 		$values = array_values($properties);
@@ -149,7 +171,7 @@ abstract class Model {
 	 *
 	 * @return bool true if the delete is done, false otherwise
 	 */
-	public final function delete() {
+	public function delete(): bool {
 		$sql = "
 	DELETE FROM
 		" . $this->table . "
