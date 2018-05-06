@@ -2,6 +2,7 @@
 
 namespace Utils\Enum;
 
+use Utils\Exceptions\UnexpectedValueException;
 use Utils\Handler\ErrorHandler;
 
 /**

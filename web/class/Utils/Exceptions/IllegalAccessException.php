@@ -3,14 +3,14 @@
 namespace Utils\Exceptions;
 
 /**
- * Called when the request value from a BasicEnum is not in the constant list.
+ * Called when the access should not be permitted.
  *
  * @package Utils\Enum
  */
-class UnexpectedValueException extends \RuntimeException {
+class IllegalAccessException extends \RuntimeException {
 
 	/**
-	 * UnexpectedValueException constructor.
+	 * IllegalAccessException constructor.
 	 *
 	 * @param string $message the message of the error
 	 */
