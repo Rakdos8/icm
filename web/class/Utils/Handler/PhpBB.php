@@ -88,10 +88,27 @@ final class PhpBB implements Handler {
 	}
 
 	/**
+	 * @return bool true if the user is in the corporation, false otherwise
+	 */
+	public function isCorporationMember(): bool {
+		return $this->isInGroup(PHPBB_GROUP_VERIFIED_ID);
+	}
+
+	/**
 	 * @return bool true if the user is a director, false otherwise
 	 */
 	public function isDirector(): bool {
-		return self::isUserInGroup($this->user->data['user_id'], PHPBB_GROUP_DIRECTOR_ID);
+		return $this->isInGroup(PHPBB_GROUP_DIRECTOR_ID);
+	}
+
+	/**
+	 * Is the current user in the given group ?
+	 *
+	 * @param int $groupId the group ID
+	 * @return bool true if the user is in the corporation, false otherwise
+	 */
+	public function isInGroup(int $groupId): bool {
+		return self::isUserInGroup($this->user->data['user_id'], $groupId);
 	}
 
 	/**
