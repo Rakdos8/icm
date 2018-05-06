@@ -55,15 +55,22 @@ Il y a <?= Utils::plural(count($this->phpbbUsers), "utilisateur"); ?>:<br>
 					<a href="<?= PHPBB_URL ?>/memberlist.php?mode=viewprofile&u=<?= $phpbbUser->user_id; ?>"><?= $phpbbUser->username; ?></a>
 				</td>
 				<td>
-	<?= Utils::formatDate($phpbbUser->user_lastvisit, true); ?>
+	<?= $phpbbUser->user_lastvisit <= 0 ? "" : Utils::formatDate($phpbbUser->user_lastvisit, true); ?>
 				</td>
 				<td>
 	<?= count($phpbbUser->characters); ?>
 				</td>
 				<td>
-	<?php foreach ($phpbbUser->characters as $character) : ?>
-					<a href="/callback/change-character/<?= $character->id_entity; ?>"><?= $character->entity_name; ?></a>,
-	<?php endforeach; ?>
+	<?php
+	$i = 0;
+	foreach ($phpbbUser->characters as $character) {
+		$i++;
+		$sep = count($phpbbUser->characters) == $i ? "" : ", ";
+	?>
+					<a href="/callback/change-character/<?= $character->id_entity; ?>"><?= $character->entity_name; ?></a><?= $sep; ?>
+	<?php
+	}
+	?>
 				</td>
 			</tr>
 <?php endforeach; ?>
