@@ -24,6 +24,10 @@ final class Controller extends AController {
 		foreach (OAuth2Users::getAllCharacters() as $character) {
 			$charactersPerUser[$character->id_forum_user][] = $character;
 		}
+		// Remove anonymous session's character: don't grant them access to the forum
+		if (array_key_exists(ANONYMOUS, $charactersPerUser)) {
+			unset($charactersPerUser[ANONYMOUS]);
+		}
 
 		$updateStatus = array();
 		foreach ($charactersPerUser as $userId => $characters) {
