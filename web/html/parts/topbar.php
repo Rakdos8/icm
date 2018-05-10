@@ -19,6 +19,12 @@ $mainCharacter = $session->getActiveCharacter();
 
 	<nav class="navbar-custom">
 		<ul class="list-inline float-right mb-0">
+			<li class="list-inline-item notification-list">
+				<a class="nav-link waves-effect waves-light esi-status" href="#">
+					<i class="fa fa-refresh"></i> ESI status
+				</a>
+			</li>
+
 			<li class="list-inline-item dropdown notification-list">
 				<a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 <?php if ($isLogged && !is_null($mainCharacter)) : ?>
@@ -88,3 +94,71 @@ $mainCharacter = $session->getActiveCharacter();
 		</ul>
 	</nav>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		function setIconAccordingToStatus(ratioGreen) {
+			var status;
+			if (ratioGreen <= 0) {
+				status = "-outline";
+			} else if (ratioGreen <= 20) {
+				status = "-10";
+			} else if (ratioGreen <= 30) {
+				status = "-20";
+			} else if (ratioGreen <= 40) {
+				status = "-30";
+			} else if (ratioGreen <= 50) {
+				status = "-40";
+			} else if (ratioGreen <= 60) {
+				status = "-50";
+			} else if (ratioGreen <= 70) {
+				status = "-60";
+			} else if (ratioGreen <= 80) {
+				status = "-70";
+			} else if (ratioGreen <= 90) {
+				status = "-80";
+			} else if (ratioGreen < 100) {
+				status = "-90";
+			} else {
+				status = "";
+			}
+			setEsiStatus("mdi mdi-battery" + status);
+		}
+
+		function setEsiStatus(clazz) {
+			var iconEsiStatus = $("a.esi-status i");
+			iconEsiStatus.removeClass();
+			iconEsiStatus.addClass(clazz);
+		}
+
+		function getEsiStatus() {
+			setEsiStatus("fa fa-refresh fa-spin");
+
+			$.ajax({
+				// JSON status of the ESI
+				url: "<?= ESI_BASE_URL; ?>/status.json?version=latest",
+				type: "GET",
+				dataType: "json"
+			})
+				.done(function(json, textStatus, jqXHR) {
+					var nbEndPoint = 0;
+					var nbStatusGreen = 0;
+					$.each(json, function() {
+						nbEndPoint++;
+						if (this.status === "green") {
+							nbStatusGreen++;
+						}
+					});
+					setIconAccordingToStatus(nbEndPoint / nbStatusGreen * 100);
+				})
+				.fail(function(jqXHR, textStatus, errorThrown) {
+					setEsiStatus("mdi mdi-battery-unknown");
+				});
+		}
+
+		// Call the ESI status every 5 seconds
+		setInterval(getEsiStatus, 5000);
+
+		$("a.esi-status").click(getEsiStatus);
+	});
+</script>
