@@ -12,7 +12,7 @@ $mainCharacter = $session->getActiveCharacter();
 	<div class="topbar-left">
 		<div class="text-center">
 			<a href="/" class="logo">
-				<img src="<?= IMAGE_SERVER_URL . "/Corporation/" . CORPORATION_ID . "_64.png"; ?>" alt="logo"><span>EVEMyAdmin</span>
+				<img src="<?= \Utils\Builder\EVEImage::getCorporationImage(CORPORATION_ID, 64); ?>" alt="logo"><span>EVEMyAdmin</span>
 			</a>
 		</div>
 	</div>
@@ -28,9 +28,9 @@ $mainCharacter = $session->getActiveCharacter();
 			<li class="list-inline-item dropdown notification-list">
 				<a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 <?php if ($isLogged && !is_null($mainCharacter)) : ?>
-					<img src="<?= IMAGE_SERVER_URL . "/Character/" . $mainCharacter->getCharacterId() . "_32.jpg"; ?>" alt="user" class="rounded-circle">
+					<img src="<?= \Utils\Builder\EVEImage::getCharacterImage($mainCharacter->getCharacterId(), 32); ?>" alt="user" class="rounded-circle">
 <?php else : ?>
-					<img src="<?= IMAGE_SERVER_URL . "/Type/22208_32.png"; ?>" alt="user" class="rounded-circle">
+					<img src="<?= \Utils\Builder\EVEImage::getItemImage(22208, 32); ?>" alt="user" class="rounded-circle">
 <?php endif; ?>
 				</a>
 				<div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
@@ -51,7 +51,7 @@ $mainCharacter = $session->getActiveCharacter();
 	<?php foreach ($characters as $character) : ?>
 		<?php if ($character->getCharacterId() != $mainCharacter->getCharacterId()) : ?>
 					<a href="/callback/change-character/<?= $character->getCharacterId(); ?>" class="dropdown-item notify-item">
-						<img src="<?= IMAGE_SERVER_URL . "/Character/" . $character->getCharacterId() . "_32.jpg"; ?>" alt="user" class="rounded-circle"> <span><?= $character->getName(); ?></span>
+						<img src="<?= \Utils\Builder\EVEImage::getCharacterImage($mainCharacter->getCharacterId(), 32); ?>" alt="user" class="rounded-circle"> <span><?= $character->getName(); ?></span>
 					</a>
 		<?php endif; ?>
 	<?php endforeach; ?>
