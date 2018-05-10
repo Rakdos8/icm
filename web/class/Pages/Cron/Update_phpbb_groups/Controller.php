@@ -8,6 +8,7 @@ use EVEOnline\ESI\Character\CharacterRoles;
 use EVEOnline\ESI\EsiFactory;
 use Model\Bean\OAuth2Users;
 use Seat\Eseye\Exceptions\RequestFailedException;
+use Utils\Handler\ErrorHandler;
 use Utils\Handler\PhpBB;
 use View\JsonView;
 use View\View;
@@ -34,6 +35,8 @@ final class Controller extends AController {
 		foreach ($charactersPerUser as $userId => $characters) {
 			$isDirector = false;
 			$isInCorporation = false;
+			// Did the ESI is inaccessible or returned an error ?
+			$esiError = NULL;
 
 			foreach ($characters as $character) {
 				$esi = EsiFactory::createEsi($character);
@@ -67,29 +70,36 @@ final class Controller extends AController {
 						$isDirector = $isDirector || in_array("Director", $roles->getRoles());
 					}
 				} catch (RequestFailedException $ex) {
-					;
+					$esiError = $ex;
+					ErrorHandler::logException($ex);
 				}
 			}
-			$updateStatus[$userId]['in_corp'] = $this->updateUserAndGroups(
-				$userId,
-				PHPBB_GROUP_VERIFIED_ID,
-				$isInCorporation
-			);
-			// If the guy is in the corp, add him as a friend
-			if ($isInCorporation) {
-				$this->updateUserAndGroups(
+
+			// Only update if the ESI responded correctly
+			if (is_null($esiError)) {
+				$updateStatus[$userId]['in_corp'] = $this->updateUserAndGroups(
 					$userId,
-					PHPBB_GROUP_FRIEND_ID,
-					// Never remove the group: manual configuration
-					true,
-					false
+					PHPBB_GROUP_VERIFIED_ID,
+					$isInCorporation
 				);
+				// If the guy is in the corp, add him as a friend
+				if ($isInCorporation) {
+					$this->updateUserAndGroups(
+						$userId,
+						PHPBB_GROUP_FRIEND_ID,
+						// Never remove the group: manual configuration
+						true,
+						false
+					);
+				}
+				$updateStatus[$userId]['is_director'] = $this->updateUserAndGroups(
+					$userId,
+					PHPBB_GROUP_DIRECTOR_ID,
+					$isInCorporation && $isDirector
+				);
+			} else {
+				$updateStatus[$userId]['error'] = $esiError->getMessage();
 			}
-			$updateStatus[$userId]['is_director'] = $this->updateUserAndGroups(
-				$userId,
-				PHPBB_GROUP_DIRECTOR_ID,
-				$isInCorporation && $isDirector
-			);
 		}
 		return new JsonView($updateStatus);
 	}
