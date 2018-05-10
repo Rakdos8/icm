@@ -131,7 +131,7 @@ define(
 );
 
 define("PATH_ESI_CACHE", PATH_PROJECT . "/esi-cache/", false);
-define("PATH_ESI_LOG", PATH_ROOT . "/log/esi.log", false);
+define("PATH_ESI_LOG", PATH_ROOT . "/log/", false);
 
 // Define of EVE Online utility stuff
 define("IMAGE_SERVER_URL", $iniConfig['image_server_url'], false);

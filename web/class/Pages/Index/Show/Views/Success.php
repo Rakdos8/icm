@@ -3,6 +3,7 @@
 namespace Pages\Index\Show\Views;
 
 use EVEOnline\ESI\Character\CharacterDetails;
+use Utils\Builder\EVEImage;
 use View\DefaultBreadcrumb;
 use View\View;
 
@@ -42,7 +43,7 @@ class Success implements View {
 <br>
 Vous avez synchornisé <?= \Utils\Utils::plural(count($this->characters), "personnage"); ?>:<br>
 <?php foreach ($this->characters as $character) : ?>
-	<?php $urlPortrait = IMAGE_SERVER_URL . "/Character/" . $character->getCharacterId() . "_128.jpg"; ?>
+	<?php $urlPortrait = EVEImage::getCharacterImage($character->getCharacterId(), 128); ?>
 	<img src="<?= $urlPortrait; ?>" alt="Portrait" title="<?= $character->getName(); ?>" class="rounded-circle">
 <?php endforeach; ?>
 <?php
