@@ -21,10 +21,13 @@
 					<a href="/entity/contact/" class="waves-effect waves-primary"><i class="fa fa-commenting-o"></i><span>Contacts</span></a>
 				</li>
 
+-->
+
 				<li>
-					<a href="/entity/mail/" class="waves-effect waves-primary"><i class="fa fa-envelope-o"></i><span>Mail</span></a>
+					<a href="/mail/" class="waves-effect waves-primary"><i class="fa fa-envelope-o"></i><span>Mail</span></a>
 				</li>
 
+<!--
 				<li>
 					<a href="/entity/wallet/" class="waves-effect waves-primary"><i class="fa fa-money"></i><span>Wallet</span></a>
 				</li>
