@@ -45,8 +45,12 @@ final class ErrorHandler implements Handler {
 	 * Logs the Exception and send a debug mail to MAIL_DEVELOPER if not an INFO.
 	 *
 	 * @param \Throwable $throwable the exception thrown
+	 * @param bool $forceHide should the error be forced to be hidden ?
 	 */
-	public static function logException(\Throwable $throwable) {
+	public static function logException(
+		\Throwable $throwable,
+		bool $forceHide = false
+	) {
 		ob_start(
 			!in_array("ob_gzhandler", ob_list_handlers()) ?
 				"ob_gzhandler" : NULL
@@ -88,7 +92,7 @@ final class ErrorHandler implements Handler {
 		Utils::log($message . str_repeat("=", 60));
 
 		// If it's in debug purpose, print the error directly
-		if (ini_get('display_errors')) {
+		if (ini_get('display_errors') && !$forceHide) {
 			echo $dump;
 		}
 		Utils::sendMail(
