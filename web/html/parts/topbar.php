@@ -20,7 +20,7 @@ $mainCharacter = $session->getActiveCharacter();
 	<nav class="navbar-custom">
 		<ul class="list-inline float-right mb-0">
 			<li class="list-inline-item notification-list">
-				<a class="nav-link waves-effect waves-light esi-status" href="#">
+				<a href="javascript:void(0);" class="nav-link waves-effect waves-light esi-status">
 					<i class="fa fa-refresh"></i> ESI status
 				</a>
 			</li>
@@ -51,7 +51,7 @@ $mainCharacter = $session->getActiveCharacter();
 	<?php foreach ($characters as $character) : ?>
 		<?php if ($character->getCharacterId() != $mainCharacter->getCharacterId()) : ?>
 					<a href="/callback/change-character/<?= $character->getCharacterId(); ?>" class="dropdown-item notify-item">
-						<img src="<?= \Utils\Builder\EVEImage::getCharacterImage($mainCharacter->getCharacterId(), 32); ?>" alt="user" class="rounded-circle"> <span><?= $character->getName(); ?></span>
+						<img src="<?= \Utils\Builder\EVEImage::getCharacterImage($character->getCharacterId(), 32); ?>" alt="user" class="rounded-circle"> <span><?= $character->getName(); ?></span>
 					</a>
 		<?php endif; ?>
 	<?php endforeach; ?>
