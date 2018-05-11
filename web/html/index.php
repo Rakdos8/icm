@@ -41,6 +41,7 @@ $view = ADispatcher::getInstance()->dispatch();
 
 		<script src="/js/modernizr.min.js"></script>
 		<script src="/js/jquery.min.js"></script>
+		<script src="/plugins/dateformat/dateFormat.min.js"></script>
 	</head>
 
 	<body class="fixed-left">
