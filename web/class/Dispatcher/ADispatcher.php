@@ -124,7 +124,7 @@ abstract class ADispatcher {
 				try {
 					$view = $this->controller->execute(self::getParameters($request));
 				} catch (\Throwable $ex) {
-					ErrorHandler::logException($ex, false);
+					ErrorHandler::logException($ex, true);
 					$view = new JsonErrorView($ex->getMessage());
 				}
 			} else {
