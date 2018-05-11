@@ -6,7 +6,9 @@ use Controller\AController;
 use Model\Bean\UserSession;
 use Pages\Errors\Views\Error404;
 use phpbb\request\request_interface;
+use Utils\Handler\ErrorHandler;
 use Utils\Handler\PhpBB;
+use View\JsonErrorView;
 use View\View;
 
 /**
@@ -72,6 +74,7 @@ abstract class ADispatcher {
 	private static final function getDispatcherType(string $page) {
 		// List here every AJAX pages
 		$pagesAJAX = array(
+			"ajax",
 			"cron"
 		);
 
@@ -116,9 +119,18 @@ abstract class ADispatcher {
 		$request = PhpBB::getInstance()->getRequest();
 
 		if ($this->controller != NULL) {
-			$view = $this->handleResponse(
-				$this->controller->execute(self::getParameters($request))
-			);
+			// If it's an AJAX Dispatcher, it must be bug-free
+			if ($this instanceof AJAX) {
+				try {
+					$view = $this->controller->execute(self::getParameters($request));
+				} catch (\Throwable $ex) {
+					ErrorHandler::logException($ex, false);
+					$view = new JsonErrorView($ex->getMessage());
+				}
+			} else {
+				$view = $this->controller->execute(self::getParameters($request));
+			}
+			$view = $this->handleResponse($view);
 
 			// Sets the current URI in the cookie in case of callback redirection
 			UserSession::getSession()->setActiveUri(
