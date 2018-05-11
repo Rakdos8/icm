@@ -10,6 +10,9 @@ use DateTime;
  */
 class MailBody {
 
+	/** @var int[] */
+	private $mailId;
+
 	/**
 	 * @var string
 	 */
@@ -36,6 +39,11 @@ class MailBody {
 	private $recipients;
 
 	/**
+	 * @var bool
+	 */
+	private $read;
+
+	/**
 	 * @var int[]
 	 */
 	private $labels;
@@ -52,6 +60,7 @@ class MailBody {
 	 * @param DateTime $time
 	 * @param int $from
 	 * @param MailRecipient[] $recipients
+	 * @param bool $read
 	 * @param int[] $labels
 	 * @param string $body
 	 */
@@ -60,16 +69,33 @@ class MailBody {
 		DateTime $time,
 		int $from,
 		array $recipients,
+		bool $read,
 		array $labels,
 		string $body
 	) {
+		$this->mailId = 0;
 		$this->subject = $subject;
 		$this->time = $time;
 		$this->from = $from;
 		$this->fromName = "";
 		$this->recipients = $recipients;
+		$this->read = $read;
 		$this->labels = $labels;
 		$this->body = strip_tags($body, "<br><a>");
+	}
+
+	/**
+	 * @param int $mailId
+	 */
+	public function setMailId(int $mailId): void {
+		$this->mailId = $mailId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getMailId(): int {
+		return $this->mailId;
 	}
 
 	/**
@@ -115,6 +141,13 @@ class MailBody {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isRead(): bool {
+		return $this->read;
+	}
+
+	/**
 	 * @return int[]
 	 */
 	public function getLabels(): array {
@@ -140,6 +173,7 @@ class MailBody {
 			new DateTime($json['timestamp']),
 			$json['from'],
 			self::createMailRecipient($json),
+			array_key_exists("read", $json) ? $json['read'] : false,
 			$json['labels'],
 			$json['body']
 		);

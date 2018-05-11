@@ -4,6 +4,7 @@ namespace Pages\Mail\Show\Views;
 
 use EVEOnline\ESI\Mail\MailLabel;
 use EVEOnline\ESI\Mail\MailList;
+use Pages\Mail\CommonMailView;
 use View\DefaultBreadcrumb;
 use View\View;
 
@@ -92,9 +93,9 @@ class Success implements View {
 			<div class="col-lg-12">
 				<div class="btn-toolbar m-t-20" role="toolbar">
 					<div class="btn-group">
-						<button type="button" class="btn btn-primary waves-effect waves-light" title="Mark as read"><i class="mdi mdi-email-open"></i></button>
-						<button type="button" class="btn btn-primary waves-effect waves-light" title="Mark as unread"><i class="mdi mdi-email"></i></button>
-						<button type="button" class="btn btn-primary waves-effect waves-light" title="Delete"><i class="fa fa-trash-o"></i></button>
+						<button type="button" class="btn btn-primary waves-effect waves-light mail-read" title="Mark as read"><i class="mdi mdi-email-open"></i></button>
+						<button type="button" class="btn btn-primary waves-effect waves-light mail-unread" title="Mark as unread"><i class="mdi mdi-email"></i></button>
+						<button type="button" class="btn btn-primary waves-effect waves-light mail-delete disabled" title="Delete"><i class="fa fa-trash-o"></i></button>
 					</div>
 				</div>
 			</div>
@@ -122,11 +123,9 @@ class Success implements View {
 	</div>
 </div>
 
+<?php $commonView = new CommonMailView(); $commonView->showTemplate(); ?>
 <link href="/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
 <link href="/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
-<!-- Notifications plugin -->
-<script src="/plugins/notifyjs/dist/notify.min.js"></script>
-<script src="/plugins/notifications/notify-metro.js"></script>
 <!-- DataTable core include -->
 <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/plugins/datatables/dataTables.bootstrap4.min.js"></script>
@@ -148,6 +147,7 @@ class Success implements View {
 		});
 		dataTable.buttons().container().appendTo('#datatable-mails_wrapper .col-md-6:eq(0)');
 
+		// Selecting a label
 		$("div.list-group a").click(function() {
 			// Remove previous active label
 			$("div.list-group").children("a").each(function() {
@@ -184,7 +184,7 @@ class Success implements View {
 							[
 								'<div class="checkbox checkbox-primary">\
 									<input id="checkbox-' + this.mail_id + '" type="checkbox" mail-id="' + this.mail_id + '">\
-									<label for="checkbox-' + this.mail_id + '"></label>\
+									<label for="checkbox-' + this.mail_id + '">' + (this.is_read ? "" : "<span class=\"badge badge-primary pull-right\">NEW</span>") + '</label>\
 								</div>',
 								'<a href="/mail/read/' + this.mail_id + '">\
 									<img src="<?= IMAGE_SERVER_URL; ?>/Character/' + this.from + '_32.jpg" alt="Character" class="rounded-circle">\
@@ -211,6 +211,30 @@ class Success implements View {
 
 					$("div.list-group a").find("i.wait").remove();
 				});
+		});
+
+		// Setting mail as read
+		$("div.btn-group button.mail-read").click(function() {
+			var mailIds = $("div.checkbox input:checked")
+				.map(function() { return $(this).attr("mail-id"); })
+				.get()
+				.join();
+			if (mailIds.length > 0) {
+				console.log(mailIds);
+				setMailReadStatus(mailIds, true);
+			}
+		});
+
+		// Setting mail as unread
+		$("div.btn-group button.mail-unread").click(function() {
+			var mailIds = $("div.checkbox input:checked")
+				.map(function() { return $(this).attr("mail-id"); })
+				.get()
+				.join();
+			if (mailIds.length > 0) {
+				console.log(mailIds);
+				setMailReadStatus(mailIds, false);
+			}
 		});
 
 		// Try to find the active label ID or select the first one if any

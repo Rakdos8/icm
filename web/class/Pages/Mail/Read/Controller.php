@@ -36,28 +36,29 @@ final class Controller extends AController {
 		}
 
 		// Retrieves mails from the active character
-		$oauthUser = $this->session->getActiveCharacter()->getOauthUser();
+		$currentUser = $this->session->getActiveCharacter()->getOauthUser();
 
-		$esi = EsiFactory::createEsi($oauthUser);
+		$esi = EsiFactory::createEsi($currentUser);
 		try {
 			$res = $esi->invoke(
 				"get",
 				"/characters/{character_id}/mail/{mail_id}/",
 				array(
-					"character_id" => $oauthUser->id_entity,
+					"character_id" => $currentUser->id_entity,
 					"mail_id" => intval($params[0])
 				)
 			);
-		}
-		// No mail found on this character, return to mail inbox
-		catch (RequestFailedException $ex) {
+		} catch (RequestFailedException $ex) {
+			// No mail found on this character, return to mail inbox
 			ErrorHandler::logException($ex, true);
 			Utils::redirect("/mail/");
+			die;
 		}
 		// Retrieve the raw JSON
 		$json = json_decode($res->raw, true);
 
 		$mailBody = MailBody::create($json);
+		$mailBody->setMailId(intval($params[0]));
 		// Retrieve recipients ID to attach name
 		$recipients = array(
 			$mailBody->getFrom() => new SimpleEntityInfo(
@@ -82,10 +83,23 @@ final class Controller extends AController {
 				$recipient->setRecipientName($recipients[$recipient->getRecipientId()]->getName());
 			}
 		}
+
+		$isOwnCharacter = true;
+		// Check if it's a director's character
+		if ($this->getPhpbbHandler()->isDirector()) {
+			$isOwnCharacter = false;
+			foreach ($this->charactersOAuth as $oauth2User) {
+				if ($oauth2User->id_entity == $currentUser->id_entity) {
+					$isOwnCharacter = true;
+					break;
+				}
+			}
+		}
 		return new Success(
-			MailLabel::invoke($oauthUser),
-			MailList::invoke($oauthUser),
-			$mailBody
+			MailLabel::invoke($currentUser),
+			MailList::invoke($currentUser),
+			$mailBody,
+			$isOwnCharacter
 		);
 	}
 

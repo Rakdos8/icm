@@ -5,6 +5,7 @@ namespace Pages\Mail\Read\Views;
 use EVEOnline\ESI\Mail\MailBody;
 use EVEOnline\ESI\Mail\MailLabel;
 use EVEOnline\ESI\Mail\MailList;
+use Pages\Mail\CommonMailView;
 use View\DefaultBreadcrumb;
 use View\View;
 
@@ -26,21 +27,27 @@ class Success implements View {
 	/** @var MailBody */
 	private $mailBody;
 
+	/** @var bool */
+	private $isOwnCharacter;
+
 	/**
 	 * Success constructor.
 	 *
 	 * @param MailLabel[] $mailLabels
 	 * @param MailList[] $mailLists
 	 * @param MailBody $mailBody
+	 * @param bool $isOwnCharacter
 	 */
 	public function __construct(
-			array $mailLabels,
-			array $mailLists,
-			MailBody $mailBody
+		array $mailLabels,
+		array $mailLists,
+		MailBody $mailBody,
+		bool $isOwnCharacter
 	) {
 		$this->mailLabels = $mailLabels;
 		$this->mailsLists = $mailLists;
 		$this->mailBody = $mailBody;
+		$this->isOwnCharacter = $isOwnCharacter;
 	}
 
 	public function getPageTitle() {
@@ -93,9 +100,9 @@ class Success implements View {
 			<div class="col-lg-12">
 				<div class="btn-toolbar m-t-20" role="toolbar">
 					<div class="btn-group">
-						<button type="button" class="btn btn-primary waves-effect waves-light" title="Mark as read"><i class="mdi mdi-email-open"></i></button>
-						<button type="button" class="btn btn-primary waves-effect waves-light" title="Mark as unread"><i class="mdi mdi-email"></i></button>
-						<button type="button" class="btn btn-primary waves-effect waves-light" title="Delete"><i class="fa fa-trash-o"></i></button>
+						<button type="button" class="btn btn-primary waves-effect waves-light mail-read" title="Mark as read"><i class="mdi mdi-email-open"></i></button>
+						<button type="button" class="btn btn-primary waves-effect waves-light mail-unread" title="Mark as unread"><i class="mdi mdi-email"></i></button>
+						<button type="button" class="btn btn-primary waves-effect waves-light mail-delete disabled" title="Delete"><i class="fa fa-trash-o"></i></button>
 					</div>
 				</div>
 			</div>
@@ -117,10 +124,27 @@ class Success implements View {
 	</div>
 </div>
 
+<?php $commonView = new CommonMailView(); $commonView->showTemplate(); ?>
+<?php if ($this->isOwnCharacter) : ?>
 <script type="text/javascript">
+	var isMailRead = <?= $this->mailBody->isRead() ? "true" : "false"; ?>;
+
 	$(document).ready(function() {
+		$("div.btn-group button.mail-read").click(function() {
+			setMailReadStatus(<?= $this->mailBody->getMailId(); ?>, true);
+		});
+
+		$("div.btn-group button.mail-unread").click(function() {
+			setMailReadStatus(<?= $this->mailBody->getMailId(); ?>, false);
+		});
+
+		// Set the mail as read after 5 seconds
+		if (!isMailRead) {
+			setTimeout(function() { setMailReadStatus(<?= $this->mailBody->getMailId(); ?>, true); }, 5000);
+		}
 	});
 </script>
+<?php endif; ?>
 <?php
 	}
 
