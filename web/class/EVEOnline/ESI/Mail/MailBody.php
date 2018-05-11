@@ -10,7 +10,7 @@ use DateTime;
  */
 class MailBody {
 
-	/** @var int[] */
+	/** @var int */
 	private $mailId;
 
 	/**
