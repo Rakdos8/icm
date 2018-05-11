@@ -28,6 +28,23 @@ abstract class BasicEnum {
 		$this->value = $value;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getValue(): string {
+		return $this->value;
+	}
+
+	/**
+	 * Is the given BasicEnum is the same of the current one ?
+	 *
+	 * @param null|BasicEnum $enum the BasicEnum to test
+	 * @return bool true if it's the same, false otherwise
+	 */
+	public final function equals(?BasicEnum $enum): bool {
+		return !is_null($enum) && strcmp($this->value, $enum->value) === 0;
+	}
+
 	private function getConstants() {
 		if (empty($this->constCacheArray)) {
 			try {
@@ -41,7 +58,7 @@ abstract class BasicEnum {
 	}
 
 	public final function __toString() {
-		return $this->value;
+		return $this->getValue();
 	}
 
 	public final function __debugInfo() {
