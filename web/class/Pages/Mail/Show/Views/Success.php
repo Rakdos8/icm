@@ -4,6 +4,7 @@ namespace Pages\Mail\Show\Views;
 
 use EVEOnline\ESI\Mail\MailLabel;
 use EVEOnline\ESI\Mail\MailList;
+use Utils\Handler\PhpBB;
 use View\DefaultBreadcrumb;
 use View\View;
 
@@ -180,13 +181,19 @@ class Success implements View {
 					dataTable.clear().draw();
 
 					$.each(json.value, function() {
+						<?php if (PhpBB::getInstance()->isDirector()) : ?>
+						var characterHref = "/callback/change-character/" + this.from;
+						<?php else : ?>
+						var characterHref = "javascript:void(0);";
+						<?php endif; ?>
 						dataTable.row.add(
 							[
 								'<div class="checkbox checkbox-primary">\
 									<input id="checkbox-' + this.mail_id + '" type="checkbox" mail-id="' + this.mail_id + '">\
 									<label for="checkbox-' + this.mail_id + '"></label>\
 								</div>',
-								'<a href="/mail/read/' + this.mail_id + '">\
+								// Define callback if director !
+								'<a href="' + characterHref + '">\
 									<img src="<?= IMAGE_SERVER_URL; ?>/Character/' + this.from + '_32.jpg" alt="Character" class="rounded-circle">\
 									' + this.from_name + '\
 								</a>',

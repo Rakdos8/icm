@@ -24,17 +24,17 @@ final class Controller extends AController {
 	public function execute(array $params = array()): View {
 		// The code was not given, might be a manual call to this page.
 		if (empty($params)) {
-			Utils::redirect("/");
+			Utils::redirect($this->session->getActiveUri());
 		}
 
 		$characterId = reset($params);
 		if (!is_numeric($characterId)) {
-			Utils::redirect("/");
+			Utils::redirect($this->session->getActiveUri());
 		}
 
 		$oauthUser = OAuth2Users::getCharacterFromCharacterId($characterId);
 		if (is_null($oauthUser)) {
-			Utils::redirect("/");
+			Utils::redirect($this->session->getActiveUri());
 		}
 
 		if ($this->getPhpbbHandler()->isDirector() ||
@@ -43,7 +43,7 @@ final class Controller extends AController {
 			$this->session->setActiveCharacter(new EVECharacter($oauthUser));
 			Utils::redirect($this->session->getActiveUri());
 		}
-		Utils::redirect("/");
+		Utils::redirect($this->session->getActiveUri());
 
 		return NULL;
 	}
