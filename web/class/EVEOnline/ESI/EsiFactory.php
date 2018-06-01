@@ -76,7 +76,14 @@ class EsiFactory {
 		}
 
 		if (!array_key_exists($idCharacter, self::$ESEYES)) {
-			self::$ESEYES[$idCharacter] = new Eseye(self::$AUTHENTICATIONS[$idCharacter]);
+			try {
+				self::$ESEYES[$idCharacter] = new Eseye(self::$AUTHENTICATIONS[$idCharacter]);
+			} catch (InvalidContainerDataException $ex) {
+				// This exception is thrown if the key of the array do not exist
+				// If so, we need to update this and every page is broken until update
+				ErrorHandler::logException($ex);
+				die;
+			}
 		}
 		// Creates the connection
 		return self::$ESEYES[$idCharacter];
