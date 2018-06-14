@@ -3,14 +3,14 @@
 namespace Pages\Errors\Show\Views;
 
 use View\DefaultBreadcrumb;
-use View\View;
+use View\ErrorView;
 
 /**
  * Class Success for the show in Index controller
  *
  * @package Pages\Index\Show\Views
  */
-class Success implements View {
+class Success extends ErrorView {
 
 	use DefaultBreadcrumb;
 
