@@ -132,13 +132,18 @@ $mainCharacter = $session->getActiveCharacter();
 		}
 
 		function getEsiStatus() {
+			// If it's already refreshing the status
+			if ($("a.esi-status i").hasClass("fa-spin")) {
+				return;
+			}
 			setEsiStatus("fa fa-refresh fa-spin");
 
 			$.ajax({
 				// JSON status of the ESI
 				url: "<?= ESI_BASE_URL; ?>/status.json?version=latest",
 				type: "GET",
-				dataType: "json"
+				dataType: "json",
+				crossDomain: true,
 			})
 				.done(function(json, textStatus, jqXHR) {
 					var nbEndPoint = 0;
