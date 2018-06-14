@@ -9,7 +9,9 @@ use Seat\Eseye\Containers\EsiResponse;
 use Seat\Eseye\Eseye;
 use Seat\Eseye\Exceptions\EsiScopeAccessDeniedException;
 use Seat\Eseye\Exceptions\InvalidContainerDataException;
+use Seat\Eseye\Exceptions\RequestFailedException;
 use Seat\Eseye\Exceptions\UriDataMissingException;
+use Utils\Exceptions\IllegalStateException;
 use Utils\Handler\ErrorHandler;
 use Utils\Utils;
 
@@ -127,18 +129,21 @@ class EsiFactory {
 		$params['character_id'] = $oauthUser->id_entity;
 
 		try {
-			$esi->invoke(strtolower($method), $url, $params);
+			return $esi->invoke(strtolower($method), $url, $params);
 		} catch (EsiScopeAccessDeniedException $ex) {
 			// The scope of the user is not enough, ask him to login again
 			Utils::redirect("/login");
 		} catch (InvalidContainerDataException $ex) {
 			// Dev is a dumbass and ask to set value which do not exists
-			ErrorHandler::logException($ex, true);
+			ErrorHandler::logException($ex, DEBUG);
 		} catch (UriDataMissingException $ex) {
 			// Dev is a dumbass and forget to provide mandatory value
-			ErrorHandler::logException($ex, true);
+			ErrorHandler::logException($ex, DEBUG);
+		} catch (RequestFailedException $ex) {
+			// ESI servers are down (CCP...)
+			Utils::redirect("/errors");
 		}
-		return NULL;
+		throw new IllegalStateException("No response given by ESI...?!");
 	}
 
 }
