@@ -20,7 +20,7 @@ class Success extends ErrorView {
 
 	public function showTemplate() {
 ?>
-L'ESI a quelques difficultés pour répondre dans les temps. Désolé pour la gène occasionnée.
+L'ESI a quelques difficultés pour répondre dans les temps. Désolé pour la gêne occasionnée.
 <?php
 	}
 }
