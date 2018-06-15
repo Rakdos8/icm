@@ -6,10 +6,8 @@ use Controller\AController;
 use Model\Bean\UserSession;
 use Pages\Errors\Views\Error404;
 use phpbb\request\request_interface;
-use Utils\Handler\ErrorHandler;
 use Utils\Handler\PhpBB;
 use View\ErrorView;
-use View\JsonErrorView;
 use View\View;
 
 /**
@@ -120,19 +118,8 @@ abstract class ADispatcher {
 		$request = PhpBB::getInstance()->getRequest();
 
 		if (!is_null($this->controller)) {
-			// If it's an AJAX Dispatcher, it must be bug-free
-			if ($this instanceof AJAX) {
-				try {
-					$view = $this->controller->execute(self::getParameters($request));
-				} catch (\Throwable $ex) {
-					ErrorHandler::logException($ex, DEBUG);
-					$view = new JsonErrorView($ex->getMessage());
-				}
-				$this->handleResponse($view);
-				// Due to AJAX call, it has to die: nothing more to print
-				die;
-			}
 			$view = $this->handleResponse(
+				$request,
 				$this->controller->execute(self::getParameters($request))
 			);
 
@@ -150,7 +137,7 @@ abstract class ADispatcher {
 
 			return $view;
 		}
-		return $this->handleResponse(new Error404());
+		return $this->handleResponse($request, new Error404());
 	}
 
 	/**
@@ -189,9 +176,13 @@ abstract class ADispatcher {
 	/**
 	 * Handles the response accordingly.
 	 *
+	 * @param \phpbb\request\request $request the PhpBB request
 	 * @param View $view the view
 	 * @return View the View to print
 	 */
-	protected abstract function handleResponse(View $view): View;
+	protected abstract function handleResponse(
+		\phpbb\request\request $request,
+		View $view
+	): View;
 
 }

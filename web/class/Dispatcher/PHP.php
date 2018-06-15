@@ -9,8 +9,11 @@ use View\View;
  */
 final class PHP extends ADispatcher {
 
-	protected final function handleResponse(View $view): View {
-		return $view;
+	protected final function handleResponse(
+		\phpbb\request\request $request,
+		View $view
+	): View {
+		return $this->controller->execute(self::getParameters($request));
 	}
 
 }
