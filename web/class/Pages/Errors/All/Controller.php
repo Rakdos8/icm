@@ -21,7 +21,7 @@ final class Controller extends AController {
 	public function execute(array $params = array()): View {
 		$action = $this->getPhpbbHandler()->getRequest()->variable(
 			"action",
-			"???",
+			"404",
 			true,
 			request_interface::GET
 		);
@@ -32,7 +32,7 @@ final class Controller extends AController {
 			return new Error404();
 		} else if (strcmp($action, "501") == 0) {
 			return new Error501();
-		} else if (strcmp($action, "???") == 0) {
+		} else if (strcmp($action, "timeout") == 0) {
 			return new EsiTimeOut();
 		}
 		return new ErrorView();

@@ -151,7 +151,7 @@ class EsiFactory {
 			ErrorHandler::logException($ex, DEBUG);
 		} catch (RequestFailedException $ex) {
 			// ESI servers are down (CCP...)
-			Utils::redirect("/errors");
+			Utils::redirect("/errors/timeout");
 		}
 		throw new IllegalStateException("No response given by ESI...?!");
 	}

@@ -14,8 +14,7 @@ use View\View;
 final class AJAX extends ADispatcher {
 
 	protected final function handleResponse(
-		\phpbb\request\request $request,
-		View $view
+		\phpbb\request\request $request
 	): View {
 		try {
 			$view = $this->controller->execute(self::getParameters($request));
