@@ -9,7 +9,7 @@ use View\View;
  */
 final class PHP extends ADispatcher {
 
-	protected final function handleResponse(View $view) {
+	protected final function handleResponse(View $view): View {
 		return $view;
 	}
 

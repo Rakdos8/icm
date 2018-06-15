@@ -12,7 +12,7 @@ use View\View;
  */
 final class AJAX extends ADispatcher {
 
-	protected final function handleResponse(View $view) {
+	protected final function handleResponse(View $view): View {
 		$json = array();
 
 		// If the result is OK
