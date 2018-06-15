@@ -87,7 +87,7 @@ session_set_cookie_params(0, "/", "." . $iniConfig['domain'], true, true);
 
 // Domain and application config
 define("DOMAIN", $iniConfig['domain'], false);
-define("FULL_DOMAIN", "http://" . DOMAIN, false);
+define("FULL_DOMAIN", "https://" . DOMAIN, false);
 
 // Cookie configuration
 define("DISCLAIMER_NAME", $iniConfig['disclaimer_name'], false);
