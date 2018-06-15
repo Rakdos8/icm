@@ -3,7 +3,7 @@
 namespace Pages\Search\Show;
 
 use Controller\AController;
-use Seat\Eseye\Eseye;
+use EVEOnline\ESI\EsiFactory;
 use Utils\Utils;
 use View\DebugView;
 use View\View;
@@ -18,13 +18,13 @@ final class Controller extends AController {
 	public function execute(array $params = array()): View {
 		if (empty($params)) {
 			Utils::redirect("/");
-			// return Error !
 		}
 
-		// No authentication required for a simple search
-		$esi = new Eseye();
-		// Sets the parameters
-		$esi->setQueryString(
+		$res = EsiFactory::invoke(
+			null,
+			"get",
+			"/search/",
+			array(),
 			array(
 				"search" => trim($params[0]),
 				"strict" => false,
@@ -41,10 +41,6 @@ final class Controller extends AController {
 					"station"
 				)
 			)
-		);
-		$res = $esi->invoke(
-			"get",
-			"/search/"
 		);
 		// Retrieve the raw JSON
 		$json = json_decode($res->raw, true);

@@ -81,8 +81,8 @@ class MailList {
 			$oauthUser = $activeCharacter->getOauthUser();
 		}
 
-		$esi = EsiFactory::createEsi($oauthUser);
-		$res = $esi->invoke(
+		$res = EsiFactory::invoke(
+			$oauthUser,
 			"get",
 			"/characters/{character_id}/mail/lists/",
 			array("character_id" => $oauthUser->id_entity)

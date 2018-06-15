@@ -27,9 +27,8 @@ final class Controller extends AController {
 
 		// Retrieves characters from the player
 		$oauthUser = $this->session->getActiveCharacter()->getOauthUser();
-		$esi = EsiFactory::createEsi($oauthUser);
-		//TODO: Handles properly the API lost
-		$res = $esi->invoke(
+		$res = EsiFactory::invoke(
+			$oauthUser,
 			"get",
 			"/characters/{character_id}/contracts/",
 			array("character_id" => $oauthUser->id_entity)

@@ -38,9 +38,9 @@ final class Controller extends AController {
 		// Retrieves mails from the active character
 		$currentUser = $this->session->getActiveCharacter()->getOauthUser();
 
-		$esi = EsiFactory::createEsi($currentUser);
 		try {
-			$res = $esi->invoke(
+			$res = EsiFactory::invoke(
+				$currentUser,
 				"get",
 				"/characters/{character_id}/mail/{mail_id}/",
 				array(
@@ -50,7 +50,7 @@ final class Controller extends AController {
 			);
 		} catch (RequestFailedException $ex) {
 			// No mail found on this character, return to mail inbox
-			ErrorHandler::logException($ex, true);
+			ErrorHandler::logException($ex, DEBUG);
 			Utils::redirect("/mail/");
 			die;
 		}

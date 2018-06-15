@@ -1,8 +1,8 @@
 <?php
 
 namespace EVEOnline\ESI\Utils;
+use EVEOnline\ESI\EsiFactory;
 use EVEOnline\ESI\Utils\Enums\EntityType;
-use Seat\Eseye\Eseye;
 
 /**
  * Helps to retrieve entities's name from their ID.
@@ -15,6 +15,8 @@ class EntitiesRetriever {
 	private static $ENTITY_INFO = array();
 
 	/**
+	 * Retrieves entity information and cache them for next sessions.
+	 *
 	 * @param SimpleEntityInfo[] $entities to complete with its ID as the key of the array
 	 * @return SimpleEntityInfo[] the SimpleEntityInfo array or empty
 	 */
@@ -48,13 +50,14 @@ class EntitiesRetriever {
 		}
 
 		if (!empty($idsToFetch)) {
-			$esi = new Eseye();
 			foreach ($idsToFetch as $entityType => $entityIds) {
 				// Sets the parameters
-				$esi->setQueryString(array($entityType . "_ids" => $entityIds));
-				$res = $esi->invoke(
+				$res = EsiFactory::invoke(
+					null,
 					"get",
-					"/" . $entityType . "s/names/"
+					"/" . $entityType . "s/names/",
+					array(),
+					array($entityType . "_ids" => $entityIds)
 				);
 				$json = json_decode($res->raw, true);
 				foreach ($json as $character) {

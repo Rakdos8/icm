@@ -31,22 +31,20 @@ final class Controller extends AController {
 
 		// Retrieves characters from the player
 		$oauthUser = $this->session->getActiveCharacter()->getOauthUser();
-		$esi = EsiFactory::createEsi($oauthUser);
 		foreach (explode(",", $params['mails']) as $mail) {
-			// Forced to re-set the body each times
-			$esi->setBody(
-				array(
-					//"labels" => $params['labels'],
-					"read" => $params['read']
-				)
-			);
-			//TODO: Handles properly the API lost
-			$esi->invoke(
+			EsiFactory::invoke(
+				$oauthUser,
 				"put",
 				"/characters/{character_id}/mail/{mail_id}/",
 				array(
 					"character_id" => $oauthUser->id_entity,
 					"mail_id" => intval($mail)
+				),
+				array(),
+				// Forced to re-set the body each times
+				array(
+					//"labels" => $params['labels'],
+					"read" => $params['read']
 				)
 			);
 		}

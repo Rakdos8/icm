@@ -39,9 +39,9 @@ final class Controller extends AController {
 			$esiError = NULL;
 
 			foreach ($characters as $character) {
-				$esi = EsiFactory::createEsi($character);
 				try {
-					$res = $esi->invoke(
+					$res = EsiFactory::invoke(
+						$character,
 						"get",
 						"/characters/{character_id}/",
 						array("character_id" => $character->id_entity)
@@ -59,7 +59,8 @@ final class Controller extends AController {
 					$isInCorporation = $isInCorporation || $curIsInCorporation;
 					// In right corp and not director (yet) ? Check if he's
 					if (!$isDirector && $curIsInCorporation) {
-						$res = $esi->invoke(
+						$res = EsiFactory::invoke(
+							$character,
 							"get",
 							"/characters/{character_id}/roles/",
 							array("character_id" => $character->id_entity)

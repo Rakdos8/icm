@@ -67,13 +67,17 @@ class EsiFactory {
 		$idCharacter = $oauthUser->id_entity;
 		if (!array_key_exists($idCharacter, self::$AUTHENTICATIONS)) {
 			try {
-				self::$AUTHENTICATIONS[$idCharacter] = new EsiAuthentication(
-					array(
-						"client_id" => ESI_CLIENT_ID,
-						"secret" => ESI_SECRET_KEY,
-						"refresh_token" => $oauthUser->refresh_token
-					)
-				);
+				if ($idCharacter < 0) {
+					self::$AUTHENTICATIONS[$idCharacter] = null;
+				} else {
+					self::$AUTHENTICATIONS[$idCharacter] = new EsiAuthentication(
+						array(
+							"client_id" => ESI_CLIENT_ID,
+							"secret" => ESI_SECRET_KEY,
+							"refresh_token" => $oauthUser->refresh_token
+						)
+					);
+				}
 			} catch (InvalidContainerDataException $ex) {
 				// This exception is thrown if the key of the array do not exist
 				// If so, we need to update this and every page is broken until update
@@ -100,7 +104,7 @@ class EsiFactory {
 	/**
 	 * Creates an Eseye connection.
 	 *
-	 * @param OAuth2Users $oauthUser the OAuth2Users user
+	 * @param OAuth2Users $oauthUser the OAuth2Users user (null = no authorization requested)
 	 * @param string $method HTTP method of the API (GET, POST, DELETE, PUT, ...)
 	 * @param string $url URL of the endpoint
 	 * @param array $parameters Parameters required on the URL
@@ -109,14 +113,20 @@ class EsiFactory {
 	 * @return EsiResponse the EsiResponse
 	 */
 	public static function invoke(
-		OAuth2Users $oauthUser,
+		?OAuth2Users $oauthUser,
 		string $method,
 		string $url,
 		array $parameters = array(),
 		array $queryHeader = array(),
 		array $queryBody = array()
 	): EsiResponse {
-		$esi = self::createEsi($oauthUser);
+		$curUser = $oauthUser;
+		if (is_null($curUser)) {
+			$curUser = new OAuth2Users();
+			$curUser->id_entity = -1;
+		}
+		$esi = self::createEsi($curUser);
+
 		if (!empty($queryHeader)) {
 			$esi->setQueryString($queryHeader);
 		}
@@ -126,7 +136,7 @@ class EsiFactory {
 
 		$params = $parameters;
 		//TODO: Also prepare the array for corporation and alliance entity
-		$params['character_id'] = $oauthUser->id_entity;
+		$params['character_id'] = $curUser->id_entity;
 
 		try {
 			return $esi->invoke(strtolower($method), $url, $params);

@@ -24,9 +24,8 @@ final class Controller extends AController {
 		// Retrieves characters from the player
 		$characters = array();
 		foreach ($this->charactersOAuth as $character) {
-			$esi = EsiFactory::createEsi($character);
-			//TODO: Handles properly the API lost
-			$res = $esi->invoke(
+			$res = EsiFactory::invoke(
+				$character,
 				"get",
 				"/characters/{character_id}/",
 				array("character_id" => $character->id_entity)

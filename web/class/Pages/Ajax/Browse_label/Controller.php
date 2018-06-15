@@ -31,14 +31,12 @@ final class Controller extends AController {
 
 		// Retrieves characters from the player
 		$oauthUser = $this->session->getActiveCharacter()->getOauthUser();
-		$esi = EsiFactory::createEsi($oauthUser);
-		// Define a specific label to retrieve mail on
-		$esi->setQueryString(array("labels" => array(intval($params[0]))));
-		//TODO: Handles properly the API lost
-		$res = $esi->invoke(
+		$res = EsiFactory::invoke(
+			$oauthUser,
 			"get",
 			"/characters/{character_id}/mail/",
-			array("character_id" => $oauthUser->id_entity)
+			array("character_id" => $oauthUser->id_entity),
+			array("labels" => array(intval($params[0])))
 		);
 
 		// Retrieve the raw JSON

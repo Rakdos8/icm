@@ -1,6 +1,6 @@
 <?php
 
-namespace Pages\Errors\Show\Views;
+namespace Pages\Errors\Views;
 
 use View\DefaultBreadcrumb;
 use View\ErrorView;
@@ -10,12 +10,12 @@ use View\ErrorView;
  *
  * @package Pages\Index\Show\Views
  */
-class Success extends ErrorView {
+class EsiTimeOut extends ErrorView {
 
 	use DefaultBreadcrumb;
 
 	public function getPageTitle() {
-		return "Errors";
+		return "Erreur ESI";
 	}
 
 	public function showTemplate() {

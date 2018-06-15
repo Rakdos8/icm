@@ -113,9 +113,8 @@ class MailLabel {
 			$oauthUser = $activeCharacter->getOauthUser();
 		}
 
-		$esi = EsiFactory::createEsi($oauthUser);
-		//TODO: Handles properly the API lost
-		$res = $esi->invoke(
+		$res = EsiFactory::invoke(
+			$oauthUser,
 			"get",
 			"/characters/{character_id}/mail/labels/",
 			array("character_id" => $oauthUser->id_entity)

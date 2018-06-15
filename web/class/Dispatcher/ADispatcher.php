@@ -10,6 +10,7 @@ use Utils\Handler\ErrorHandler;
 use Utils\Handler\PhpBB;
 use View\ErrorView;
 use View\JsonErrorView;
+use View\JsonView;
 use View\View;
 
 /**
@@ -123,10 +124,10 @@ abstract class ADispatcher {
 			// If it's an AJAX Dispatcher, it must be bug-free
 			if ($this instanceof AJAX) {
 				try {
-					return $this->controller->execute(self::getParameters($request));
+					$view = $this->controller->execute(self::getParameters($request));
 				} catch (\Throwable $ex) {
 					ErrorHandler::logException($ex, DEBUG);
-					return new JsonErrorView($ex->getMessage());
+					$view = new JsonErrorView($ex->getMessage());
 				}
 			} else {
 				$view = $this->controller->execute(self::getParameters($request));
@@ -134,7 +135,9 @@ abstract class ADispatcher {
 			$view = $this->handleResponse($view);
 
 			// Sets the current URI (if not an error) in the cookie in case of callback redirection
-			if (!($view instanceof ErrorView)) {
+			if (!($view instanceof ErrorView) &&
+				!($view instanceof JsonView)
+			) {
 				UserSession::getSession()->setActiveUri(
 					$request->variable(
 						"REQUEST_URI",
