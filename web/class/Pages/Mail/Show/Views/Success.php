@@ -240,7 +240,7 @@ class Success implements View {
 		// Try to find the active label ID or select the first one if any
 		var found = false;
 		$("div.list-group").children("a").each(function() {
-			if ($(this).attr("label-id") == <?= $this->activeLabelId; ?>) {
+			if ($(this).attr("label-id") === <?= $this->activeLabelId; ?>) {
 				$(this).trigger("click");
 				found = true;
 			}
