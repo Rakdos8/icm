@@ -35,19 +35,11 @@ class EsiFactory {
 	private static $ESEYES = array();
 
 	/**
-	 * Creates an Eseye connection.
+	 * Creates the global ESI Configuration for the application.
 	 *
-	 * @param OAuth2Users $oauthUser the OAuth2Users user
-	 * @return Eseye the ESI connection
-	 * @see invoke to call to request through the ESI
+	 * @return Configuration the EsiConfiguration
 	 */
-	public static function createEsi(
-		OAuth2Users $oauthUser
-	): Eseye {
-		if (is_null($oauthUser)) {
-			throw new \InvalidArgumentException("You must provide a character.");
-		}
-
+	public static function createEsiConfiguration(): Configuration {
 		// Prepares the configuration of ESI
 		if (is_null(self::$CONFIGURATION)) {
 			try {
@@ -62,6 +54,24 @@ class EsiFactory {
 				die;
 			}
 		}
+		return self::$CONFIGURATION;
+	}
+
+	/**
+	 * Creates an Eseye connection.
+	 *
+	 * @param OAuth2Users $oauthUser the OAuth2Users user
+	 * @return Eseye the ESI connection
+	 * @see invoke to call to request through the ESI
+	 */
+	public static function createEsi(
+		OAuth2Users $oauthUser
+	): Eseye {
+		if (is_null($oauthUser)) {
+			throw new \InvalidArgumentException("You must provide a character.");
+		}
+
+		self::createEsiConfiguration();
 
 		// Creates an authentication for ESI if not done yet
 		$idCharacter = $oauthUser->id_entity;
@@ -99,7 +109,6 @@ class EsiFactory {
 		// Creates the connection
 		return self::$ESEYES[$idCharacter];
 	}
-
 
 	/**
 	 * Creates an Eseye connection.

@@ -1,6 +1,6 @@
 <?php
 
-require_once "fonctions.inc.php";
+require_once "functions.inc.php";
 
 /**
  * Creates the file if missing.<br>
@@ -164,3 +164,6 @@ require_once PATH_COMPOSER . "/autoload.php";
 
 // Includes the ErrorHandler
 Utils\Handler\ErrorHandler::register();
+
+// Creates the global ESI Configuration
+EVEOnline\ESI\EsiFactory::createEsiConfiguration();
