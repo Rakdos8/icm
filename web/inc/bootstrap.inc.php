@@ -171,6 +171,3 @@ require_once PATH_COMPOSER . "/autoload.php";
 
 // Includes the ErrorHandler
 Utils\Handler\ErrorHandler::register();
-
-// Creates the global ESI Configuration
-EVEOnline\ESI\EsiFactory::createEsiConfiguration();
