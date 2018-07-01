@@ -1,8 +1,8 @@
 <?php
 
 namespace EVEOnline\ESI\Utils;
+
 use EVEOnline\ESI\EsiFactory;
-use EVEOnline\ESI\Utils\Enums\EntityType;
 
 /**
  * Helps to retrieve entities's name from their ID.
@@ -27,53 +27,32 @@ class EntitiesRetriever {
 			return array();
 		}
 
-		// Map entity per EntityType
-		$mapEntities = array();
-		foreach ($entities as $entity) {
-			$mapEntities[strtolower($entity->getType()->getValue())][$entity->getId()] = $entity;
-		}
-
 		$idsToFetch = array();
-		foreach ($mapEntities as $entityType => $entityIds) {
+		foreach ($entities as $entityId => $entity) {
 			// Prepare the cache if not existing yet
-			if (!array_key_exists($entityType, self::$ENTITY_INFO)) {
-				self::$ENTITY_INFO[$entityType] = array();
-			}
-
-			foreach ($entityIds as $entityId => $entity) {
-				// Forget if the character was already added
-				if (array_key_exists($entityId, self::$ENTITY_INFO[$entityType])) {
-					continue;
-				}
-				$idsToFetch[$entityType][] = intval($entityId);
+			if (!array_key_exists($entityId, self::$ENTITY_INFO)) {
+				self::$ENTITY_INFO[$entityId] = $entity;
+				$idsToFetch[] = intval($entityId);
 			}
 		}
 
 		if (!empty($idsToFetch)) {
-			foreach ($idsToFetch as $entityType => $entityIds) {
-				// Sets the parameters
-				$res = EsiFactory::invoke(
-					null,
-					"get",
-					"/" . $entityType . "s/names/",
-					array(),
-					array($entityType . "_ids" => $entityIds)
-				);
-				$json = json_decode($res->raw, true);
-				foreach ($json as $character) {
-					$character = SimpleEntityInfo::create($character, new EntityType($entityType));
-					if (array_key_exists($character->getId(), self::$ENTITY_INFO[$entityType])) {
-						self::$ENTITY_INFO[$entityType][$character->getId()]->setName($character->getName());
-					} else {
-						self::$ENTITY_INFO[$entityType][$character->getId()] = $character;
-					}
-				}
-			}
-		}
+			// Sets the parameters
+			$res = EsiFactory::invoke(
+				null,
+				"post",
+				"/universe/names/",
+				array(),
+				array(),
+				$idsToFetch
+			);
+			$json = json_decode($res->raw, true);
+			foreach ($json as $entity) {
+				$entity = SimpleEntityInfo::create($entity);
+				self::$ENTITY_INFO[$entity->getId()]->setName($entity->getName());
 
-		foreach ($idsToFetch as $entityType => $entityIds) {
-			foreach ($entityIds as $entityId) {
-				$entities[$entityId]->setName(self::$ENTITY_INFO[$entityType][$entityId]->getName());
+				// Update back the array which was given (save time)
+				$entities[$entity->getId()]->setName(self::$ENTITY_INFO[$entity->getId()]->getName());
 			}
 		}
 		return $entities;

@@ -69,14 +69,13 @@ class SimpleEntityInfo {
 	 * Creates a SimpleEntityInfo from the associative json array.
 	 *
 	 * @param array $json the json associative array
-	 * @param EntityType $entityType type of the entity to retrieve
 	 * @return SimpleEntityInfo
 	 */
-	public static function create(array $json, EntityType $entityType) {
+	public static function create(array $json) {
 		return new SimpleEntityInfo(
-			$json[strtolower($entityType->getValue()) . '_id'],
-			$json[strtolower($entityType->getValue()) . '_name'],
-			$entityType
+			$json['id'],
+			$json['name'],
+			new EntityType($json['category'])
 		);
 	}
 

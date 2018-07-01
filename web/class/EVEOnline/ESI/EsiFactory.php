@@ -3,6 +3,7 @@
 namespace EVEOnline\ESI;
 
 use Model\Bean\OAuth2Users;
+use Seat\Eseye\Cache\RedisCache;
 use Seat\Eseye\Configuration;
 use Seat\Eseye\Containers\EsiAuthentication;
 use Seat\Eseye\Containers\EsiResponse;
@@ -23,7 +24,7 @@ use Utils\Utils;
 class EsiFactory {
 
 	/** @var string User-Agent in HTTP header to give contact in case of error for EVE developers */
-	private static $USER_AGENT = "User-Agent: EVEMyAdmin (Beta). Contact Freyers In-Game";
+	private static $USER_AGENT = "User-Agent: EVEMyAdmin (Beta) through Eseye lib. Contact Freyers In-Game";
 
 	/** @var Configuration the ESI configuration (user agent, etc) */
 	private static $CONFIGURATION = null;
@@ -47,6 +48,31 @@ class EsiFactory {
 				self::$CONFIGURATION->http_user_agent = self::$USER_AGENT;
 				self::$CONFIGURATION->logfile_location = PATH_ESI_LOG;
 				self::$CONFIGURATION->file_cache_location = PATH_ESI_CACHE;
+
+				if (USE_REDIS) {
+					self::$CONFIGURATION->cache = RedisCache::class;
+
+					// Build URL connection
+					$redisUrl = REDIS_URL;
+					if (!empty(REDIS_PASSWORD)) {
+						if (strpos($redisUrl, "?") === false) {
+							$redisUrl .= "?";
+						} else {
+							$redisUrl .= "&";
+						}
+						$redisUrl .= "password=" . REDIS_PASSWORD;
+					}
+					if (!empty(REDIS_DATABASE) && is_integer(REDIS_DATABASE)) {
+						$redisUrl .= "&database=" . intval(REDIS_DATABASE);
+					}
+					// Every errors should throw an Exception ! Only set if not already given in URL
+					if (strpos($redisUrl, "throw_errors") === false) {
+						$redisUrl .= "&throw_errors=true";
+					}
+
+					self::$CONFIGURATION->redis_cache_location = $redisUrl;
+					self::$CONFIGURATION->redis_cache_prefix = REDIS_CACHE_PREFIX;
+				}
 			} catch (InvalidContainerDataException $ex) {
 				// This exception is thrown if the key of the array do not exist
 				// If so, we need to update this and every page is broken until update

@@ -11,8 +11,17 @@ use Utils\Enum\BasicEnum;
  */
 final class EntityType extends BasicEnum {
 
-	const CHARACTER = "character";
-	const CORPORATION = "corporation";
+	const FACTION = "faction";
 	const ALLIANCE = "alliance";
+	const CORPORATION = "corporation";
+	const CHARACTER = "character";
+	const AGENT = "agent";
+
+	const REGION = "region";
+	const CONSTELLATION = "constellation";
+	const SOLAR_SYSTEM = "solar_system";
+	const STATION = "station";
+
+	const INVENTORY_TYPE = "inventory_type";
 
 }
