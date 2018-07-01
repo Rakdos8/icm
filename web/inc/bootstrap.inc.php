@@ -147,6 +147,13 @@ define("PHPBB_GROUP_VERIFIED_ID", $iniConfig['phpbb_group_verified_id'], false);
 define("PHPBB_GROUP_DIRECTOR_ID", $iniConfig['phpbb_group_director_id'], false);
 define("PHPBB_GROUP_FRIEND_ID", $iniConfig['phpbb_group_friend_id'], false);
 
+// Some define for REDIS link with ESI
+define("USE_REDIS", boolval($iniConfig['use_redis']), false);
+define("REDIS_URL", $iniConfig['redis_url'], false);
+define("REDIS_DATABASE", $iniConfig['redis_database'], false);
+define("REDIS_PASSWORD", $iniConfig['redis_password'], false);
+define("REDIS_CACHE_PREFIX", $iniConfig['redis_cache_prefix'], false);
+
 // Security measure
 unset($iniConfig);
 
