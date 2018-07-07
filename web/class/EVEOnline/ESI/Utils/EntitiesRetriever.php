@@ -45,6 +45,7 @@ class EntitiesRetriever {
 			}
 		}
 
+		// If some entity are still missing, retrieve them from ESI and store them in DB
 		if (!empty($idsToFetch)) {
 			// Sets the parameters
 			$res = EsiFactory::invoke(
