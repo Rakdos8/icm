@@ -3,6 +3,7 @@
 namespace EVEOnline\ESI\Utils;
 
 use EVEOnline\ESI\EsiFactory;
+use Model\Bean\Cache\CacheEntity;
 
 /**
  * Helps to retrieve entities's name from their ID.
@@ -32,7 +33,15 @@ class EntitiesRetriever {
 			// Prepare the cache if not existing yet
 			if (!array_key_exists($entityId, self::$ENTITY_INFO)) {
 				self::$ENTITY_INFO[$entityId] = $entity;
-				$idsToFetch[] = intval($entityId);
+				$idsToFetch[intval($entityId)] = intval($entityId);
+			}
+		}
+
+		// If the local cache is empty, try to retrieve them from DB
+		$cachedEntities = CacheEntity::getEntityFromEntityId(array_values($idsToFetch));
+		foreach ($cachedEntities as $cachedEntity) {
+			if (!empty($cachedEntity->name)) {
+				unset($idsToFetch[$cachedEntity->id_entity]);
 			}
 		}
 
@@ -49,10 +58,13 @@ class EntitiesRetriever {
 			$json = json_decode($res->raw, true);
 			foreach ($json as $entity) {
 				$entity = SimpleEntityInfo::create($entity);
-				self::$ENTITY_INFO[$entity->getId()]->setName($entity->getName());
-
 				// Update back the array which was given (save time)
-				$entities[$entity->getId()]->setName(self::$ENTITY_INFO[$entity->getId()]->getName());
+				$entities[$entity->getId()]->setName($entity->getName());
+
+				// Insert in Database the entity
+				CacheEntity::createCacheEntityFromEntityInfo($entity)->insert();
+				// And update cache
+				self::$ENTITY_INFO[$entity->getId()] = $entity;
 			}
 		}
 		return $entities;
