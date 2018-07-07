@@ -143,7 +143,7 @@ $mainCharacter = $session->getActiveCharacter();
 				url: "<?= ESI_BASE_URL; ?>/status.json?version=latest",
 				type: "GET",
 				dataType: "json",
-				crossDomain: true,
+				crossDomain: true
 			})
 				.done(function(json, textStatus, jqXHR) {
 					var nbEndPoint = 0;
@@ -154,7 +154,7 @@ $mainCharacter = $session->getActiveCharacter();
 							nbStatusGreen++;
 						}
 					});
-					setIconAccordingToStatus(nbEndPoint / nbStatusGreen * 100);
+					setIconAccordingToStatus(nbStatusGreen / nbEndPoint * 100);
 				})
 				.fail(function(jqXHR, textStatus, errorThrown) {
 					setEsiStatus("mdi mdi-battery-unknown");
