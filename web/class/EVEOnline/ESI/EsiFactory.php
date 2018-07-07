@@ -170,7 +170,8 @@ class EsiFactory {
 		}
 
 		$params = $parameters;
-		//TODO: Also prepare the array for corporation and alliance entity
+		$params['alliance_id'] = $curUser->id_entity;
+		$params['corporation_id'] = $curUser->id_entity;
 		$params['character_id'] = $curUser->id_entity;
 
 		try {
