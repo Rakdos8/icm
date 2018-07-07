@@ -220,7 +220,6 @@ class Success implements View {
 				.get()
 				.join();
 			if (mailIds.length > 0) {
-				console.log(mailIds);
 				setMailReadStatus(mailIds, true);
 			}
 		});
@@ -232,15 +231,14 @@ class Success implements View {
 				.get()
 				.join();
 			if (mailIds.length > 0) {
-				console.log(mailIds);
 				setMailReadStatus(mailIds, false);
 			}
 		});
 
 		// Try to find the active label ID or select the first one if any
 		var found = false;
-		$("div.list-group").children("a").each(function() {
-			if ($(this).attr("label-id") === <?= $this->activeLabelId; ?>) {
+		$("div.list-group a").each(function() {
+			if (parseInt($(this).attr("label-id"), 10) === <?= $this->activeLabelId; ?>) {
 				$(this).trigger("click");
 				found = true;
 			}

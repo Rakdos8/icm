@@ -29,7 +29,7 @@ final class Controller extends AController {
 		return new Success(
 			MailLabel::invoke($oauthUser),
 			MailList::invoke($oauthUser),
-			!empty($params) ? intval($params[0]) : 1
+			!empty($params) && intval($params[0]) > 0 ? intval($params[0]) : 1
 		);
 	}
 
