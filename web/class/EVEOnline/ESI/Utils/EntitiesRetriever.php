@@ -41,6 +41,9 @@ class EntitiesRetriever {
 		$cachedEntities = CacheEntity::getEntityFromEntityId(array_values($idsToFetch));
 		foreach ($cachedEntities as $cachedEntity) {
 			if (!empty($cachedEntity->name)) {
+				// Update entity array
+				$entities[$cachedEntity->id_entity]->setName($cachedEntity->name);
+				// Remove entity ID to be fetched through ESI
 				unset($idsToFetch[$cachedEntity->id_entity]);
 			}
 		}

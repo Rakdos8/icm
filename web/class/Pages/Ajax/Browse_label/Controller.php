@@ -26,7 +26,7 @@ final class Controller extends AController {
 			die("Method Not Allowed");
 		} else if (empty($params) || !is_numeric($params[0])) {
 			http_response_code(409);
-			die("Missing parameter");
+			die("Missing Parameter");
 		}
 
 		// Retrieves characters from the player
