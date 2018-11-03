@@ -54,8 +54,8 @@ class Login extends AbstractProvider {
 	 */
 	public function getResourceOwner(AccessToken $token) {
 		return $this->createResourceOwner(
-			$this->fetchResourceOwnerDetails($token),
-			$token
+				$this->fetchResourceOwnerDetails($token),
+				$token
 		);
 	}
 

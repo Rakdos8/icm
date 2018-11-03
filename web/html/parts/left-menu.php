@@ -3,7 +3,7 @@
 		<div id="sidebar-menu">
 			<ul>
 
-<?php if (\Utils\Handler\PhpBB::getInstance()->isDirector()) : ?>
+<?php if (\com\evemyadmin\utils\handler\PhpBB::getInstance()->isDirector()) : ?>
 				<li class="menu-title">Directeurs</li>
 
 				<li>

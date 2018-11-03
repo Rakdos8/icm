@@ -4,12 +4,10 @@
 require_once "../inc/bootstrap.inc.php";
 
 // Include some class
-use Dispatcher\ADispatcher;
-use Utils\Handler\PhpBB;
-use Utils\Utils;
+use net\bourelly\core\utils\Utils;
 
 // Links with the phpbb forum
-$phpbb = PhpBB::getInstance();
+$phpbb = \com\evemyadmin\utils\handler\PhpBB::getInstance();
 
 $request = $phpbb->getRequest();
 if (strcmp($request->variable("page", "index"), "logout") == 0) {
@@ -18,7 +16,7 @@ if (strcmp($request->variable("page", "index"), "logout") == 0) {
 	Utils::redirect("/");
 }
 
-$view = ADispatcher::getInstance()->dispatch();
+$view = \net\bourelly\core\dispatcher\ADispatcher::getInstance()->dispatch();
 ?>
 <!DOCTYPE html>
 <html lang="fr" class="wide wow-animation">
@@ -68,7 +66,7 @@ require_once "parts/left-menu.php";
 
 						<div class="row">
 							<div class="col-sm-12">
-<?= $view->showTemplate(); ?>
+<?= $view->showHtmlTemplate(); ?>
 							</div>
 						</div>
 

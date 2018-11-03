@@ -2,8 +2,8 @@
 
 namespace EVEOnline\ESI\Utils;
 
+use com\evemyadmin\model\bean\cache\CacheEntity;
 use EVEOnline\ESI\EsiFactory;
-use Model\Bean\Cache\CacheEntity;
 
 /**
  * Helps to retrieve entities's name from their ID.
@@ -52,12 +52,12 @@ class EntitiesRetriever {
 		if (!empty($idsToFetch)) {
 			// Sets the parameters
 			$res = EsiFactory::invoke(
-				null,
-				"post",
-				"/universe/names/",
-				array(),
-				array(),
-				$idsToFetch
+					null,
+					"post",
+					"/universe/names/",
+					array(),
+					array(),
+					array_keys($idsToFetch)
 			);
 			$json = json_decode($res->raw, true);
 			foreach ($json as $entity) {

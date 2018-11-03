@@ -23,7 +23,7 @@ Some of the feature are not implemented yet, so be patient, will come soon(TM).
     + Dispatcher: Handles how to print the response to the User (HTML, JSON, else)
     + EVEOnline: Handles the ESI communication through OAUth2
     + Model: Handles the link between the application and the DataBase
-    + Pages: Structure defining the ``Page``/``Action`` with its specific Controller and Views
+    + com.evemyadmin.pages: Structure defining the ``Page``/``Action`` with its specific Controller and Views
     + Utils: Some utility class and methods (often in public static)
     + View: Defines some standard Views
   + conf: contains ini file with config variables

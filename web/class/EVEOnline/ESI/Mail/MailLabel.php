@@ -1,10 +1,10 @@
 <?php
 
 namespace EVEOnline\ESI\Mail;
+use com\evemyadmin\model\bean\OAuth2Users;
+use com\evemyadmin\model\bean\UserSession;
 use EVEOnline\ESI\EsiFactory;
-use Model\Bean\OAuth2Users;
-use Model\Bean\UserSession;
-use Utils\Exceptions\IllegalAccessException;
+use net\bourelly\core\utils\exceptions\IllegalAccessException;
 
 /**
  * Class MailLabel

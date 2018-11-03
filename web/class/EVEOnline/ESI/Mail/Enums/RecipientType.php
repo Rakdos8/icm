@@ -2,7 +2,7 @@
 
 namespace EVEOnline\ESI\Mail\Enums;
 
-use Utils\Enum\BasicEnum;
+use net\bourelly\core\utils\enum\BasicEnum;
 
 /**
  * Recipient Type for any mail.

@@ -2,7 +2,7 @@
 
 namespace EVEOnline\ESI\Utils\Enums;
 
-use Utils\Enum\BasicEnum;
+use net\bourelly\core\utils\enum\BasicEnum;
 
 /**
  * Entity Type.

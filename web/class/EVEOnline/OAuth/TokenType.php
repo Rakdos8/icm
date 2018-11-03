@@ -2,7 +2,7 @@
 
 namespace EVEOnline\OAuth;
 
-use Utils\Enum\BasicEnum;
+use net\bourelly\core\utils\enum\BasicEnum;
 
 /**
  * Token Type for any OAuth Token.

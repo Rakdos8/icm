@@ -2,7 +2,7 @@
 
 namespace EVEOnline\ESI\Character\Enums;
 
-use Utils\Enum\BasicEnum;
+use net\bourelly\core\utils\enum\BasicEnum;
 
 /**
  * Gender for any character.

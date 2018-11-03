@@ -1,17 +1,19 @@
 {
 	"name": "rakdos8/evemyadmin",
-	"description": "STUFF",
-	"license": "PRIVATE",
+	"license": "proprietary",
 	"authors": [
 		{
-			"name": "Bla",
-			"email": "lol@rakdos.net",
-			"homepage": "https://rakdos.net"
+			"name": "Christophe Bourelly",
+			"email": "contact@bourelly.net",
+			"homepage": "https://www.bourelly.net"
 		}
 	],
 	"require": {
-		"php": ">=7.1.0",
-		"league/oauth2-client": "^2.0.0",
+		"php": ">=7.2.0",
+		"ext-pdo": "*",
+		"ext-json": "*",
+		"ext-mbstring": "*",
+		"league/oauth2-client": "^2.3.0",
 		"eveseat/eseye": "^1.1.0"
 	},
 	"require-dev" : {

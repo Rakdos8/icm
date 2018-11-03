@@ -2,7 +2,10 @@
 
 namespace EVEOnline\ESI;
 
-use Model\Bean\OAuth2Users;
+use com\evemyadmin\model\bean\OAuth2Users;
+use net\bourelly\core\utils\exceptions\IllegalStateException;
+use net\bourelly\core\utils\handler\ErrorHandler;
+use net\bourelly\core\utils\Utils;
 use Seat\Eseye\Cache\RedisCache;
 use Seat\Eseye\Configuration;
 use Seat\Eseye\Containers\EsiAuthentication;
@@ -12,9 +15,6 @@ use Seat\Eseye\Exceptions\EsiScopeAccessDeniedException;
 use Seat\Eseye\Exceptions\InvalidContainerDataException;
 use Seat\Eseye\Exceptions\RequestFailedException;
 use Seat\Eseye\Exceptions\UriDataMissingException;
-use Utils\Exceptions\IllegalStateException;
-use Utils\Handler\ErrorHandler;
-use Utils\Utils;
 
 /**
  * Main class which handles HTTP query, login, and other stuff.
